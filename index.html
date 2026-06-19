@@ -41,7 +41,6 @@
   }
   .wrap{max-width:960px;margin:0 auto;}
 
-  /* 모바일 터치 씹힘 현상 완벽 해결 CSS */
   button, select, input, label {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
@@ -59,7 +58,6 @@
     margin:0 0 8px;line-height:1.15;word-break:keep-all;
   }
   .lede{color:var(--ink-2);font-size:14px;max-width:62ch;margin:0;}
-  /* ---------- 브랜드 헤더 ---------- */
   .brand-bar{
     display:flex;align-items:center;justify-content:space-between;gap:12px;
     background:var(--saman-gray);border-radius:12px;
@@ -84,6 +82,41 @@
   }
   .guide-btn:active{background:var(--saman-orange-deep);transform:translateY(1px);}
   .guide-btn svg{flex-shrink:0;}
+  .calc-tabs{display:flex;gap:6px;background:#E2E6EC;border-radius:12px;padding:5px;margin-bottom:6px;}
+  .calc-tab{flex:1;border:none;background:transparent;border-radius:9px;padding:12px 8px;
+    font-family:var(--sans);font-size:14px;font-weight:800;color:var(--ink-2);cursor:pointer;white-space:nowrap;}
+  .calc-tab.active{background:var(--surface);color:var(--saman-orange-deep);box-shadow:0 1px 5px rgba(16,32,47,.14);}
+
+  /* ---------- 조달수수료 계산기 ---------- */
+  .fee-cases{display:flex;flex-direction:column;gap:9px;margin-bottom:18px;}
+  .fee-case{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;text-align:left;
+    border:1.5px solid var(--line);border-radius:12px;padding:13px 15px;background:var(--surface);cursor:pointer;}
+  .fee-case.active{border-color:var(--saman-orange);background:#FFF6EE;box-shadow:0 0 0 1px var(--saman-orange) inset;}
+  .fc-tag{font-family:var(--mono);font-size:11px;font-weight:800;color:#fff;background:var(--saman-gray);
+    border-radius:5px;padding:2px 8px;letter-spacing:.04em;}
+  .fee-case.active .fc-tag{background:var(--saman-orange);}
+  .fc-title{font-size:14px;font-weight:700;color:var(--ink);word-break:keep-all;}
+  .fc-desc{font-size:12px;color:var(--ink-2);line-height:1.45;word-break:keep-all;}
+  
+  .fee-table{width:100%;border-collapse:collapse;}
+  .fee-table th{text-align:left;font-size:14px;font-weight:600;color:var(--ink-2);
+    padding:13px 4px;border-bottom:1px solid var(--line-soft);word-break:keep-all;}
+  .fee-table td{text-align:right;font-family:var(--mono);font-size:15px;font-weight:600;color:var(--ink);
+    padding:13px 4px;border-bottom:1px solid var(--line-soft);white-space:nowrap;}
+  
+  .fee-row-sub th, .fee-row-sub td{color:var(--ink); font-weight:700; background-color:#FAFBFC;}
+  .fee-row-fee th, .fee-row-fee td{color:var(--saman-orange-deep); font-weight:800;}
+  .fee-row-total th{font-weight:800;color:var(--ink);}
+  .fee-row-total th, .fee-row-total td{border-top:2px solid var(--line);border-bottom:none;padding-top:15px;}
+  .fee-row-total td{font-size:18px;font-weight:800;color:var(--saman-orange-deep);}
+  .fee-rate-note{font-size:12.5px;color:var(--ink-2);line-height:1.55;margin:14px 0 0;
+    background:#F4F6F8;border-radius:9px;padding:11px 13px;word-break:keep-all;}
+  @media(max-width:480px){
+    .fee-table th{font-size:13px;}
+    .fee-table td{font-size:14px;}
+    .fee-row-total td{font-size:16px;}
+  }
+  
   /* ---------- 사용 설명서 모달 ---------- */
   .guide-overlay{
     position:fixed;inset:0;z-index:100;background:rgba(16,32,47,.55);
@@ -137,12 +170,10 @@
   .card-title .idx{
     font-family:var(--mono);color:var(--copper-deep);font-size:12px;font-weight:700;
   }
-
   .field{margin-bottom:24px;}
   .field:last-child{margin-bottom:0;}
   .field > label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px;}
 
-  /* 라디오 버튼 기반 세그먼트 컨트롤 */
   .seg {
     display: flex; flex-wrap: wrap; gap: 6px;
     background: var(--line-soft); padding: 6px; border-radius: 12px;
@@ -171,7 +202,6 @@
   .fixed-fill .ff-val{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--copper-deep);line-height:1;}
   .fixed-fill .ff-desc{font-size:12px;color:#7a4a28;line-height:1.4;word-break:keep-all;}
 
-  /* 그리드 비율 조정 및 높이 확대 */
   .wire-head{
     display:grid;grid-template-columns:3fr 2.5fr 1.5fr 46px;gap:6px;
     font-size:11px;font-weight:700;letter-spacing:.04em;
@@ -181,7 +211,7 @@
     display:grid;grid-template-columns:3fr 2.5fr 1.5fr 46px;gap:6px;
     align-items:center;margin-bottom:10px;
   }
-  select,input[type="number"]{
+  select,input[type="number"],input[type="text"]{
     width:100%;font-family:var(--sans);font-size:14px;color:var(--ink);
     border:1px solid var(--line);border-radius:9px;padding:0 8px;background:#fff;
     transition:.15s;appearance:none; height:46px;
@@ -243,7 +273,6 @@
   .fillbar .limit{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--copper);box-shadow:0 0 6px var(--copper);}
   .fillbar .cap{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--panel-dim);margin-top:7px;}
 
-  /* cross section */
   .viz{
     background:rgba(255,255,255,.03);border-left:1px solid rgba(255,255,255,.08);
     padding:clamp(18px,3vw,26px);display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -255,12 +284,10 @@
   .viz .legend .sw{width:11px;height:11px;border-radius:50%;flex:none;border:1px solid rgba(255,255,255,.3);}
   .viz .vcap{font-size:10.5px;color:var(--panel-dim);margin-top:10px;text-align:center;line-height:1.4;}
 
-  /* ---------- table ---------- */
   .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch; margin:0 -4px;}
   table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed;}
   th,td{padding:12px 10px;text-align:right;border-bottom:1px solid var(--line-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   th:first-child,td:first-child{text-align:left;}
-  /* 열 폭 고정: 호칭 좁게 · 판정 넓고 가운데 (모든 화면 공통) */
   th:nth-child(1),td:nth-child(1){width:10%;}
   th:nth-child(2),td:nth-child(2){width:14%;}
   th:nth-child(3),td:nth-child(3){width:19%;}
@@ -280,7 +307,6 @@
   .pill.ok{background:rgba(47,158,115,.14);color:#207a55;}
   .pill.no{background:rgba(207,68,89,.12);color:#a83144;}
   .pill.rec{background:var(--copper);color:#fff;}
-  /* 모바일: 글자·여백 축소 (열 폭은 위 기본 규칙에서 고정) */
   @media(max-width:480px){
     table{font-size:11.5px;}
     th,td{padding:9px 4px;}
@@ -293,7 +319,6 @@
     .pill{padding:3px 6px;font-size:10px;border-radius:5px;}
   }
 
-  /* disclosure + footer */
   details{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:18px;overflow:hidden;}
   summary{
     cursor:pointer;padding:16px 20px;font-size:14px;font-weight:700;color:var(--ink);
@@ -338,12 +363,18 @@
         </span>
       </div>
     </div>
+    <div class="calc-tabs" role="tablist" aria-label="계산기 선택">
+      <button type="button" class="calc-tab active" data-view="conduit" role="tab" aria-selected="true">전선관 관경</button>
+      <button type="button" class="calc-tab" data-view="fee" role="tab" aria-selected="false">조달수수료</button>
+    </div>
+  </header>
+
+  <div id="view-conduit" class="calc-view">
     <div class="head-text">
       <div class="eyebrow">전기설비 · 배관 산정</div>
       <h1>전선관 관경 계산기</h1>
       <p class="lede">전선 굵기와 본수를 넣으면 점유율 1/3(33.3%) 기준에 맞는 최소 전선관 규격을 산정합니다.</p>
     </div>
-  </header>
 
   <div class="card">
     <div class="card-title-row">
@@ -441,15 +472,73 @@
       <h4>점유율 산정 기준</h4>
       <p class="ref">여러 전선을 동일 관내에 넣을 때 <strong>전선 피복(절연물 포함) 완성단면적의 총합 ≤ 전선관 내단면적의 1/3(약 33.3%)</strong>을 적용합니다. 굵기 구분 없이 통일된 현행 권장 기준입니다. (내선규정 전선관 굵기 선정, KEC 232 금속관·합성수지관·가요전선관 공사)</p>
       <h4>전선관 내경</h4>
-      <p class="ref">후강전선관(<code>KS C 8401</code>) 호칭 16~104은 근사 내경(짝수)으로 실제 KS 내경값을 사용합니다. ELP전선관(<code>KS C 8455</code>, 파상형 경질 폴리에틸렌·지중용)은 호칭이 곧 내경(30~200mm)입니다. HI-PVC전선관(<code>KS C 8431</code>, 내충격용 경질 PVC)은 호칭 16~104의 KS 내경값을 사용합니다.</p>
+      <p class="ref">후강전선관(<code>KS C 8401</code>) 호칭 16~104은 근사 내경(짝수)으로 실제 KS 내경값을 사용합니다. ELP전선관(<code>KS C 8455</code>, 파상형 경질 폴리에틸렌·지중용)은 호칭이 곧 내경(30~200mm) 점유율은 호칭 16~104의 KS 내경값을 사용합니다.</p>
       <h4>전선·케이블 외경</h4>
       <p class="ref">단심 절연전선은 HFIX(<code>KS C 3341</code>)와 F-GV 접지선을 사용합니다. F-CV 전력케이블(<code>KS C IEC 60502-1</code>)은 1심(단심)부터 다심까지 선택할 수 있으며, F-CVV 제어케이블, 22.9kV CN-CV, 소방용 F-FR-8 내화케이블 데이터가 포함되어 있습니다. F-CV는 난연(난연 PVC 시스) 처리만 다를 뿐 CV와 동일 규격·치수이므로 단심 CV는 F-CV 1심으로 통합했습니다. 표에 없는 규격은 '직접입력' 모드를 사용하세요.</p>
       <div class="note"><strong>참고</strong> · 본 계산은 점유율(면적) 기준의 1차 산정 도구입니다. 가닥수가 적을 때(2~3본)는 기하학적 외접원 보정으로 필요 관경이 달라질 수 있습니다. 최종 설계 시에는 현장 조건을 함께 검토하세요.</p>
     </div>
   </details>
+  </div><div id="view-fee" class="calc-view" hidden>
+    <div class="head-text">
+      <div class="eyebrow">전기설비 · 조달 산정</div>
+      <h1>조달수수료 계산기</h1>
+      <p class="lede">계약 방식을 선택하고 금액을 입력하면 조달수수료와 합계 금액을 산정합니다. <span style="white-space: nowrap;">(만 단위 올림 적용)</span></p>
+    </div>
 
-  <footer>
-    <strong>전선관 관경 계산기</strong> · 점유율 1/3 기준 1차 산정 도구. 표시 수치는 규격값을 사용하며, 법적 효력을 갖는 설계서가 아닙니다. <span style="opacity:.6;">(rev. 0619-H)</span>
+    <div class="card">
+      <p class="card-title"><span class="idx">01</span> 계약 방식 선택</p>
+      <div class="fee-cases" id="feeCases">
+        <button type="button" class="fee-case active" data-case="case1">
+          <span class="fc-tag">CASE 1</span>
+          <span class="fc-title">총액입찰 · 공급가액/부가세 분리</span>
+          <span class="fc-desc">공급가액(부가세 별도)을 입력하면 부가세 10%를 자동 가산합니다.</span>
+        </button>
+        <button type="button" class="fee-case" data-case="case2">
+          <span class="fc-tag">CASE 2</span>
+          <span class="fc-title">총액입찰 · 공급가액+부가세 포함</span>
+          <span class="fc-desc">부가세가 포함된 총액(낙찰금액)을 입력합니다.</span>
+        </button>
+        <button type="button" class="fee-case" data-case="case3">
+          <span class="fc-tag">CASE 3</span>
+          <span class="fc-title">3자단가 · 공급가액+부가세 포함</span>
+          <span class="fc-desc">부가세 포함 총액을 입력 · 단가계약 요율(0.54%)을 적용합니다.</span>
+        </button>
+      </div>
+
+      <div class="field" style="margin-bottom:0;">
+        <label id="feeAmtLabel">공급가액 입력 (부가세 별도, 원)</label>
+        <input type="text" id="feeAmount" inputmode="numeric" placeholder="예: 100,000,000" value="100,000,000" style="font-family:var(--mono); text-align:center;">
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">02</span> 산정 결과</p>
+      <table class="fee-table">
+        <tbody>
+          <tr><th>공급가액</th><td id="feeSupply">₩ 0</td></tr>
+          <tr><th>부가가치세</th><td id="feeVat">₩ 0</td></tr>
+          <tr class="fee-row-sub"><th>소계</th><td id="feeSub">₩ 0</td></tr>
+          <tr><th>조달수수료 기본금액</th><td id="feeFeeBase">₩ 0</td></tr>
+          <tr><th>조달수수료 추가증액</th><td id="feeFeeAdj">₩ 0</td></tr>
+          <tr class="fee-row-fee"><th>조달수수료 적용금액</th><td id="feeFeeApplied">₩ 0</td></tr>
+          <tr class="fee-row-total"><th>끝자리 조정 총금액<br><small style="font-weight:600;font-size:12px;opacity:0.6;">(소계 + 적용수수료)</small></th><td id="feeTotal">₩ 0</td></tr>
+        </tbody>
+      </table>
+      <p class="fee-rate-note" id="feeRateNote"></p>
+    </div>
+
+    <details>
+      <summary>조달수수료 요율 및 산정 기준 보기</summary>
+      <div class="details-body">
+        <h4>적용 요율 (내자구매 · 조달청 고시 제2022-17호, 2023~2025)</h4>
+        <p class="ref"><strong>총액(CASE 1·2)</strong> · 2천만원까지 210,000원(정액), 2천만~5천만 530,000원(정액), 5천만~1억 1.07%, 1억~10억 초과분 0.76%, 10억~100억 초과분 0.48%, 100억 초과분 0.38%. (1억 초과는 초과분 체감 적용)</p>
+        <p class="ref"><strong>단가·3자단가(CASE 3)</strong> · 10억까지 0.54%, 10억~100억 초과분 0.47%, 100억 초과분 0.37%. (10억 초과는 초과분 체감 적용)</p>
+        <p class="ref">수수료 기준금액은 부가세를 포함한 <strong>소계</strong>입니다. 산정된 조달수수료 기본금액에, 전체 총액이 10,000원 단위로 떨어지도록 <strong>추가증액분</strong>을 더하여 <strong>적용금액</strong>을 산출합니다.</p>
+        <div class="note"><strong>주의</strong> · 2025.7.1자로 조달수수료 고시가 개정(제2025-22호)되었습니다. 본 계산기는 귀사 산정표와 동일한 제2022-17호 요율을 적용합니다. 현행 최신 요율로 갱신을 원하시면 개정 요율표를 알려주세요. 실제 납부액은 나라장터 공식 계산 결과를 확인하시기 바랍니다.</p>
+      </div>
+    </details>
+  </div><footer>
+    <strong>전선관 관경 계산기</strong> · 점유율 1/3 기준 1차 산정 도구. 표시 수치는 규격값을 사용하며, 법적 효력을 갖는 설계서가 아닙니다. <span style="opacity:.6;">(rev. 0619-I)</span>
   </footer>
 
 </div>
@@ -462,7 +551,6 @@
     </div>
     <div class="guide-body">
       <p>관경 계산기는 입력한 전선의 종류·굵기·가닥수(본수)를 바탕으로 점유율 33.3% 기준에 부합하는 최소 전선관 규격을 자동으로 산정해 주는 도구입니다.</p>
-
       <h3>🚀 사용 방법</h3>
       <h4>1. 전선관 종류 선택</h4>
       <p>계산할 전선관의 재질·용도에 맞게 하나를 선택합니다.</p>
@@ -481,7 +569,6 @@
       <p class="tip">💡 목록에 없는 규격이나 특수 케이블은 <strong>'직접입력(외경)'</strong>을 선택해 케이블 바깥지름(mm)을 직접 넣을 수 있습니다.</p>
       <h4>3. 결과 확인</h4>
       <p>전선 정보를 입력하면 즉시 상단 패널과 하단 표에 결과가 업데이트됩니다.</p>
-
       <h3>📊 요약 결과 패널</h3>
       <ul>
         <li><strong>추천 최소 전선관</strong> · 전선 완성단면적 합계가 전선관 내단면적의 33.3%를 넘지 않는 가장 경제적인(작은) 호칭을 제시</li>
@@ -493,13 +580,11 @@
         </li>
         <li><strong>단면 개념도</strong> · 바깥 원 = 전선관, 색칠된 원 = 전선 면적 합계, 점선 = 허용 한계(33.3%)</li>
       </ul>
-
       <h3>📋 규격별 검토 표</h3>
       <ul>
         <li>선택한 전선관 종류의 모든 호칭에 대한 내경·단면적·허용면적(33.3%)·실제 점유율을 한눈에 확인</li>
         <li>우측 <strong>판정</strong> 열로 어떤 규격부터 '적합'한지, 어떤 규격이 최적의 '추천'인지 비교 검토</li>
       </ul>
-
       <h3>📌 산정 기준 및 주의사항 (필독)</h3>
       <p>본 계산기의 결과는 현행 규정에 따른 <strong>1차 산정 및 검토용</strong>입니다.</p>
       <h4>1. 산정 근거 (점유율 기준)</h4>
@@ -621,7 +706,6 @@ function odOf(w){
 }
 const COLORS=["#C16A36","#3E7CB1","#5BA46F","#B0578D","#C9A227","#5C6BC0","#D1495B","#3FA7A0"];
 
-// 🔥 기본적으로 세팅된 전선 3종 (HFIX 2.5 3가닥, F-CV 1C 4.0 1가닥, F-GV 2.5 1가닥)
 let state={
   pipe: "steel_thick",
   fill: 1/3,
@@ -635,7 +719,6 @@ let state={
 const A=d=>Math.PI/4*d*d;
 const fmt=(x,d=1)=>x.toLocaleString("ko-KR",{minimumFractionDigits:d,maximumFractionDigits:d});
 
-// iOS 터치 씹힘 완벽 해결을 위해 inline 함수(onchange, onclick, oninput)로 변경
 window.updateWireRow = function(i, f, val) {
   if(!state.wires[i]) return;
   if(f === "type") {
@@ -825,14 +908,12 @@ function render(){
   drawLegend();
 }
 
-// ===== 이벤트 위임 기반 초기화 (iOS 사파리 포함 전 브라우저 안전) =====
 function handleWireEvent(e){
   const el = e.target.closest("[data-action]");
   if(!el || !document.getElementById("wireRows").contains(el)) return;
   const action = el.getAttribute("data-action");
   const i = parseInt(el.getAttribute("data-i"), 10);
 
-  // 이벤트 종류별로 한 번씩만 처리 (중복 발화 방지)
   if((action === "type" || action === "size") && e.type === "change"){
     updateWireRow(i, action, el.value);
   } else if((action === "count" || action === "od") && e.type === "input"){
@@ -842,19 +923,90 @@ function handleWireEvent(e){
   }
 }
 
+// ===== 조달수수료 계산기 =====
+var feeState = { kase:"case1", amount:100000000 };
+function feeTotalSchedule(base){
+  if(base<=0) return 0;
+  if(base<=2e7) return 210000;
+  if(base<=5e7) return 530000;
+  if(base<=1e8) return base*0.0107;
+  if(base<=1e9) return 1e8*0.0107 + (base-1e8)*0.0076;
+  if(base<=1e10){ var f10=1e8*0.0107+9e8*0.0076; return f10+(base-1e9)*0.0048; }
+  var a=1e8*0.0107+9e8*0.0076, b=a+9e9*0.0048;
+  return b+(base-1e10)*0.0038;
+}
+function feeUnitSchedule(base){
+  if(base<=0) return 0;
+  if(base<=1e9) return base*0.0054;
+  if(base<=1e10) return 1e9*0.0054 + (base-1e9)*0.0047;
+  var a=1e9*0.0054+9e9*0.0047;
+  return a+(base-1e10)*0.0037;
+}
+function wonFmt(n){ return "₩ " + Math.round(n).toLocaleString("ko-KR"); }
+
+function renderFee(){
+  var amt = feeState.amount||0, supply, vat, sub, baseFee, isUnit=false, vatText=null;
+  if(feeState.kase==="case1"){
+    supply=amt; vat=Math.round(amt*0.1); sub=supply+vat; baseFee=feeTotalSchedule(sub);
+  } else if(feeState.kase==="case2"){
+    supply=amt; vat=0; vatText="포함"; sub=amt; baseFee=feeTotalSchedule(sub);
+  } else {
+    supply=amt; vat=0; vatText="포함"; sub=amt; isUnit=true; baseFee=feeUnitSchedule(sub);
+  }
+  
+  // 1. 기본 조달수수료 (원 단위 올림)
+  baseFee=Math.ceil(baseFee);
+  
+  // 2. 만원 단위 끝자리 조정 계산
+  var tempTotal = sub + baseFee; // 소계 + 기본수수료
+  var adjustedTotal = Math.ceil(tempTotal / 10000) * 10000; // 10,000원 단위로 올림한 최종 총액
+  var adjustment = adjustedTotal - tempTotal; // 총액을 맞추기 위해 필요한 추가증액분
+  var appliedFee = baseFee + adjustment; // 실제로 적용될 조달수수료
+
+  var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
+  set("feeSupply", wonFmt(supply));
+  set("feeVat", vatText?vatText:wonFmt(vat));
+  set("feeSub", wonFmt(sub));
+  
+  // 새로 추가된 행들에 값 반영
+  set("feeFeeBase", wonFmt(baseFee));
+  set("feeFeeAdj", wonFmt(adjustment));
+  set("feeFeeApplied", wonFmt(appliedFee));
+  set("feeTotal", wonFmt(adjustedTotal));
+
+  set("feeRateNote", (isUnit?"단가(3자단가) 요율 적용":"총액 요율 적용")
+      +" · 기준금액 "+wonFmt(sub)
+      +(feeState.kase==="case1"?" (공급가액+부가세 10%)":" (부가세 포함)")
+      +" · 최종합계 만원 단위 올림 조정.");
+      
+  var lbl=document.getElementById("feeAmtLabel");
+  if(lbl) lbl.textContent = feeState.kase==="case1" ? "공급가액 입력 (부가세 별도, 원)" : "공급가액 입력 (부가세 포함, 원)";
+}
+
+function switchView(view){
+  var conduit=document.getElementById("view-conduit"), fee=document.getElementById("view-fee");
+  var isFee = view==="fee";
+  if(conduit) conduit.hidden=isFee;
+  if(fee) fee.hidden=!isFee;
+  document.querySelectorAll(".calc-tab").forEach(function(t){
+    var on=t.getAttribute("data-view")===view;
+    t.classList.toggle("active",on);
+    t.setAttribute("aria-selected", on?"true":"false");
+  });
+  if(isFee) renderFee();
+  try{ window.scrollTo(0,0); }catch(e){}
+}
+
 function initApp(){
   try{
     const wireRows = document.getElementById("wireRows");
-    // 입력 행: change(셀렉트) / input(숫자) / click(삭제) 위임
     wireRows.addEventListener("change", handleWireEvent);
     wireRows.addEventListener("input",  handleWireEvent);
     wireRows.addEventListener("click",  handleWireEvent);
 
-    // 전선 추가 버튼
     const addBtn = document.getElementById("addWire");
     if(addBtn) addBtn.addEventListener("click", addWireRow);
 
-    // 배관 종류 라디오
     document.querySelectorAll('input[name="pipe"]').forEach(function(rad){
       rad.addEventListener("change", function(ev){
         state.pipe = ev.target.value;
@@ -862,7 +1014,6 @@ function initApp(){
       });
     });
 
-    // 사용 설명서 모달
     const guideOverlay = document.getElementById("guideOverlay");
     const openGuide = document.getElementById("openGuide");
     const closeGuide = document.getElementById("closeGuide");
@@ -873,11 +1024,32 @@ function initApp(){
     if(guideOverlay) guideOverlay.addEventListener("click", function(e){ if(e.target===guideOverlay) hideGuide(); });
     document.addEventListener("keydown", function(e){ if(e.key==="Escape" && guideOverlay && !guideOverlay.hidden) hideGuide(); });
 
-    // 최초 렌더
+    document.querySelectorAll(".calc-tab").forEach(function(t){
+      t.addEventListener("click", function(){ switchView(t.getAttribute("data-view")); });
+    });
+    
+    document.querySelectorAll(".fee-case").forEach(function(b){
+      b.addEventListener("click", function(){
+        feeState.kase = b.getAttribute("data-case");
+        document.querySelectorAll(".fee-case").forEach(function(x){ x.classList.toggle("active", x===b); });
+        renderFee();
+      });
+    });
+    
+    var feeAmt = document.getElementById("feeAmount");
+    if(feeAmt) {
+      feeAmt.addEventListener("input", function(e){
+        var rawValue = e.target.value.replace(/[^0-9]/g, '');
+        feeState.amount = parseFloat(rawValue) || 0;
+        e.target.value = rawValue ? Number(rawValue).toLocaleString('ko-KR') : '';
+        renderFee(); 
+      });
+    }
+
     renderWires();
     render();
+    renderFee();
   }catch(err){
-    // 한 줄이 실패해도 화면 전체가 비지 않도록, 원인을 사용자에게 노출
     var box = document.getElementById("wireRows");
     if(box){
       box.innerHTML = '<div style="padding:14px;border:1px solid var(--bad);border-radius:9px;'
