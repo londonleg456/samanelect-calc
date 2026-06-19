@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>전선관 굵기 계산기 · 점유율 기반 배관 사이즈 산정</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  :root{
+    --bg:#ECEFF3;
+    --surface:#FFFFFF;
+    --panel:#10202F;
+    --panel-2:#16293B;
+    --panel-ink:#E9F0F8;
+    --panel-dim:#8DA2B8;
+    --ink:#15212F;
+    --ink-2:#566578;
+    --line:#D6DCE4;
+    --line-soft:#E7EBF0;
+    --copper:#C16A36;
+    --copper-deep:#9A4F26;
+    --copper-soft:#F2E2D6;
+    --ok:#2F9E73;
+    --warn:#D2962F;
+    --bad:#CF4459;
+    --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:"Pretendard",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    padding:clamp(16px,4vw,40px) clamp(14px,4vw,24px) 64px;
+  }
+  .wrap{max-width:960px;margin:0 auto;}
+
+  /* 모바일 터치 씹힘 현상 완벽 해결 CSS */
+  button, select, input, label {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* ---------- header ---------- */
+  header{margin-bottom:26px;}
+  .eyebrow{
+    font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--copper-deep);display:flex;align-items:center;gap:9px;margin-bottom:10px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--copper);display:inline-block;}
+  h1{
+    font-size:clamp(26px,5.4vw,36px);font-weight:800;letter-spacing:-.02em;
+    margin:0 0 8px;line-height:1.15;word-break:keep-all;
+  }
+  .lede{color:var(--ink-2);font-size:14px;max-width:62ch;margin:0;}
+
+  /* ---------- cards ---------- */
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:clamp(16px,3vw,26px);margin-bottom:18px;
+  }
+  .card-title{
+    font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--ink-2);margin:0 0 16px;display:flex;align-items:center;gap:8px;
+  }
+  .card-title .idx{
+    font-family:var(--mono);color:var(--copper-deep);font-size:12px;font-weight:700;
+  }
+
+  .field{margin-bottom:24px;}
+  .field:last-child{margin-bottom:0;}
+  .field > label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:10px;}
+
+  /* 라디오 버튼 기반 세그먼트 컨트롤 */
+  .seg {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    background: var(--line-soft); padding: 6px; border-radius: 12px;
+  }
+  .seg label {
+    flex: 1 1 0; min-width: 96px; cursor: pointer; margin: 0;
+  }
+  .seg input[type="radio"] { display: none; }
+  .seg .btn-surface {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: transparent; color: var(--ink-2); font-size: 14px; font-weight: 600;
+    padding: 12px 4px; border-radius: 8px; transition: .2s; height: 100%; text-align: center;
+  }
+  .seg .btn-surface small {
+    display: block; font-weight: 500; font-size: 11px; opacity: .8; margin-top: 4px;
+  }
+  .seg input[type="radio"]:checked + .btn-surface {
+    background: #fff; color: var(--copper-deep);
+    box-shadow: 0 2px 8px rgba(193,106,54,.15);
+  }
+
+  .fixed-fill{
+    display:flex;align-items:center;gap:14px;border:1px solid var(--line);
+    background:var(--copper-soft);border-radius:10px;padding:14px 16px;
+  }
+  .fixed-fill .ff-val{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--copper-deep);line-height:1;}
+  .fixed-fill .ff-desc{font-size:12px;color:#7a4a28;line-height:1.4;word-break:keep-all;}
+
+  /* 그리드 비율 조정 및 높이 확대 */
+  .wire-head{
+    display:grid;grid-template-columns:3fr 2.5fr 1.5fr 46px;gap:6px;
+    font-size:11px;font-weight:700;letter-spacing:.04em;
+    color:var(--ink-2);padding:0 2px 8px;
+  }
+  .wire-row{
+    display:grid;grid-template-columns:3fr 2.5fr 1.5fr 46px;gap:6px;
+    align-items:center;margin-bottom:10px;
+  }
+  select,input[type="number"]{
+    width:100%;font-family:var(--sans);font-size:14px;color:var(--ink);
+    border:1px solid var(--line);border-radius:9px;padding:0 8px;background:#fff;
+    transition:.15s;appearance:none; height:46px;
+  }
+  input[type="number"]{font-family:var(--mono); text-align:center;}
+  select:focus,input:focus{outline:none;border-color:var(--copper);box-shadow:0 0 0 3px rgba(193,106,54,.16);}
+  
+  .del{
+    border:1px solid var(--line);background:#FAFBFC;border-radius:9px;
+    height:46px; width:100%; display:flex; align-items:center; justify-content:center;
+    cursor:pointer;color:var(--ink-2);font-size:22px;line-height:1;transition:.15s; padding:0;
+  }
+  .del:active, .del:hover{border-color:var(--bad);color:var(--bad);background:#fff;}
+  .add{
+    margin-top:10px;width:100%;border:1.5px dashed var(--line);background:transparent;
+    color:var(--copper-deep);font-family:var(--sans);font-weight:700;font-size:14px;
+    padding:14px;border-radius:10px;cursor:pointer;transition:.15s;
+  }
+  .add:active, .add:hover{border-color:var(--copper);background:var(--copper-soft);}
+
+  /* ---------- result instrument ---------- */
+  .panel{
+    background:linear-gradient(160deg,var(--panel),var(--panel-2));
+    border-radius:16px;color:var(--panel-ink);overflow:hidden;
+    border:1px solid #0a1622;margin-bottom:18px;
+  }
+  .panel-grid{display:grid;grid-template-columns:1.05fr .95fr;}
+  @media(max-width:680px){.panel-grid{grid-template-columns:1fr;}}
+  .readout{padding:clamp(20px,3.4vw,30px);}
+  .readout .tag{
+    font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--panel-dim);
+    margin-bottom:6px;
+  }
+  .big{display:flex;align-items:baseline;gap:8px;margin-bottom:4px;flex-wrap:wrap;}
+  .big .num{font-family:var(--mono);font-size:clamp(40px,10vw,68px);font-weight:700;line-height:.95;letter-spacing:-.02em;}
+  .big .unit{font-size:18px;font-weight:600;color:var(--panel-dim);}
+  .big .nominal-label{font-size:13px;color:var(--copper);font-weight:700;align-self:flex-end;margin-bottom:6px;}
+  .sub-pipe{font-family:var(--mono);font-size:12.5px;color:var(--panel-dim);margin-bottom:18px;}
+
+  .status{
+    display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    padding:7px 13px;border-radius:999px;margin-bottom:20px;
+  }
+  .status .dot{width:9px;height:9px;border-radius:50%;}
+  .status.ok{background:rgba(47,158,115,.16);color:#7ee0b4;}
+  .status.ok .dot{background:#3ed699;box-shadow:0 0 8px #3ed699;}
+  .status.bad{background:rgba(207,68,89,.18);color:#ff97a6;}
+  .status.bad .dot{background:#ff6477;box-shadow:0 0 8px #ff6477;}
+
+  .metrics{display:grid;grid-template-columns:1fr 1fr;gap:14px 10px;}
+  .metric .k{font-size:11px;letter-spacing:.02em;color:var(--panel-dim);margin-bottom:3px;word-break:keep-all;}
+  .metric .v{font-family:var(--mono);font-size:16px;font-weight:600;}
+  .metric .v small{font-size:12px;color:var(--panel-dim);font-weight:500;}
+
+  .fillbar{margin-top:20px;}
+  .fillbar .track{height:9px;border-radius:6px;background:rgba(255,255,255,.1);position:relative;overflow:hidden;}
+  .fillbar .fill{height:100%;border-radius:6px;background:linear-gradient(90deg,#3ed699,#2f9e73);transition:width .5s cubic-bezier(.2,.7,.3,1);}
+  .fillbar .fill.over{background:linear-gradient(90deg,#ff8a5c,#cf4459);}
+  .fillbar .limit{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--copper);box-shadow:0 0 6px var(--copper);}
+  .fillbar .cap{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--panel-dim);margin-top:7px;}
+
+  /* cross section */
+  .viz{
+    background:rgba(255,255,255,.03);border-left:1px solid rgba(255,255,255,.08);
+    padding:clamp(18px,3vw,26px);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  @media(max-width:680px){.viz{border-left:none;border-top:1px solid rgba(255,255,255,.08);}}
+  .viz svg{width:100%;max-width:240px;height:auto;}
+  .viz .legend{margin-top:14px;width:100%;font-size:11.5px;color:var(--panel-dim);}
+  .viz .legend .row{display:flex;align-items:center;gap:8px;padding:2px 0;font-family:var(--mono);}
+  .viz .legend .sw{width:11px;height:11px;border-radius:50%;flex:none;border:1px solid rgba(255,255,255,.3);}
+  .viz .vcap{font-size:10.5px;color:var(--panel-dim);margin-top:10px;text-align:center;line-height:1.4;}
+
+  /* ---------- table ---------- */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch; margin:0 -4px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:420px;}
+  th,td{padding:12px 10px;text-align:right;border-bottom:1px solid var(--line-soft);white-space:nowrap;}
+  th:first-child,td:first-child{text-align:left;}
+  thead th{
+    font-size:11px;letter-spacing:.05em;color:var(--ink-2);
+    font-weight:700;border-bottom:1.5px solid var(--line);
+  }
+  tbody td{font-family:var(--mono);color:var(--ink);}
+  tbody td:first-child{font-family:var(--sans);font-weight:600;}
+  tr.rec{background:var(--copper-soft);}
+  tr.rec td{color:var(--copper-deep);font-weight:700;}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:4px 8px;border-radius:6px;font-family:var(--sans);}
+  .pill.ok{background:rgba(47,158,115,.14);color:#207a55;}
+  .pill.no{background:rgba(207,68,89,.12);color:#a83144;}
+  .pill.rec{background:var(--copper);color:#fff;}
+
+  /* disclosure + footer */
+  details{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:18px;overflow:hidden;}
+  summary{
+    cursor:pointer;padding:16px 20px;font-size:14px;font-weight:700;color:var(--ink);
+    list-style:none;display:flex;align-items:center;justify-content:space-between;
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary::after{content:"+";font-family:var(--mono);color:var(--copper-deep);font-size:18px;}
+  details[open] summary::after{content:"−";}
+  .details-body{padding:0 20px 20px;}
+  .details-body h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2);margin:18px 0 8px;}
+  .details-body p{font-size:13px;color:var(--ink-2);margin:6px 0;}
+  .ref{font-size:12px;color:var(--ink-2);line-height:1.7;}
+  .ref code{font-family:var(--mono);background:var(--line-soft);padding:2px 6px;border-radius:5px;color:var(--copper-deep);font-size:11.5px;}
+
+  footer{font-size:12px;color:var(--ink-2);line-height:1.7;margin-top:24px; padding-bottom:20px;}
+  footer strong{color:var(--ink);}
+  .note{
+    background:#FBF4EE;border:1px solid var(--copper-soft);border-left:3px solid var(--copper);
+    border-radius:8px;padding:12px 15px;font-size:12.5px;color:#7a4a28;margin-top:14px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">전기설비 · 배관 산정</div>
+    <h1>전선관 굵기 계산기</h1>
+    <p class="lede">전선 굵기와 본수를 넣으면 점유율 1/3(33.3%) 기준에 맞는 최소 전선관 규격을 산정합니다.</p>
+  </header>
+
+  <div class="card">
+    <p class="card-title"><span class="idx">01</span> 조건 입력</p>
+
+    <div class="field">
+      <label>전선관 종류</label>
+      <div class="seg" id="segPipe">
+        <label>
+          <input type="radio" name="pipe" value="steel_thick" checked>
+          <span class="btn-surface">후강전선관<small>강관·KS C 8401</small></span>
+        </label>
+        <label>
+          <input type="radio" name="pipe" value="elp">
+          <span class="btn-surface">ELP전선관<small>파상형 PE·지중</small></span>
+        </label>
+        <label>
+          <input type="radio" name="pipe" value="hipvc">
+          <span class="btn-surface">HI-PVC전선관<small>내충격용·KS C 8431</small></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>점유율 기준</label>
+      <div class="fixed-fill">
+        <span class="ff-val">33.3%</span>
+        <span class="ff-desc">전선 완성단면적 합계 ÷ 전선관 내단면적 · 1/3 이하</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>전선 입력</label>
+      <div class="wire-head">
+        <span>종류</span><span>규격</span><span>본수</span><span></span>
+      </div>
+      <div id="wireRows"></div>
+      <button type="button" class="add" id="addWire">+ 전선 추가</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-grid">
+      <div class="readout">
+        <div class="tag">추천 최소 전선관</div>
+        <div class="big">
+          <span class="num" id="recNum">—</span>
+          <span class="unit">mm</span>
+          <span class="nominal-label" id="recType"></span>
+        </div>
+        <div class="sub-pipe" id="recPipe">전선을 입력하세요</div>
+        <div class="status ok" id="status" style="display:none"><span class="dot"></span><span id="statusText"></span></div>
+
+        <div class="metrics">
+          <div class="metric"><div class="k">전선 완성단면적</div><div class="v" id="mWire">— <small>mm²</small></div></div>
+          <div class="metric"><div class="k">전선관 내단면적</div><div class="v" id="mPipe">— <small>mm²</small></div></div>
+          <div class="metric"><div class="k">허용 한계 (33.3%)</div><div class="v" id="mAllow">— <small>mm²</small></div></div>
+          <div class="metric"><div class="k">실제 점유율</div><div class="v" id="mPct">— <small>%</small></div></div>
+        </div>
+
+        <div class="fillbar">
+          <div class="track"><div class="fill" id="barFill" style="width:0%"></div><div class="limit" id="barLimit" style="left:33.3%"></div></div>
+          <div class="cap"><span>0%</span><span id="capLimit">기준 33.3%</span><span>100%</span></div>
+        </div>
+      </div>
+
+      <div class="viz">
+        <svg id="xsvg" viewBox="0 0 200 200" aria-label="전선관 단면 개념도"></svg>
+        <div class="legend" id="legend"></div>
+        <div class="vcap">바깥 원 = 전선관 내경 · 채워진 원 = 전선 면적<br>점선 = 허용 한계 · 면적 비례 개념도</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p class="card-title"><span class="idx">02</span> 규격별 검토</p>
+    <div class="tbl-wrap">
+      <table id="resultTable">
+        <thead>
+          <tr><th>호칭</th><th>내경(mm)</th><th>단면적(mm²)</th><th>허용(mm²)</th><th>점유율</th><th>판정</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <details>
+    <summary>적용 기준 및 데이터 출처 보기</summary>
+    <div class="details-body">
+      <h4>점유율 산정 기준</h4>
+      <p class="ref">여러 전선을 동일 관내에 넣을 때 <strong>전선 피복(절연물 포함) 완성단면적의 총합 ≤ 전선관 내단면적의 1/3(약 33.3%)</strong>을 적용합니다. 굵기 구분 없이 통일된 현행 권장 기준입니다. (내선규정 전선관 굵기 선정, KEC 232 금속관·합성수지관·가요전선관 공사)</p>
+      <h4>전선관 내경</h4>
+      <p class="ref">후강전선관(<code>KS C 8401</code>) 호칭 16~104은 근사 내경(짝수)으로 실제 KS 내경값을 사용합니다. ELP전선관(<code>KS C 8455</code>, 파상형 경질 폴리에틸렌·지중용)은 호칭이 곧 내경(30~200mm)입니다. HI-PVC전선관(<code>KS C 8431</code>, 내충격용 경질 PVC)은 호칭 16~104의 KS 내경값을 사용합니다.</p>
+      <h4>전선·케이블 외경</h4>
+      <p class="ref">단심 절연전선은 HFIX(<code>KS C 3341</code>)와 F-GV 접지선을 사용합니다. F-CV 전력케이블(<code>KS C IEC 60502-1</code>)은 1심(단심)부터 다심까지 선택할 수 있으며, F-CVV 제어케이블, 22.9kV CN-CV, 소방용 F-FR-8 내화케이블 데이터가 포함되어 있습니다. F-CV는 난연(난연 PVC 시스) 처리만 다를 뿐 CV와 동일 규격·치수이므로 단심 CV는 F-CV 1심으로 통합했습니다. 표에 없는 규격은 '직접입력' 모드를 사용하세요.</p>
+      <div class="note"><strong>참고</strong> · 본 계산은 점유율(면적) 기준의 1차 산정 도구입니다. 가닥수가 적을 때(2~3본)는 기하학적 외접원 보정으로 필요 관경이 달라질 수 있습니다. 최종 설계 시에는 현장 조건을 함께 검토하세요.</p>
+    </div>
+  </details>
+
+  <footer>
+    <strong>전선관 굵기 계산기</strong> · 점유율 1/3 기준 1차 산정 도구. 표시 수치는 규격값을 사용하며, 법적 효력을 갖는 설계서가 아닙니다.
+  </footer>
+
+</div>
+
+<script>
+const CONDUITS = {
+  steel_thick:{label:"후강전선관", sizes:[
+    {n:16,id:16.4},{n:22,id:21.9},{n:28,id:28.3},{n:36,id:36.9},{n:42,id:42.8},
+    {n:54,id:54.0},{n:70,id:69.6},{n:82,id:82.3},{n:92,id:93.7},{n:104,id:106.4}]},
+  elp:{label:"ELP전선관", sizes:[
+    {n:30,id:30.0},{n:40,id:40.0},{n:50,id:50.0},{n:65,id:65.0},{n:80,id:80.0},
+    {n:100,id:100.0},{n:125,id:125.0},{n:150,id:150.0},{n:175,id:175.0},{n:200,id:200.0}]},
+  hipvc:{label:"HI-PVC전선관", sizes:[
+    {n:16,id:18.0},{n:22,id:22.0},{n:28,id:28.0},{n:36,id:35.0},{n:42,id:40.0},
+    {n:54,id:52.0},{n:70,id:67.0},{n:82,id:78.0},{n:104,id:100.0}]}
+};
+
+const WIRES = {
+  HFIX:{label:"HFIX(절연전선)", od:{1.5:3.3,2.5:4.0,4:4.6,6:5.2,10:6.5,16:8.0,25:10.1,35:11.3,50:13.2,70:15.1,95:17.6,120:19.4,150:21.6,185:24.1,240:27.5,300:30.6}},
+  FGV:{label:"F-GV 접지선", od:{1.5:6.0,2.5:6.5,4:7.5,6:8.0,10:9.0,16:10.0,25:11.5,35:12.5,50:14.0,70:15.0,95:18.0,120:19.5,150:21.5,185:23.5,240:26.5,300:29.5}},
+  CNCV:{label:"22.9kV CN-CV", od:{60:28.0,100:32.0,150:34.0,200:36.5,250:39.0,325:42.5,400:46.0,500:49.5,600:53.5}},
+  OPTIC:{label:"광케이블(SM/MM)", od:{2:6.5, 4:7.0, 8:7.5, 12:8.0, 16:8.5, 24:9.5, 48:11.5}},
+  LAN:{label:"통신선(UTP/STP)", od:{"UTP CAT.5E":5.5, "UTP CAT.6":6.2, "STP CAT.5E":6.5, "STP CAT.6":7.4, "STP CAT.6A":8.0}}
+};
+
+const FCV_OD = {
+  1:{1.5:6.5,2.5:7,4:7.5,6:8,10:9,16:9.5,25:11,35:12,50:13.5,70:15.5,95:17,120:19,150:21,185:23,240:26,300:28.5,400:32,500:36,630:40.5},
+  2:{1.5:10.5,2.5:11.5,4:12.5,6:13.5,10:15.5,16:16.5,25:20,35:22,50:25,70:28.5,95:32,120:35.5,150:40,185:44,240:50,300:55},
+  3:{1.5:11,2.5:12,4:13,6:14.5,10:16.5,16:17.5,25:21,35:23.5,50:26.5,70:30.5,95:34.5,120:38.5,150:43,185:47.5,240:53.5,300:59},
+  4:{1.5:12,2.5:13,4:14,6:15.5,10:17.5,16:19.5,25:23.5,35:25.5,50:29,70:34,95:38.5,120:43,150:48,185:53,240:59.5,300:66}
+};
+const FCVV_OD = {
+  2:{1.5:11,2.5:12,4:14,6:15,10:17}, 3:{1.5:11.5,2.5:12.5,4:14.5,6:16,10:18},
+  4:{1.5:12.5,2.5:13.5,4:16,6:17,10:19.5}, 5:{1.5:13.5,2.5:14.5,4:17,6:18.5,10:21},
+  6:{1.5:14.5,2.5:15.5,4:18.5,6:21,10:23}, 7:{1.5:14.5,2.5:15.5,4:18.5,6:21,10:23},
+  8:{1.5:15.5,2.5:16.5,4:20,6:22,10:25}, 10:{1.5:18,2.5:19.5,4:23,6:26,10:29},
+  12:{1.5:18.5,2.5:20,4:24,6:27,10:30}, 15:{1.5:19.5,2.5:22,4:26,6:29},
+  20:{1.5:22,2.5:24,4:29,6:32}, 30:{1.5:26,2.5:28,4:35}
+};
+const FCVVS_OD = {
+  2:{1.5:12,2.5:13,4:14.5,6:16,10:17.5}, 3:{1.5:12.5,2.5:13.5,4:15.5,6:17,10:18.5},
+  4:{1.5:13.5,2.5:14.5,4:16.5,6:18,10:20}, 5:{1.5:14.5,2.5:15.5,4:18,6:19.5,10:22.5},
+  6:{1.5:15.5,2.5:16.5,4:19.5,6:21.5,10:24.5}, 7:{1.5:15.5,2.5:16.5,4:19.5,6:21.5,10:24.5},
+  8:{1.5:16.5,2.5:17.5,4:21.5,6:23.5,10:26.5}, 10:{1.5:18,2.5:20,4:24.5,6:26.5,10:30.5}
+};
+const FFR8_OD = {
+  1:{1.5:6.5,2.5:7.0,4:7.5,6:8.5,10:9.5,16:10.5,25:12.5,35:14.0,50:15.5,70:17.5,95:19.5,120:21.5,150:23.5,185:26.0,240:29.0,300:32.0,400:36.0},
+  2:{1.5:11.5,2.5:12.5,4:13.5,6:15.0,10:17.0,16:19.0,25:23.0,35:25.0,50:28.5,70:32.5,95:37.0,120:41.0,150:46.0,185:51.0,240:58.0},
+  3:{1.5:12.0,2.5:13.0,4:14.5,6:16.0,10:18.0,16:20.0,25:24.5,35:26.5,50:30.5,70:34.5,95:39.5,120:43.5,150:49.0,185:54.0,240:62.0},
+  4:{1.5:13.0,2.5:14.5,4:16.0,6:17.5,10:20.0,16:22.0,25:27.0,35:29.5,50:34.0,70:38.5,95:44.0,120:48.5,150:54.5,185:60.0,240:68.5}
+};
+
+const CABLES = {
+  FCV:{label:"F-CV (전력)", od:FCV_OD},
+  FCVV:{label:"F-CVV (제어)", od:FCVV_OD},
+  FCVVS:{label:"F-CVV-S (차폐)", od:FCVVS_OD},
+  FCVVSB:{label:"F-CVV-SB (편조)", od:FCVVS_OD},
+  FFR8:{label:"F-FR-8 (내화)", od:FFR8_OD}
+};
+const isCable=t=>!!CABLES[t];
+
+function getSortedKeys(obj) {
+  return Object.keys(obj).sort((a, b) => {
+    const numA = parseFloat(a);
+    const numB = parseFloat(b);
+    if(isNaN(numA) || isNaN(numB)) return a.localeCompare(b);
+    return numA - numB;
+  });
+}
+
+function optionsFor(type){
+  if(isCable(type)){
+    const od=CABLES[type].od, groups=[];
+    for(const core of getSortedKeys(od)){
+      const opts=getSortedKeys(od[core]).map(s=>({v:core+"C-"+s, l:core+"C × "+s+"mm²"}));
+      groups.push({core, opts});
+    }
+    return {grouped:true, groups};
+  }
+  
+  return {grouped:false, opts:getSortedKeys(WIRES[type].od).map(s=>{
+    let unit = " mm²";
+    if(type === "CNCV") unit = " sq";
+    if(type === "OPTIC") unit = " Core";
+    if(type === "LAN") unit = ""; 
+    return {v:s, l:s + unit};
+  })};
+}
+
+function firstValueOf(type){
+  if(isCable(type)){
+    const od=CABLES[type].od, c=getSortedKeys(od)[0]; 
+    return c+"C-"+getSortedKeys(od[c])[0];
+  }
+  const ks=getSortedKeys(WIRES[type].od); 
+  return ks[1]||ks[0]; 
+}
+
+function odOf(w){
+  if(w.type==="custom") return parseFloat(w.od)||0;
+  if(isCable(w.type)){
+    const m=String(w.size).match(/^(\d+)C-(.+)$/); if(!m) return 0;
+    const tbl=CABLES[w.type].od[m[1]]; return (tbl&&tbl[m[2]])||0;
+  }
+  return WIRES[w.type].od[w.size]||0;
+}
+const COLORS=["#C16A36","#3E7CB1","#5BA46F","#B0578D","#C9A227","#5C6BC0","#D1495B","#3FA7A0"];
+
+// 🔥 기본적으로 세팅된 전선 3종 (HFIX 2.5 3가닥, F-CV 1C 4.0 1가닥, F-GV 2.5 1가닥)
+let state={
+  pipe: "steel_thick",
+  fill: 1/3,
+  wires: [
+    {type: "HFIX", size: "2.5", od: "", count: 3},
+    {type: "FCV", size: "1C-4", od: "", count: 1},
+    {type: "FGV", size: "2.5", od: "", count: 1}
+  ]
+};
+
+const A=d=>Math.PI/4*d*d;
+const fmt=(x,d=1)=>x.toLocaleString("ko-KR",{minimumFractionDigits:d,maximumFractionDigits:d});
+
+// iOS 터치 씹힘 완벽 해결을 위해 inline 함수(onchange, onclick, oninput)로 변경
+window.updateWireRow = function(i, f, val) {
+  if(!state.wires[i]) return;
+  if(f === "type") {
+    state.wires[i].type = val;
+    if(val !== "custom") state.wires[i].size = firstValueOf(val);
+    renderWires();
+  } else {
+    state.wires[i][f] = val;
+  }
+  render();
+};
+
+window.deleteWireRow = function(i) {
+  state.wires.splice(i, 1);
+  if(!state.wires.length) state.wires.push({type:"HFIX",size:"2.5",od:"",count:1});
+  renderWires();
+  render();
+};
+
+window.addWireRow = function() {
+  state.wires.push({type:"HFIX",size:"2.5",od:"",count:1});
+  renderWires();
+  render();
+};
+
+function wireRowHTML(w,i){
+  const isCustom=w.type==="custom";
+  let sizeCell;
+  if(isCustom){
+    sizeCell=`<input type="number" min="0.1" step="0.1" placeholder="외경 mm" value="${w.od}" data-action="od" data-i="${i}">`;
+  } else {
+    const o=optionsFor(w.type);
+    let inner;
+    if(o.grouped){
+      inner=o.groups.map(g=>`<optgroup label="${g.core}심">`+
+        g.opts.map(op=>`<option value="${op.v}" ${String(w.size)===op.v?"selected":""}>${op.l}</option>`).join("")+
+        `</optgroup>`).join("");
+    } else {
+      inner=o.opts.map(op=>`<option value="${op.v}" ${String(w.size)===op.v?"selected":""}>${op.l}</option>`).join("");
+    }
+    sizeCell=`<select data-action="size" data-i="${i}">${inner}</select>`;
+  }
+  
+  const types=[
+    ["HFIX","HFIX 절연전선"],
+    ["FGV","F-GV 접지선"],
+    ["CNCV","22.9kV CN-CV"],
+    ["FCV","F-CV 전력"],
+    ["FCVV","F-CVV 제어"],
+    ["FCVVS","F-CVV-S 차폐"],
+    ["FCVVSB","F-CVV-SB 편조"],
+    ["FFR8","F-FR-8 내화"],
+    ["OPTIC","광케이블(SM/MM)"],
+    ["LAN","통신선(UTP/STP)"],
+    ["custom","직접입력(외경)"]
+  ];
+  
+  const typeOpts=types.map(([v,l])=>`<option value="${v}" ${w.type===v?"selected":""}>${l}</option>`).join("");
+  return `<div class="wire-row">
+    <select data-action="type" data-i="${i}">${typeOpts}</select>
+    ${sizeCell}
+    <input type="number" min="1" step="1" value="${w.count}" data-action="count" data-i="${i}">
+    <button type="button" class="del" data-action="del" data-i="${i}" title="삭제">×</button>
+  </div>`;
+}
+
+function renderWires(){
+  document.getElementById("wireRows").innerHTML=state.wires.map(wireRowHTML).join("");
+}
+
+function totalWireArea(){
+  let t=0;
+  for(const w of state.wires){ t+=A(odOf(w))*(parseInt(w.count)||0); }
+  return t;
+}
+
+function wireBreakdown(){
+  const list=[];
+  state.wires.forEach((w,i)=>{
+    const od=odOf(w), c=parseInt(w.count)||0;
+    if(od>0&&c>0){
+      let label;
+      if(w.type==="custom") label="직접 ⌀"+od+"mm";
+      else if(isCable(w.type)) label=CABLES[w.type].label.split(" ")[0]+" "+String(w.size).replace("-"," ");
+      else {
+        let unit = "mm²";
+        if(w.type==="CNCV") unit="sq";
+        if(w.type==="OPTIC") unit="C";
+        if(w.type==="LAN") unit="";
+        label = (w.type==="HFIX"?"":WIRES[w.type].label.split(/[ (]/)[0]+" ") + w.size + unit;
+      }
+      list.push({od,c,color:COLORS[i%COLORS.length],label});
+    }
+  });
+  return list;
+}
+
+function compute(){
+  const sizes=CONDUITS[state.pipe].sizes;
+  const total=totalWireArea();
+  const rows=sizes.map(s=>{
+    const pa=A(s.id), allow=pa*state.fill, pct=pa>0?total/pa*100:0;
+    return Object.assign({}, s, {pa:pa, allow:allow, pct:pct, fits:total<=allow&&total>0});
+  });
+  const rec=rows.find(r=>r.fits)||null;
+  return {total,rows,rec};
+}
+
+function drawXS(rec,total){
+  const svg=document.getElementById("xsvg");
+  if(!rec||total<=0){svg.innerHTML=`<circle cx="100" cy="100" r="82" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="3"/><text x="100" y="105" text-anchor="middle" fill="#8DA2B8" font-size="12" font-family="ui-monospace">입력 대기</text>`;return;}
+  const R=82;
+  const rWire=Math.sqrt(total/Math.PI)/ (rec.id/2) * R;
+  const rLimit=Math.sqrt(rec.allow/Math.PI)/(rec.id/2)*R;
+  const over=total>rec.allow;
+  const wireCol=over?"#CF4459":"#3ed699";
+  svg.innerHTML=`
+    <circle cx="100" cy="100" r="${R}" fill="rgba(255,255,255,.04)" stroke="#C16A36" stroke-width="3"/>
+    <circle cx="100" cy="100" r="${rLimit.toFixed(1)}" fill="none" stroke="#C16A36" stroke-width="1.4" stroke-dasharray="4 4" opacity=".85"/>
+    <circle cx="100" cy="100" r="${Math.max(rWire,1).toFixed(1)}" fill="${wireCol}" fill-opacity=".22" stroke="${wireCol}" stroke-width="2"/>
+    <text x="100" y="104" text-anchor="middle" fill="#E9F0F8" font-size="15" font-weight="700" font-family="ui-monospace">${fmt(rec.pct,0)}%</text>`;
+}
+
+function drawLegend(){
+  const bd=wireBreakdown();
+  document.getElementById("legend").innerHTML=bd.map(b=>
+    `<div class="row"><span class="sw" style="background:${b.color}"></span>${b.label} × ${b.c} <span style="margin-left:auto;opacity:.7">⌀${b.od}mm</span></div>`).join("");
+}
+
+function render(){
+  const {total,rows,rec}=compute();
+  const recNum=document.getElementById("recNum"),
+        recType=document.getElementById("recType"),
+        recPipe=document.getElementById("recPipe"),
+        status=document.getElementById("status"),
+        statusText=document.getElementById("statusText");
+
+  if(total<=0){
+    recNum.textContent="—";recType.textContent="";recPipe.textContent="전선을 입력하세요";
+    status.style.display="none";
+    document.getElementById("mWire").innerHTML="— <small>mm²</small>";
+    document.getElementById("mPipe").innerHTML="— <small>mm²</small>";
+    document.getElementById("mAllow").innerHTML="— <small>mm²</small>";
+    document.getElementById("mPct").innerHTML="— <small>%</small>";
+    document.getElementById("barFill").style.width="0%";
+  } else if(rec){
+    recNum.textContent=rec.n;recType.textContent=CONDUITS[state.pipe].label;
+    recPipe.textContent=`내경 ${fmt(rec.id)}mm · 내단면적 ${fmt(rec.pa,0)}mm²`;
+    status.className="status ok";status.style.display="inline-flex";
+    statusText.textContent=`적합 · 점유율 ${fmt(rec.pct)}% (기준 33.3% 이하)`;
+    document.getElementById("mWire").innerHTML=`${fmt(total,0)} <small>mm²</small>`;
+    document.getElementById("mPipe").innerHTML=`${fmt(rec.pa,0)} <small>mm²</small>`;
+    document.getElementById("mAllow").innerHTML=`${fmt(rec.allow,0)} <small>mm²</small>`;
+    document.getElementById("mPct").innerHTML=`${fmt(rec.pct)} <small>%</small>`;
+    const bf=document.getElementById("barFill");
+    bf.style.width=Math.min(rec.pct,100)+"%";bf.className="fill";
+  } else {
+    const last=rows[rows.length-1];
+    recNum.textContent="!";recType.textContent="";
+    recPipe.textContent=`최대 규격(${last.n}mm)으로도 초과`;
+    status.className="status bad";status.style.display="inline-flex";
+    statusText.textContent=`기준 초과 · 분기 또는 큰 규격 필요`;
+    document.getElementById("mWire").innerHTML=`${fmt(total,0)} <small>mm²</small>`;
+    document.getElementById("mPipe").innerHTML=`${fmt(last.pa,0)} <small>mm²</small>`;
+    document.getElementById("mAllow").innerHTML=`${fmt(last.allow,0)} <small>mm²</small>`;
+    document.getElementById("mPct").innerHTML=`${fmt(last.pct)} <small>%</small>`;
+    const bf=document.getElementById("barFill");
+    bf.style.width=Math.min(last.pct,100)+"%";bf.className="fill over";
+  }
+
+  document.getElementById("barLimit").style.left=(state.fill*100)+"%";
+  document.getElementById("capLimit").textContent=`기준 33.3%`;
+
+  const tb=document.querySelector("#resultTable tbody");
+  tb.innerHTML=rows.map(r=>{
+    const isRec=rec&&r.n===rec.n;
+    const pill=total<=0?'<span class="pill no">—</span>'
+      :isRec?'<span class="pill rec">추천</span>'
+      :r.fits?'<span class="pill ok">적합</span>'
+      :'<span class="pill no">초과</span>';
+    return `<tr class="${isRec?"rec":""}">
+      <td>${r.n}</td><td>${fmt(r.id)}</td><td>${fmt(r.pa,0)}</td>
+      <td>${fmt(r.allow,0)}</td><td>${total>0?fmt(r.pct)+"%":"—"}</td><td>${pill}</td></tr>`;
+  }).join("");
+
+  drawXS(rec||(rows.length?rows[rows.length-1]:null),total);
+  drawLegend();
+}
+
+// ===== 이벤트 위임 기반 초기화 (iOS 사파리 포함 전 브라우저 안전) =====
+function handleWireEvent(e){
+  const el = e.target.closest("[data-action]");
+  if(!el || !document.getElementById("wireRows").contains(el)) return;
+  const action = el.getAttribute("data-action");
+  const i = parseInt(el.getAttribute("data-i"), 10);
+
+  // 이벤트 종류별로 한 번씩만 처리 (중복 발화 방지)
+  if((action === "type" || action === "size") && e.type === "change"){
+    updateWireRow(i, action, el.value);
+  } else if((action === "count" || action === "od") && e.type === "input"){
+    updateWireRow(i, action, el.value);
+  } else if(action === "del" && e.type === "click"){
+    deleteWireRow(i);
+  }
+}
+
+function initApp(){
+  try{
+    const wireRows = document.getElementById("wireRows");
+    // 입력 행: change(셀렉트) / input(숫자) / click(삭제) 위임
+    wireRows.addEventListener("change", handleWireEvent);
+    wireRows.addEventListener("input",  handleWireEvent);
+    wireRows.addEventListener("click",  handleWireEvent);
+
+    // 전선 추가 버튼
+    const addBtn = document.getElementById("addWire");
+    if(addBtn) addBtn.addEventListener("click", addWireRow);
+
+    // 배관 종류 라디오
+    document.querySelectorAll('input[name="pipe"]').forEach(function(rad){
+      rad.addEventListener("change", function(ev){
+        state.pipe = ev.target.value;
+        render();
+      });
+    });
+
+    // 최초 렌더
+    renderWires();
+    render();
+  }catch(err){
+    // 한 줄이 실패해도 화면 전체가 비지 않도록, 원인을 사용자에게 노출
+    var box = document.getElementById("wireRows");
+    if(box){
+      box.innerHTML = '<div style="padding:14px;border:1px solid var(--bad);border-radius:9px;'
+        + 'color:var(--bad);font-size:13px;">초기화 중 오류가 발생했습니다: '
+        + (err && err.message ? err.message : err) + '</div>';
+    }
+    if(window.console) console.error(err);
+  }
+}
+
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", initApp);
+}else{
+  initApp();
+}
+</script>
+</body>
+</html>
