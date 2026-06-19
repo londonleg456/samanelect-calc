@@ -196,6 +196,7 @@
     font-size:11px;letter-spacing:.05em;color:var(--ink-2);
     font-weight:700;border-bottom:1.5px solid var(--line);
   }
+  thead th small{display:block;font-family:var(--mono);font-weight:600;font-size:9.5px;opacity:.6;letter-spacing:0;margin-top:2px;}
   tbody td{font-family:var(--mono);color:var(--ink);}
   tbody td:first-child{font-family:var(--sans);font-weight:600;}
   tr.rec{background:var(--copper-soft);}
@@ -204,6 +205,25 @@
   .pill.ok{background:rgba(47,158,115,.14);color:#207a55;}
   .pill.no{background:rgba(207,68,89,.12);color:#a83144;}
   .pill.rec{background:var(--copper);color:#fff;}
+  /* 모바일: 6개 열을 한 화면에 맞춤 (판정 칸 잘림 방지) */
+  @media(max-width:480px){
+    table{font-size:11.5px;min-width:0;table-layout:fixed;}
+    th,td{padding:9px 4px;}
+    /* 열 폭 배분: 호칭 좁게, 판정 넓고 안정적으로 */
+    th:nth-child(1),td:nth-child(1){width:11%;}
+    th:nth-child(2),td:nth-child(2){width:15%;}
+    th:nth-child(3),td:nth-child(3){width:19%;}
+    th:nth-child(4),td:nth-child(4){width:18%;}
+    th:nth-child(5),td:nth-child(5){width:16%;}
+    th:nth-child(6),td:nth-child(6){width:21%;text-align:center;}
+    th:first-child,td:first-child{padding-left:2px;}
+    th:last-child,td:last-child{padding-right:2px;}
+    td:nth-child(6) .pill{min-width:40px;text-align:center;}
+    thead th{font-size:10px;letter-spacing:.01em;}
+    thead th small{font-size:8.5px;margin-top:1px;}
+    .tbl-wrap{margin:0 -6px;}
+    .pill{padding:3px 6px;font-size:10px;border-radius:5px;}
+  }
 
   /* disclosure + footer */
   details{border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:18px;overflow:hidden;}
@@ -314,7 +334,7 @@
     <div class="tbl-wrap">
       <table id="resultTable">
         <thead>
-          <tr><th>호칭</th><th>내경(mm)</th><th>단면적(mm²)</th><th>허용(mm²)</th><th>점유율</th><th>판정</th></tr>
+          <tr><th>호칭</th><th>내경<small>mm</small></th><th>단면적<small>mm²</small></th><th>허용<small>mm²</small></th><th>점유율</th><th>판정</th></tr>
         </thead>
         <tbody></tbody>
       </table>
