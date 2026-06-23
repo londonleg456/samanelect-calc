@@ -58,7 +58,7 @@
     font-size:clamp(26px,5.4vw,36px);font-weight:800;letter-spacing:-.02em;
     margin:0 0 8px;line-height:1.15;word-break:keep-all;
   }
-  .lede{color:var(--ink-2);font-size:14px;max-width:62ch;margin:0;}
+  .lede{color:var(--ink-2);font-size:14px;max-width:62ch;margin:0;word-break:keep-all;overflow-wrap:break-word;line-height:1.55;}
   /* ---------- 브랜드 헤더 ---------- */
   .brand-bar{
     display:flex;align-items:center;justify-content:space-between;gap:12px;
@@ -517,9 +517,7 @@
       <div class="note"><strong>참고</strong> · 본 계산은 점유율(면적) 기준의 1차 산정 도구입니다. 가닥수가 적을 때(2~3본)는 기하학적 외접원 보정으로 필요 관경이 달라질 수 있습니다. 최종 설계 시에는 현장 조건을 함께 검토하세요.</p>
     </div>
   </details>
-  </div><!-- /view-conduit -->
-
-  <div id="view-fee" class="calc-view" hidden>
+  </div><div id="view-fee" class="calc-view" hidden>
     <div class="head-text">
       <div class="eyebrow">전기설비 · 조달 산정</div>
       <h1>조달수수료 계산기</h1>
@@ -578,17 +576,21 @@
         <div class="note"><strong>주의</strong> · 2025.7.1자로 조달수수료 고시가 개정(제2025-22호)되었습니다. 본 계산기는 귀사 산정표와 동일한 제2022-17호 요율을 적용합니다. 현행 최신 요율로 갱신을 원하시면 개정 요율표를 알려주세요. 실제 납부액은 나라장터 공식 계산 결과를 확인하시기 바랍니다.</p>
       </div>
     </details>
-  </div><!-- /view-fee -->
-
-  <div id="view-light" class="calc-view" hidden>
+  </div><div id="view-light" class="calc-view" hidden>
     <div class="head-text">
       <div class="eyebrow">전기설비 · 조명 산정</div>
-      <h1>등기구 계산기</h1>
-      <p class="lede">실의 조도기준·크기·등기구 광속·조명률을 입력하면 광속법으로 소요 등기구 수와 배치도를 산정합니다.</p>
+      <h1>등기구 배치</h1>
+      <p class="lede">실의 조도기준·크기·등기구 광속·조명률을 입력하면<br>공식에 따라 소요 등기구 수와 배치도를 산정합니다.</p>
     </div>
 
     <div class="card">
-      <p class="card-title"><span class="idx">01</span> 조명 조건 입력</p>
+      <div class="card-title-row">
+        <p class="card-title"><span class="idx">01</span> 조명 조건 입력</p>
+        <button type="button" id="openGuideLight" class="guide-btn" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          사용 설명서
+        </button>
+      </div>
 
       <div class="field">
         <label>실 용도 (조도기준)</label>
@@ -682,10 +684,8 @@
         <div class="note"><strong>참고</strong> · 본 결과는 평균 조도 기준 1차 산정값입니다. 정확한 조명률은 등기구 배광곡선·실내 반사율·실지수로 결정됩니다.</div>
       </div>
     </details>
-  </div><!-- /view-light -->
-
-  <footer>
-    <strong>전선관 관경 계산기</strong> · 점유율 1/3 기준 1차 산정 도구. 표시 수치는 규격값을 사용하며, 법적 효력을 갖는 설계서가 아닙니다. <span style="opacity:.6;">(rev. 0623-F)</span>
+  </div><footer>
+    <strong>전선관 관경 계산기</strong> · 점유율 1/3 기준 1차 산정 도구. 표시 수치는 규격값을 사용하며, 법적 효력을 갖는 설계서가 아닙니다. <span style="opacity:.6;">(rev. 0623-G)</span>
   </footer>
 
 </div>
@@ -748,6 +748,43 @@
         <p>이 도구는 단순히 <strong>'면적의 합'</strong>으로 점유율을 계산합니다.</p>
         <p>가닥수가 매우 적을 때(예: 굵은 케이블 2~3가닥)는 전선 배치의 기하학적 형태(외접원)로 인해, 면적 점유율이 33.3% 미만이어도 실제로는 관을 통과하지 못하거나 마찰이 심할 수 있습니다.</p>
         <p>따라서 최종 실시설계·시공 시에는 반드시 현장 조건과 기하학적 여유(외접원 보정 등)를 추가 검토해야 합니다. 본 결과는 법적 효력을 갖는 최종 설계서가 아닙니다.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="guide-overlay" id="guideOverlayLight" role="dialog" aria-modal="true" aria-labelledby="guideTitleLight" hidden>
+  <div class="guide-modal">
+    <div class="guide-head">
+      <h2 id="guideTitleLight">💡 등기구 배치 계산기 사용 설명서</h2>
+      <button type="button" class="guide-close" id="closeGuideLight" aria-label="닫기">×</button>
+    </div>
+    <div class="guide-body">
+      <p>공간의 조도 기준, 크기, 등기구 광속 등을 입력하여 광속법(루멘법) 공식에 따라 필요한 조명 기구의 수량과 개략적인 배치 격자를 산정해 주는 1차 설계용 계산기입니다.</p>
+
+      <h3>🚀 조명 조건 입력 방법</h3>
+      <ul>
+        <li><strong>실 용도 (조도기준)</strong> · 공간 목적에 맞는 조도 기준을 선택합니다. (전기실 400lx, 실험실 600lx 등) 표에 없는 경우 '직접 입력'이 가능합니다.</li>
+        <li><strong>실 크기 (m)</strong> · 대상 공간의 가로(W)와 세로(L) 길이를 기입합니다.</li>
+        <li><strong>등기구 광속 (lm)</strong> · 사용하실 등기구 1대의 광속을 선택하거나 카탈로그 수치를 직접 입력합니다.</li>
+        <li><strong>설치 높이 (m)</strong> · 조명이 설치되는 위치의 높이를 입력합니다. (내부 산정 시 일반 작업면 0.85m 자동 공제)</li>
+        <li><strong>조명률 (U)</strong> · 자동 추정 선택 시 실지수(K)와 공간에 맞춘 일반 반사율을 가정해 개략적인 조명률을 자동 입력합니다. 정확한 값이 있다면 수동으로 입력하세요.</li>
+        <li><strong>보수율 (M)</strong> · 노후화 및 오염으로 인한 광속 저하를 보상하는 계수로, 일반적인 청결 실내 기준인 0.85가 적용됩니다.</li>
+      </ul>
+
+      <h3>📊 산정 결과 확인</h3>
+      <ul>
+        <li><strong>필요 조도(E) 및 실 면적(A)</strong> · 사용자가 입력한 목표 조도와 가로·세로 기반 면적</li>
+        <li><strong>실지수 (K)</strong> · 방의 크기와 설치 높이 비율 수치</li>
+        <li><strong>소요 등기구 수 (N)</strong> · 올림 처리된 필요 등기구의 최종 수량</li>
+        <li><strong>배치도</strong> · 면적비에 따라 등기구를 균등하게 나눈 가로·세로 격자 배치도와 개략 간격 정보</li>
+      </ul>
+
+      <h3>📌 주요 산정 기준 및 주의사항</h3>
+      <p class="ref"><strong>광속법 공식</strong> · <code>N = (E × A) / (F × U × M)</code></p>
+      <div class="warn-box">
+        <p><strong>개략 검토용 도구</strong></p>
+        <p>도출된 수량과 배치는 평균 조도 기준의 1차 산정값입니다. 실제 설계 시에는 제조사별 등기구 배광 곡선, 균제도, 권장 간격(S ≤ 1.5H) 등을 현장 조건에 맞춰 추가로 검토해야 합니다.</p>
       </div>
     </div>
   </div>
@@ -1277,7 +1314,7 @@ function initApp(){
       });
     });
 
-    // 사용 설명서 모달
+    // 사용 설명서 모달 (전선관)
     const guideOverlay = document.getElementById("guideOverlay");
     const openGuide = document.getElementById("openGuide");
     const closeGuide = document.getElementById("closeGuide");
@@ -1286,7 +1323,24 @@ function initApp(){
     if(openGuide) openGuide.addEventListener("click", showGuide);
     if(closeGuide) closeGuide.addEventListener("click", hideGuide);
     if(guideOverlay) guideOverlay.addEventListener("click", function(e){ if(e.target===guideOverlay) hideGuide(); });
-    document.addEventListener("keydown", function(e){ if(e.key==="Escape" && guideOverlay && !guideOverlay.hidden) hideGuide(); });
+
+    // 사용 설명서 모달 (등기구)
+    const guideOverlayLight = document.getElementById("guideOverlayLight");
+    const openGuideLight = document.getElementById("openGuideLight");
+    const closeGuideLight = document.getElementById("closeGuideLight");
+    function showGuideLight(){ if(guideOverlayLight){ guideOverlayLight.hidden=false; document.body.style.overflow="hidden"; } }
+    function hideGuideLight(){ if(guideOverlayLight){ guideOverlayLight.hidden=true; document.body.style.overflow=""; } }
+    if(openGuideLight) openGuideLight.addEventListener("click", showGuideLight);
+    if(closeGuideLight) closeGuideLight.addEventListener("click", hideGuideLight);
+    if(guideOverlayLight) guideOverlayLight.addEventListener("click", function(e){ if(e.target===guideOverlayLight) hideGuideLight(); });
+
+    // ESC 키 처리 공통
+    document.addEventListener("keydown", function(e){ 
+      if(e.key==="Escape"){
+        if(guideOverlay && !guideOverlay.hidden) hideGuide(); 
+        if(guideOverlayLight && !guideOverlayLight.hidden) hideGuideLight();
+      }
+    });
 
     // 계산기 전환 탭
     document.querySelectorAll(".calc-tab").forEach(function(t){
