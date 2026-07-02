@@ -148,21 +148,47 @@
   .refl-info{font-size:11.5px;color:var(--ink-2);margin:8px 0 0;font-weight:600;}
   #lightU[readonly]{background:#F4F6F8;color:var(--saman-orange-deep);font-weight:700;}
   /* ---------- 기계부하 정리 ---------- */
-  .mech-item{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:10px;background:#fff;}
-  .mech-item-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-  .mech-item-no{font-size:12px;font-weight:800;color:var(--saman-orange-deep);letter-spacing:.04em;}
-  .mech-del{border:1px solid var(--line);background:#FAFBFC;border-radius:8px;width:32px;height:32px;
-    display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-2);font-size:19px;line-height:1;padding:0;flex-shrink:0;}
-  .mech-del:active{border-color:var(--bad);color:var(--bad);}
-  .mech-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .mech-fields .mf{display:flex;flex-direction:column;gap:5px;}
-  .mech-fields .mf.full{grid-column:1 / -1;}
-  .mf-cap{font-size:11px;color:var(--ink-2);font-weight:600;}
-  .mech-fields input[type="text"]{
-    width:100%;font-family:var(--sans);font-size:14px;color:var(--ink);box-sizing:border-box;
-    border:1px solid var(--line);border-radius:9px;padding:0 10px;background:#fff;height:46px;
+  /* ---------- 기계부하: 파일 인식 ---------- */
+  .mech-drop{
+    border:2px dashed var(--line);border-radius:14px;background:#FAFBFC;
+    padding:26px 16px;text-align:center;cursor:pointer;transition:border-color .15s, background .15s;
   }
-  .mech-fields input[type="text"]:focus{outline:none;border-color:var(--saman-orange);box-shadow:0 0 0 3px rgba(245,130,32,.16);}
+  .mech-drop.drag{border-color:var(--saman-orange);background:#FFF6EE;}
+  .mech-drop .md-main{margin:0 0 6px;font-size:14.5px;font-weight:700;color:var(--ink);word-break:keep-all;}
+  .mech-drop .md-sub{margin:0;font-size:12px;color:var(--ink-2);word-break:keep-all;}
+  .md-pick{
+    display:inline-block;border:none;border-radius:9px;padding:9px 14px;margin-left:4px;
+    font-family:var(--sans);font-size:13.5px;font-weight:800;color:#fff;background:var(--saman-orange);cursor:pointer;
+    box-shadow:0 2px 8px rgba(245,130,32,.34);
+  }
+  .md-pick:active{background:var(--saman-orange-deep);transform:translateY(1px);}
+  /* ---------- 기계부하: 한 줄 입력 행 ---------- */
+  .mech-rows{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;}
+  .mech-rows-inner{min-width:640px;}
+  .mech-row,.mech-rows-head{
+    display:grid;grid-template-columns:96px minmax(150px,1fr) 78px 118px 58px 58px 36px;
+    gap:6px;align-items:center;
+  }
+  .mech-rows-head{margin-bottom:6px;}
+  .mech-rows-head span{font-size:11px;font-weight:800;color:var(--ink-2);letter-spacing:.02em;padding-left:2px;white-space:nowrap;}
+  .mech-row{margin-bottom:6px;}
+  .mech-row input,.mech-row select{
+    width:100%;border:1.5px solid var(--line);border-radius:8px;padding:9px 8px;
+    font-family:var(--sans);font-size:13px;color:var(--ink);background:#fff;min-width:0;
+  }
+  .mech-row input[type="number"]{font-family:var(--mono);text-align:right;}
+  .mech-row input:focus,.mech-row select:focus{outline:none;border-color:var(--saman-orange);box-shadow:0 0 0 3px rgba(245,130,32,.16);}
+  .mech-row .mech-del{width:34px;height:36px;}
+  .mech-status{
+    margin:12px 0 0;border-radius:10px;padding:11px 13px;font-size:13px;font-weight:700;word-break:keep-all;
+    background:#EFF3F7;color:var(--ink-2);border:1px solid var(--line);
+  }
+  .mech-status.ok{background:#E9F6F0;color:var(--ok);border-color:#BFE5D5;}
+  .mech-status.bad{background:#FBECEF;color:var(--bad);border-color:#EFC6CE;}
+  .mech-status.busy{background:#FFF6EE;color:var(--saman-orange-deep);border-color:#F5D5B8;}
+  .mech-del{border:1px solid var(--line);background:#FAFBFC;border-radius:8px;width:32px;height:32px;
+    font-size:17px;font-weight:700;color:var(--ink-2);cursor:pointer;line-height:1;}
+  .mech-del:active{border-color:var(--bad);color:var(--bad);}
   .mech-table{width:100%;border-collapse:collapse;table-layout:fixed;}
   .mech-table th,.mech-table td{padding:10px 4px;font-size:13px;border-bottom:1px solid var(--line-soft);
     text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -441,7 +467,7 @@
       <button type="button" class="calc-tab active" data-view="conduit" role="tab" aria-selected="true">전선관</button>
       <button type="button" class="calc-tab" data-view="fee" role="tab" aria-selected="false">조달수수료</button>
       <button type="button" class="calc-tab" data-view="light" role="tab" aria-selected="false">등기구 배치</button>
-      <button type="button" class="calc-tab" data-view="mech" role="tab" aria-selected="false">기계부하(작업중)</button>
+      <button type="button" class="calc-tab" data-view="mech" role="tab" aria-selected="false">기기리스트 정리</button>
     </div>
   </header>
 
@@ -729,14 +755,31 @@
     </div>
 
     <div class="card">
-      <p class="card-title"><span class="idx">01</span> 부하 입력</p>
-      <div id="mechItems"></div>
+      <p class="card-title"><span class="idx">01</span> 기기리스트 엑셀 인식</p>
+      <div class="mech-drop" id="mechDrop">
+        <input type="file" id="mechFile" accept=".xlsx,.xls,.csv" hidden>
+        <p class="md-main">기기리스트 엑셀 파일을 끌어다 놓거나 <button type="button" class="md-pick" id="mechPick">파일 선택</button></p>
+        <p class="md-sub">.xlsx · .xls · .csv 지원 — 브라우저 안에서 바로 인식되며 파일이 외부로 전송되지 않습니다</p>
+      </div>
+      <p class="mech-status" id="mechStatus" hidden></p>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">02</span> 부하 입력·수정</p>
+      <div class="mech-rows">
+        <div class="mech-rows-inner">
+          <div class="mech-rows-head">
+            <span>부하번호</span><span>부하명</span><span>kW</span><span>기동방식</span><span>상용</span><span>예비</span><span></span>
+          </div>
+          <div id="mechItems"></div>
+        </div>
+      </div>
       <button type="button" class="add" data-maction="add">+ 부하 추가</button>
     </div>
 
     <div class="card">
       <div class="card-title-row">
-        <p class="card-title"><span class="idx">02</span> 정리 표</p>
+        <p class="card-title"><span class="idx">03</span> 정리 표</p>
         <button type="button" class="guide-btn" data-maction="copy">표 복사</button>
       </div>
       <div class="tbl-wrap">
@@ -752,8 +795,8 @@
     <details>
       <summary>사용 안내</summary>
       <div class="details-body">
-        <p class="ref">기계분야 기기리스트에서 부하번호·부하명·동력(단위부하)·기동방식·수량을 옮겨 적습니다. 수량 <code>2(1)</code>은 <strong>상용 1·예비 1</strong>로 입력하세요(괄호 안이 예비). '표 복사'한 내용은 탭(Tab)으로 칸이 구분되어 엑셀·한글 부하계산서에 붙여넣으면 칸이 자동으로 맞춰집니다.</p>
-        <div class="note"><strong>예정</strong> · 캡처 이미지를 올리면 부하번호·부하명·단위부하·기동방식·상용/예비를 자동으로 읽어 채우는 기능은 추후 추가할 수 있습니다(별도 환경 필요).</div>
+        <p class="ref">기계분야 기기리스트 엑셀(.xlsx·.xls·.csv)을 올리면 부하번호·부하명·단위부하(kW)·기동방식·상용/예비 대수를 자동으로 읽어 채웁니다. 수량 <code>2(1)</code>은 <strong>상용 1·예비 1</strong>로 해석합니다(괄호 안이 예비). 단계가 여러 개면 <strong>1단계 수량</strong>을 기준으로 읽습니다. 인식 후 잘못 읽힌 값은 02에서 직접 수정하세요. '표 복사'한 내용은 탭(Tab)으로 칸이 구분되어 엑셀·한글 부하계산서에 붙여넣으면 칸이 자동으로 맞춰집니다.</p>
+        <div class="note"><strong>인식 규칙</strong> · 엑셀은 머리글에서 '기기번호·기기명·동력(kW)·수량·상용' 열을 찾아 읽습니다. 사양·비고에 VVVF/인버터가 있으면 기동방식 V, 그 외는 N(직입)으로 넣습니다. 파일은 브라우저 안에서만 처리되며 외부로 전송되지 않습니다. 인식 결과는 반드시 원본과 대조 확인하세요.</div>
       </div>
     </details>
   </div><!-- /view-mech -->
@@ -1333,9 +1376,9 @@ function buildRoomSVG(W,L,cols,rows){
 
 // ===== 기계부하 정리 =====
 var MECH_STARTS=[
-  {c:"N", t:"직입 (N)"},
-  {c:"V", t:"인버터·VVVF (V)"},
-  {c:"F", t:"피더 (F)"}
+  {c:"N", t:"N·직입"},
+  {c:"V", t:"V·인버터"},
+  {c:"F", t:"F·피더"}
 ];
 var mechState={ items:[
   {no:"M1-101", name:"유입펌프", cap:"3.7", start:"V", on:"1", sp:"1"},
@@ -1347,17 +1390,15 @@ function mechStartOptions(sel){
   return MECH_STARTS.map(function(o){ return '<option value="'+o.c+'"'+(o.c===sel?' selected':'')+'>'+o.t+'</option>'; }).join("");
 }
 function mechItemHTML(it,i){
-  return '<div class="mech-item">'
-    +'<div class="mech-item-head"><span class="mech-item-no">부하 '+(i+1)+'</span>'
-    +'<button type="button" class="mech-del" data-maction="del" data-i="'+i+'" aria-label="삭제">×</button></div>'
-    +'<div class="mech-fields">'
-    +'<div class="mf full"><span class="mf-cap">부하번호</span><input type="text" data-maction="no" data-i="'+i+'" value="'+mEsc(it.no)+'" placeholder="예: M1-101"></div>'
-    +'<div class="mf full"><span class="mf-cap">부하명</span><input type="text" data-maction="name" data-i="'+i+'" value="'+mEsc(it.name)+'" placeholder="예: 유입펌프"></div>'
-    +'<div class="mf"><span class="mf-cap">단위부하 (kW)</span><input type="number" data-maction="cap" data-i="'+i+'" value="'+mEsc(it.cap)+'" min="0" step="0.01" placeholder="0"></div>'
-    +'<div class="mf"><span class="mf-cap">기동방식</span><select data-maction="start" data-i="'+i+'">'+mechStartOptions(it.start)+'</select></div>'
-    +'<div class="mf"><span class="mf-cap">상용 (운전)</span><input type="number" data-maction="on" data-i="'+i+'" value="'+mEsc(it.on)+'" min="0" step="1" placeholder="1"></div>'
-    +'<div class="mf"><span class="mf-cap">예비</span><input type="number" data-maction="sp" data-i="'+i+'" value="'+mEsc(it.sp)+'" min="0" step="1" placeholder="0"></div>'
-    +'</div></div>';
+  return '<div class="mech-row">'
+    +'<input type="text" data-maction="no" data-i="'+i+'" value="'+mEsc(it.no)+'" placeholder="M-101" aria-label="부하번호">'
+    +'<input type="text" data-maction="name" data-i="'+i+'" value="'+mEsc(it.name)+'" placeholder="부하명" aria-label="부하명">'
+    +'<input type="number" data-maction="cap" data-i="'+i+'" value="'+mEsc(it.cap)+'" min="0" step="0.01" placeholder="0" aria-label="단위부하 kW">'
+    +'<select data-maction="start" data-i="'+i+'" aria-label="기동방식">'+mechStartOptions(it.start)+'</select>'
+    +'<input type="number" data-maction="on" data-i="'+i+'" value="'+mEsc(it.on)+'" min="0" step="1" placeholder="1" aria-label="상용 대수">'
+    +'<input type="number" data-maction="sp" data-i="'+i+'" value="'+mEsc(it.sp)+'" min="0" step="1" placeholder="0" aria-label="예비 대수">'
+    +'<button type="button" class="mech-del" data-maction="del" data-i="'+i+'" aria-label="부하 '+(i+1)+' 삭제">×</button>'
+    +'</div>';
 }
 function renderMechItems(){
   var c=document.getElementById("mechItems"); if(!c) return;
@@ -1419,6 +1460,168 @@ function handleMechEvent(e){
   if(isNaN(i)) return;
   if((act==="no"||act==="name"||act==="cap"||act==="on"||act==="sp") && e.type==="input"){ mechState.items[i][act]=el.value; renderMechTable(); }
   else if(act==="start" && e.type==="change"){ mechState.items[i].start=el.value; renderMechTable(); }
+}
+
+/* ===== 기계부하: 기기리스트 파일 자동 인식 ===== */
+var MECH_SHEETJS_URL="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js";
+
+function mechStatus(msg, kind){
+  var el=document.getElementById("mechStatus"); if(!el) return;
+  if(!msg){ el.hidden=true; return; }
+  el.hidden=false; el.className="mech-status"+(kind?" "+kind:""); el.textContent=msg;
+}
+function mechLoadSheetJS(){
+  return new Promise(function(res, rej){
+    if(window.XLSX) return res();
+    var s=document.createElement("script");
+    s.src=MECH_SHEETJS_URL;
+    s.onload=function(){ res(); };
+    s.onerror=function(){ rej(new Error("엑셀 파서(SheetJS) 로딩 실패 — 인터넷 연결을 확인하세요.")); };
+    document.head.appendChild(s);
+  });
+}
+// "2(1)" / "2 (1)" / "2" → {on:총-예비, sp:예비}
+function mechParseQty(raw){
+  var s=String(raw==null?"":raw).replace(/\s/g,"");
+  var m=s.match(/^(\d+)\((\d+)\)$/);
+  if(m){ var tot=parseInt(m[1],10), sp=parseInt(m[2],10); return {on:Math.max(tot-sp,0), sp:sp}; }
+  m=s.match(/^(\d+)$/);
+  if(m) return {on:parseInt(m[1],10), sp:0};
+  return null;
+}
+function mechDetectStart(text){
+  var t=String(text||"");
+  if(/VVVF|인버터|인버어터|inverter/i.test(t)) return "V";
+  return "N";
+}
+function mechCellStr(v){ return String(v==null?"":v).replace(/\s+/g," ").trim(); }
+
+// 엑셀 그리드(2차원 배열) → 부하 배열
+function mechParseGrid(grid){
+  var R=grid.length, hdrRow=-1;
+  for(var r=0;r<Math.min(R,40);r++){
+    var row=grid[r]||[];
+    var hit=row.some(function(c){ return /기\s*기\s*번\s*호|부\s*하\s*번\s*호/.test(mechCellStr(c)); });
+    if(hit){ hdrRow=r; break; }
+  }
+  if(hdrRow<0) return null;
+  // 머리글 블록(병합 대비 3행)에서 열 위치 탐색
+  var colNo=-1,colName=-1,colSpec=-1,colKw=-1,colQty=-1,colSp=-1,colRemark=-1;
+  var maxC=0;
+  for(var r2=hdrRow;r2<Math.min(hdrRow+4,R);r2++){
+    var row2=grid[r2]||[]; if(row2.length>maxC) maxC=row2.length;
+    for(var c=0;c<row2.length;c++){
+      var t=mechCellStr(row2[c]); if(!t) continue;
+      if(colNo<0   && /기\s*기\s*번\s*호|부\s*하\s*번\s*호/.test(t)) colNo=c;
+      if(colName<0 && /기\s*기\s*명|부\s*하\s*명|명\s*칭/.test(t)) colName=c;
+      if(colSpec<0 && /사\s*양|규\s*격/.test(t)) colSpec=c;
+      if(colKw<0   && (/동\s*력/.test(t)||/^kW$|\(kW\)|kw\)/i.test(t))) colKw=c;
+      if(colQty<0  && /상\s*용/.test(t)) colQty=c;
+      if(colSp<0   && /^예\s*비$/.test(t)) colSp=c;
+      if(colRemark<0 && /비\s*고/.test(t)) colRemark=c;
+    }
+  }
+  // '상용' 열을 못 찾으면 '수량' 계열 열로 대체
+  if(colQty<0){
+    for(var r3=hdrRow;r3<Math.min(hdrRow+4,R);r3++){
+      var row3=grid[r3]||[];
+      for(var c3=0;c3<row3.length;c3++){
+        if(/수\s*량|1\s*단\s*계/.test(mechCellStr(row3[c3]))){ colQty=c3; break; }
+      }
+      if(colQty>=0) break;
+    }
+  }
+  if(colNo<0 || colKw<0) return null;
+  var idPat=/^[A-Za-z]{1,4}\d*[-–]?\d/;
+  var items=[];
+  for(var dr=hdrRow+1;dr<R;dr++){
+    var row=grid[dr]||[];
+    var no=mechCellStr(row[colNo]);
+    var name=colName>=0?mechCellStr(row[colName]):"";
+    var kwRaw=mechCellStr(row[colKw]).replace(/,/g,"");
+    var kw=parseFloat(kwRaw);
+    var isData = idPat.test(no) || (name && isFinite(kw) && kw>0);
+    if(!isData) continue;
+    if(/합\s*계|총\s*계|소\s*계/.test(no+name)) continue;
+    if(!(isFinite(kw)&&kw>0)) continue; // 동력 없는 무동력 기기(저장박스 등) 제외
+    var on="", sp="";
+    if(colQty>=0){
+      var q=mechParseQty(row[colQty]);
+      if(q){ on=String(q.on); sp=String(q.sp); }
+    }
+    if(colSp>=0){
+      var sq=mechParseQty(row[colSp]);
+      if(sq) sp=String(sq.on+sq.sp);
+    }
+    var startSrc=(colSpec>=0?mechCellStr(row[colSpec]):"")+" "+(colRemark>=0?mechCellStr(row[colRemark]):"");
+    items.push({
+      no:no, name:name,
+      cap:(isFinite(kw)&&kw>0)?String(kw):"",
+      start:mechDetectStart(startSrc),
+      on:on||"1", sp:sp||"0"
+    });
+  }
+  return items.length?items:null;
+}
+
+function mechApplyItems(items, srcLabel){
+  var hasData=mechState.items.some(function(it){ return it.no||it.name||it.cap; });
+  if(hasData){
+    var replace=window.confirm("기존 입력 "+mechState.items.length+"건이 있습니다.\n[확인] 지우고 교체 · [취소] 아래에 추가");
+    mechState.items = replace? items : mechState.items.concat(items);
+  }else{
+    mechState.items = items;
+  }
+  renderMech();
+  mechStatus(srcLabel+"에서 "+items.length+"개 부하를 인식했습니다. 값이 맞는지 원본과 대조해 주세요.","ok");
+}
+
+function mechHandleExcel(file){
+  mechStatus("엑셀 파일을 읽는 중…","busy");
+  mechLoadSheetJS().then(function(){
+    return file.arrayBuffer();
+  }).then(function(buf){
+    var wb=XLSX.read(buf,{type:"array"});
+    var items=null, usedSheet="";
+    for(var i=0;i<wb.SheetNames.length;i++){
+      var ws=wb.Sheets[wb.SheetNames[i]];
+      var grid=XLSX.utils.sheet_to_json(ws,{header:1, defval:""});
+      var got=mechParseGrid(grid);
+      if(got){ items=got; usedSheet=wb.SheetNames[i]; break; }
+    }
+    if(!items) throw new Error("표에서 '기기번호/부하번호'와 '동력(kW)' 머리글을 찾지 못했습니다. 머리글이 있는 시트인지 확인하세요.");
+    mechApplyItems(items, "엑셀('"+usedSheet+"' 시트)");
+  }).catch(function(err){
+    mechStatus("인식 실패: "+(err&&err.message?err.message:err),"bad");
+  });
+}
+
+function mechHandleFile(file){
+  if(!file) return;
+  var name=file.name.toLowerCase();
+  if(/\.(xlsx|xls|csv)$/.test(name)) return mechHandleExcel(file);
+  mechStatus("엑셀 파일만 올릴 수 있습니다 (.xlsx · .xls · .csv). 이미지·PDF는 지원하지 않습니다.","bad");
+}
+
+function initMechUpload(){
+  var drop=document.getElementById("mechDrop");
+  var input=document.getElementById("mechFile");
+  var pick=document.getElementById("mechPick");
+  if(!drop||!input) return;
+  function openPicker(){ input.click(); }
+  drop.addEventListener("click", function(e){ if(e.target!==pick) openPicker(); });
+  if(pick) pick.addEventListener("click", function(e){ e.stopPropagation(); openPicker(); });
+  input.addEventListener("change", function(){ mechHandleFile(input.files&&input.files[0]); input.value=""; });
+  ["dragenter","dragover"].forEach(function(ev){
+    drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.add("drag"); });
+  });
+  ["dragleave","drop"].forEach(function(ev){
+    drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.remove("drag"); });
+  });
+  drop.addEventListener("drop", function(e){
+    var f=e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0];
+    mechHandleFile(f);
+  });
 }
 
 function initApp(){
@@ -1489,6 +1692,8 @@ function initApp(){
       mechView.addEventListener("change", handleMechEvent);
       mechView.addEventListener("click", handleMechEvent);
     }
+    // 기계부하: 파일 업로드 인식
+    initMechUpload();
 
     // 최초 렌더
     renderWires();
