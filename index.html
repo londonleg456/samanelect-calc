@@ -626,10 +626,18 @@
           <tr class="fee-row-sub"><th>소계</th><td id="feeSub">₩ 0</td></tr>
           <tr><th>조달수수료 기본금액</th><td id="feeFeeBase">₩ 0</td></tr>
           <tr><th>조달수수료 추가증액</th><td id="feeFeeAdj">₩ 0</td></tr>
-          <tr class="fee-row-fee"><th>조달수수료 적용금액</th><td id="feeFeeApplied">₩ 0</td></tr>
+          <tr class="fee-row-fee" id="feeAppliedRow" role="button" tabindex="0" title="클릭하면 내역서 구간별 배분을 보여줍니다"><th>조달수수료 적용금액 <span id="feeBreakChev" style="display:inline-block;transition:transform .15s;font-size:11px;">▶</span><br><small style="font-weight:600;font-size:11px;opacity:.65;">클릭 시 내역서 구간별 배분 표시</small></th><td id="feeFeeApplied">₩ 0</td></tr>
           <tr class="fee-row-total"><th>끝자리 조정 총금액<br><small style="font-weight:600;font-size:12px;opacity:0.6;">(소계 + 적용수수료)</small></th><td id="feeTotal">₩ 0</td></tr>
         </tbody>
       </table>
+      <div id="feeBreakBox" hidden style="margin-top:14px;border:1.5px solid var(--saman-orange);border-radius:12px;padding:14px 15px;background:#FFF9F3;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px;flex-wrap:wrap;">
+          <p style="margin:0;font-size:13.5px;font-weight:800;color:var(--saman-orange-deep);">내역서 적용 시 구간별 배분</p>
+          <button type="button" class="guide-btn" id="feeBreakCopy" style="padding:7px 12px;font-size:12.5px;">배분값 복사</button>
+        </div>
+        <table class="fee-table" id="feeBreakTable"><tbody></tbody></table>
+        <p class="fee-rate-note" id="feeBreakNote" style="margin-top:10px;"></p>
+      </div>
       <p class="fee-rate-note" id="feeRateNote"></p>
     </div>
 
@@ -784,7 +792,7 @@
         <p class="card-title"><span class="idx">03</span> 정리 표</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button type="button" class="guide-btn" data-maction="copycalc">계산서 복사</button>
-          <button type="button" class="guide-btn" data-maction="copy" style="background:var(--saman-gray);box-shadow:0 2px 9px rgba(77,77,77,.3);">표 복사</button>
+          <button type="button" class="guide-btn" data-maction="copy" style="background:var(--saman-gray);box-shadow:0 2px 9px rgba(77,77,77,.3);">표 복사(전체)</button>
         </div>
       </div>
       <div class="tbl-wrap">
@@ -794,7 +802,7 @@
           <tfoot><tr><th colspan="4">총계</th><td id="mechTotalOn">0</td><td id="mechTotalSp">0</td><td id="mechTotalKw">0</td><td></td></tr></tfoot>
         </table>
       </div>
-      <p class="fee-rate-note"><strong>계산서 복사</strong> — 부하계산서 양식의 칸 위치에 맞춰 복사합니다. 부하번호는 하이픈 기준 두 칸(M1- / 101)으로 나뉘고, 수식이 있는 칸(효율·역률·전압·kVA·전류·계)은 빈 칸으로 건너뜁니다. 엑셀에서 부하번호 첫 칸(M1- 자리)을 선택한 뒤 <strong>마우스 오른쪽 → 선택하여 붙여넣기 → '내용 있는 셀만 붙여넣기(빈 셀 무시)' 체크 → 확인</strong>으로 붙여넣으면 수식 칸을 지우지 않고 입력칸만 채워집니다. <strong>표 복사</strong> — 제목줄 포함 전체 표를 복사합니다(검토·공유용). 기동방식 — V:인버터(VVVF), N:직입, F:피더.</p>
+      <p class="fee-rate-note"><strong>계산서 복사</strong> — 부하계산서 양식 칸 위치에 맞춰 복사합니다. 부하번호는 하이픈 기준 두 칸(M1- / 101)으로 나뉘고, 수식 칸(효율·역률·전압·kVA·전류·계)은 빈 칸으로 나갑니다. 수식을 지키려면: ① 빈 시트에 일반 붙여넣기(Ctrl+V) → ② 그 범위를 엑셀에서 다시 복사(Ctrl+C) → ③ 계산서의 부하번호 첫 칸 선택 → 선택하여 붙여넣기 → <strong>'빈 셀 무시' 체크</strong> → 확인. (웹에서 바로 붙여넣으면 '빈 셀 무시' 옵션이 나타나지 않아 이 순서가 필요합니다.) <strong>표 복사(전체)</strong> — 제목줄 포함 전체 표(검토·공유용). 기동방식 — V:인버터(VVVF), N:직입, F:피더.</p>
       <details style="margin-top:10px;">
         <summary>계산서 열 배치 설정</summary>
         <div class="details-body">
@@ -802,7 +810,7 @@
             <span class="mf-cap">열 순서 (쉼표로 구분 · 빈 항목 = 건너뛰는 칸)</span>
             <input type="text" id="mechCalcLayout" style="width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;font-family:var(--mono);font-size:12.5px;color:var(--ink);background:#fff;" spellcheck="false">
           </div>
-          <p class="ref" style="margin-top:8px;">사용 가능한 항목: <code>번호1</code>(하이픈 앞, 하이픈 포함) · <code>번호2</code>(하이픈 뒤) · <code>부하번호</code>(전체) · <code>부하명</code> · <code>단위부하</code> · <code>기동</code> · <code>상용</code> · <code>예비</code> · <code>계</code> · <code>비고</code>. 항목 사이에 아무것도 쓰지 않으면(쉼표만) 그 칸은 비워서 건너뜁니다. 양식이 바뀌면 여기만 고치면 되고, 설정은 이 브라우저에 저장됩니다. <button type="button" id="mechCalcReset" style="border:1px solid var(--line);background:#FAFBFC;border-radius:7px;padding:4px 10px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--ink-2);cursor:pointer;">기본값 복원</button></p>
+          <p class="ref" style="margin-top:8px;">사용 가능한 항목: <code>번호1</code>(하이픈 앞, 하이픈 포함) · <code>번호2</code>(하이픈 뒤) · <code>부하번호</code>(전체) · <code>부하명</code> · <code>단위부하</code> · <code>기동</code> · <code>상용</code> · <code>예비</code> · <code>계</code> · <code>비고</code>. 항목 사이에 아무것도 쓰지 않으면(쉼표만) 그 칸은 비워서 건너뜁니다. 설정은 이 브라우저에 저장됩니다. <button type="button" id="mechCalcReset" style="border:1px solid var(--line);background:#FAFBFC;border-radius:7px;padding:4px 10px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--ink-2);cursor:pointer;">기본값 복원</button></p>
         </div>
       </details>
     </div>
@@ -1230,6 +1238,59 @@ function feeUnitSchedule(base){
   return a+(base-1e10)*0.0037;
 }
 function wonFmt(n){ return "₩ " + Math.round(n).toLocaleString("ko-KR"); }
+// 조달수수료 내역서 구간별 배분
+var feeBreakState={open:false, rows:[]};
+function feeClamp(v,lo,hi){ return Math.max(lo, Math.min(v, hi)); }
+function feeBreakRows(sub, appliedFee, isUnit){
+  var defs;
+  if(isUnit){
+    defs=[
+      {label:"10억원까지", raw: sub>0? 0.0054*Math.min(sub,1e9):0},
+      {label:"10억원초과~100억원까지", raw: 0.0047*feeClamp(sub-1e9,0,9e9)},
+      {label:"100억원초과", raw: 0.0037*Math.max(sub-1e10,0)}
+    ];
+  }else{
+    var r1;
+    if(sub<=0) r1=0;
+    else if(sub<=2e7) r1=210000;
+    else if(sub<=5e7) r1=530000;
+    else r1=0.0107*Math.min(sub,1e8);
+    defs=[
+      {label:"5천만원초과~1억원까지"+(sub>0&&sub<=5e7?" (5천만원 이하 정액 포함)":""), raw:r1},
+      {label:"1억원초과~10억원까지", raw: 0.0076*feeClamp(sub-1e8,0,9e8)},
+      {label:"10억원초과~100억원까지", raw: 0.0048*feeClamp(sub-1e9,0,9e9)},
+      {label:"100억원초과", raw: 0.0038*Math.max(sub-1e10,0)}
+    ];
+  }
+  // 마지막 유효 구간(최상위 구간)에 추가증액·끝수 몰아주기 → 합계 = 적용금액 보장
+  var top=0;
+  defs.forEach(function(d,i){ if(d.raw>0) top=i; });
+  var rows=defs.map(function(d){ return {label:d.label, val:Math.round(d.raw)}; });
+  var others=0;
+  rows.forEach(function(r,i){ if(i!==top) others+=r.val; });
+  rows[top].val = Math.round(appliedFee - others);
+  rows.forEach(function(r,i){ r.top=(i===top); });
+  // 100억초과 행은 값이 있을 때만 노출
+  if(!isUnit && rows[3].val===0) rows=rows.slice(0,3);
+  return rows;
+}
+function renderFeeBreak(sub, appliedFee, isUnit){
+  var box=document.getElementById("feeBreakBox");
+  var tb=document.querySelector("#feeBreakTable tbody");
+  var chev=document.getElementById("feeBreakChev");
+  if(!box||!tb) return;
+  feeBreakState.rows = feeBreakRows(sub, appliedFee, isUnit);
+  var html="";
+  feeBreakState.rows.forEach(function(r){
+    html+='<tr><th style="font-size:13px;">'+r.label+'</th><td'+(r.top?' style="color:var(--saman-orange-deep);font-weight:800;"':'')+'>'+wonFmt(r.val)+'</td></tr>';
+  });
+  html+='<tr class="fee-row-total"><th>합계 (= 적용금액)</th><td>'+wonFmt(appliedFee)+'</td></tr>';
+  tb.innerHTML=html;
+  var note=document.getElementById("feeBreakNote");
+  if(note) note.textContent="끝자리 조정 추가증액분은 최상위 적용 구간(주황 표시)에 합산했습니다. 구간 합계가 적용금액과 일치합니다.";
+  box.hidden = !feeBreakState.open;
+  if(chev) chev.style.transform = feeBreakState.open? "rotate(90deg)":"none";
+}
 function renderFee(){
   var amt = feeState.amount||0, supply, vat, sub, baseFee, isUnit=false, vatText=null;
   if(feeState.kase==="case1"){
@@ -1256,6 +1317,7 @@ function renderFee(){
   set("feeFeeAdj", wonFmt(adjustment));
   set("feeFeeApplied", wonFmt(appliedFee));
   set("feeTotal", wonFmt(adjustedTotal));
+  renderFeeBreak(sub, appliedFee, isUnit);
   set("feeRateNote", (isUnit?"단가(3자단가) 요율 적용":"총액 요율 적용")
       +" · 기준금액 "+wonFmt(sub)
       +(feeState.kase==="case1"?" (공급가액+부가세 10%)":" (부가세 포함)")
@@ -1476,8 +1538,7 @@ function mechSplitNo(no){
   return {p1:s.slice(0,i+1), p2:s.slice(i+1)};
 }
 function copyMechCalc(btn){
-  var layout=mechCalcLayout();
-  var lines=[];
+  var layout=mechCalcLayout(), lines=[];
   mechState.items.forEach(function(it){
     var cap=parseFloat(it.cap)||0, on=parseFloat(it.on)||0, sp=parseFloat(it.sp)||0;
     if(!it.no && !it.name && !cap && !on && !sp) return;
@@ -1490,7 +1551,6 @@ function copyMechCalc(btn){
     };
     lines.push(layout.map(function(t){ return t in map? map[t] : ""; }).join("\t"));
   });
-  if(!lines.length){ mechDoCopy("", btn); return; }
   mechDoCopy(lines.join("\n"), btn);
 }
 function initMechCalcLayout(){
@@ -1741,6 +1801,22 @@ function initApp(){
         feeState.amount = parseFloat(rawValue) || 0;
         e.target.value = rawValue ? Number(rawValue).toLocaleString('ko-KR') : '';
         renderFee();
+      });
+    }
+
+    // 조달수수료: 적용금액 클릭 → 구간별 배분 토글
+    var feeRow=document.getElementById("feeAppliedRow");
+    if(feeRow){
+      var feeTgl=function(){ feeBreakState.open=!feeBreakState.open; renderFee(); };
+      feeRow.style.cursor="pointer";
+      feeRow.addEventListener("click", feeTgl);
+      feeRow.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); feeTgl(); } });
+    }
+    var feeBc=document.getElementById("feeBreakCopy");
+    if(feeBc){
+      feeBc.addEventListener("click", function(){
+        var text=feeBreakState.rows.map(function(r){ return r.val; }).join("\n");
+        mechDoCopy(text, feeBc);
       });
     }
 
