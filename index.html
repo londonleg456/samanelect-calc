@@ -99,12 +99,12 @@
   .fee-case.active .fc-tag{background:var(--saman-orange);}
   .fc-title{font-size:14px;font-weight:700;color:var(--ink);word-break:keep-all;}
   .fc-desc{font-size:12px;color:var(--ink-2);line-height:1.45;word-break:keep-all;}
-  #feeAmount{
+  #feeAmount, #dmgCost, #dmgGov{
     width:100%;height:58px;box-sizing:border-box;
     font-family:var(--mono);text-align:center;font-size:21px;font-weight:700;color:var(--ink);
     border:1.5px solid var(--line);border-radius:12px;background:#fff;padding:0 14px;
   }
-  #feeAmount:focus{outline:none;border-color:var(--saman-orange);box-shadow:0 0 0 3px rgba(245,130,32,.16);}
+  #feeAmount:focus, #dmgCost:focus, #dmgGov:focus{outline:none;border-color:var(--saman-orange);box-shadow:0 0 0 3px rgba(245,130,32,.16);}
   .fee-table{width:100%;border-collapse:collapse;}
   .fee-table th{text-align:left;font-size:14px;font-weight:600;color:var(--ink-2);
     padding:13px 4px;border-bottom:1px solid var(--line-soft);word-break:keep-all;}
@@ -651,6 +651,57 @@
         <div class="note"><strong>주의</strong> · 2025.7.1자로 조달수수료 고시가 개정(제2025-22호)되었습니다. 본 계산기는 귀사 산정표와 동일한 제2022-17호 요율을 적용합니다. 현행 최신 요율로 갱신을 원하시면 개정 요율표를 알려주세요. 실제 납부액은 나라장터 공식 계산 결과를 확인하시기 바랍니다.</p>
       </div>
     </details>
+
+    <div class="head-text" style="margin-top:46px;">
+      <div class="eyebrow">전기설비 · 조달 산정</div>
+      <h1>전기공사 손해배상공제료 계산기</h1>
+      <p class="lede">총공사원가와 도급자 관급자재를 입력하면 손해배상공제료와 계약금액을 산정합니다. <span style="white-space: nowrap;">(요율 0.26477% · 100원 미만 절사)</span></p>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">01</span> 공제료 산정</p>
+      <div class="field">
+        <label>총공사원가 (부가세 제외, 원)</label>
+        <input type="text" id="dmgCost" inputmode="numeric" placeholder="예: 100,000,000" value="100,000,000" style="font-family:var(--mono); text-align:center;">
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label>도급자 관급자재 (원)</label>
+        <input type="text" id="dmgGov" inputmode="numeric" placeholder="예: 10,000,000" value="0" style="font-family:var(--mono); text-align:center;">
+      </div>
+      <table class="fee-table" style="margin-top:16px;">
+        <tbody>
+          <tr><th>산정 기준액 <small style="font-weight:600;font-size:11px;opacity:.6;">(총공사원가+도급자 관급자재)</small></th><td id="dmgBase">₩ 0</td></tr>
+          <tr class="fee-row-fee"><th>손해배상공제료 <small style="font-weight:600;font-size:11px;opacity:.6;">× 0.26477% · 100원 미만 절사</small></th><td id="dmgFee">₩ 0</td></tr>
+          <tr><th>부가가치세 <small style="font-weight:600;font-size:11px;opacity:.6;">(총공사원가+공제료) × 10%</small></th><td id="dmgVat">₩ 0</td></tr>
+          <tr class="fee-row-total"><th>계약금액 <small style="font-weight:600;font-size:12px;opacity:0.6;">(총공사원가+공제료+부가세)</small></th><td id="dmgTotal">₩ 0</td></tr>
+        </tbody>
+      </table>
+      <p class="fee-rate-note" id="dmgNote"></p>
+
+      <details style="margin-top:12px;">
+        <summary>원가계산서상 공제료 적용 예시 보기</summary>
+        <div class="details-body">
+          <h4>원가계산서 적용 구조</h4>
+          <div class="tbl-wrap"><table class="fee-table">
+            <tbody>
+              <tr><th>순공사원가 (재료비+노무비+경비)</th><td style="text-align:right;font-family:var(--sans);color:var(--ink-2);">–</td></tr>
+              <tr><th>일반관리비 · 이윤</th><td style="text-align:right;font-family:var(--sans);color:var(--ink-2);">–</td></tr>
+              <tr><th>총공사원가</th><td style="text-align:right;font-family:var(--sans);">순공사원가 + 일반관리비 + 이윤</td></tr>
+              <tr class="fee-row-fee"><th>손해배상공제료</th><td style="text-align:right;font-family:var(--sans);">(총공사원가 + 도급자 관급자재) × 0.26477%<br><small>100원 미만 절사 · 최저공제료 20,000원</small></td></tr>
+              <tr><th>부가가치세</th><td style="text-align:right;font-family:var(--sans);">(총공사원가 + 손해배상공제료) × 10%</td></tr>
+              <tr class="fee-row-total"><th>계약금액</th><td style="text-align:right;font-family:var(--sans);font-size:14px;">총공사원가 + 손해배상공제료 + 부가가치세</td></tr>
+            </tbody>
+          </table></div>
+          <h4 style="margin-top:14px;">숫자 예시 (총공사원가 1억 · 관급자재 1천만원)</h4>
+          <p class="ref">기준액 110,000,000 × 0.26477% = 291,247원 → 100원 미만 절사 → <strong>공제료 291,200원</strong><br>
+          부가가치세 = (100,000,000 + 291,200) × 10% = 10,029,120원<br>
+          계약금액 = 100,000,000 + 291,200 + 10,029,120 = <strong>110,320,320원</strong></p>
+          <h4 style="margin-top:14px;">요율 근거 (전기공사공제조합 현행)</h4>
+          <p class="ref">0.26477% = 제3자 대인 0.02057%×1.2 + 제3자 대물 0.09988%×1.2 + 목적물 0.12023% (발주자미필적배상책임 특약 20% 할증 포함). 최종 공제료는 100원 미만 절사, 최저공제료 20,000원. 실제 요율은 보상한도 설정·특약 가입 여부에 따라 달라질 수 있으므로 확정 시 공제조합 산출값을 확인하세요.</p>
+        </div>
+      </details>
+    </div>
+
   </div><!-- /view-fee -->
 
   <div id="view-light" class="calc-view" hidden>
@@ -1325,6 +1376,28 @@ function renderFee(){
   var lbl=document.getElementById("feeAmtLabel");
   if(lbl) lbl.textContent = feeState.kase==="case1" ? "공급가액 입력 (부가세 별도, 원)" : "공급가액 입력 (부가세 포함, 원)";
 }
+// ===== 전기공사 손해배상공제료 =====
+var DMG_RATE=0.0026477, DMG_MIN=20000;
+function renderDmg(){
+  var g=function(id){ var el=document.getElementById(id); return el? (parseFloat(String(el.value).replace(/[^0-9]/g,""))||0) : 0; };
+  var cost=g("dmgCost"), gov=g("dmgGov");
+  var base=cost+gov;
+  var fee=Math.floor(base*DMG_RATE/100)*100;
+  var minApplied=false;
+  if(base>0 && fee<DMG_MIN){ fee=DMG_MIN; minApplied=true; }
+  if(base<=0) fee=0;
+  var vat=Math.round((cost+fee)*0.1);
+  var total=cost+fee+vat;
+  var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
+  set("dmgBase", wonFmt(base));
+  set("dmgFee", wonFmt(fee));
+  set("dmgVat", wonFmt(vat));
+  set("dmgTotal", wonFmt(total));
+  var note=document.getElementById("dmgNote");
+  if(note) note.textContent = minApplied
+    ? "산출액이 최저공제료 미만이라 최저공제료 20,000원을 적용했습니다."
+    : "요율 0.26477% = 대인 0.02057%×1.2 + 대물 0.09988%×1.2 + 목적물 0.12023% (발주자미필적배상책임 특약 포함) · 100원 미만 절사 · 최저공제료 20,000원.";
+}
 function switchView(view){
   var map={conduit:"view-conduit", fee:"view-fee", light:"view-light", mech:"view-mech"};
   Object.keys(map).forEach(function(k){
@@ -1336,7 +1409,7 @@ function switchView(view){
     t.classList.toggle("active",on);
     t.setAttribute("aria-selected", on?"true":"false");
   });
-  if(view==="fee") renderFee();
+  if(view==="fee"){ renderFee(); renderDmg(); }
   if(view==="light") renderLight();
   try{ window.scrollTo(0,0); }catch(e){}
 }
@@ -1803,6 +1876,18 @@ function initApp(){
         renderFee();
       });
     }
+
+    // 손해배상공제료: 금액 입력 (콤마 자동 표시)
+    ["dmgCost","dmgGov"].forEach(function(id){
+      var el=document.getElementById(id);
+      if(!el) return;
+      el.addEventListener("input", function(e){
+        var raw=e.target.value.replace(/[^0-9]/g,"");
+        e.target.value = raw? Number(raw).toLocaleString("ko-KR") : "";
+        renderDmg();
+      });
+    });
+    renderDmg();
 
     // 조달수수료: 적용금액 클릭 → 구간별 배분 토글
     var feeRow=document.getElementById("feeAppliedRow");
