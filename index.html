@@ -497,6 +497,10 @@
           <span class="btn-surface">후강전선관<small>강관·KS C 8401</small></span>
         </label>
         <label>
+          <input type="radio" name="pipe" value="steel_e">
+          <span class="btn-surface">나사없는 전선관<small>E관·KS C 8401</small></span>
+        </label>
+        <label>
           <input type="radio" name="pipe" value="elp">
           <span class="btn-surface">ELP전선관<small>파상형 PE·지중</small></span>
         </label>
@@ -576,7 +580,7 @@
       <h4>점유율 산정 기준</h4>
       <p class="ref">여러 전선을 동일 관내에 넣을 때 <strong>전선 피복(절연물 포함) 완성단면적의 총합 ≤ 전선관 내단면적의 1/3(약 33.3%)</strong>을 적용합니다. 굵기 구분 없이 통일된 현행 권장 기준입니다. (내선규정 전선관 굵기 선정, KEC 232 금속관·합성수지관·가요전선관 공사)</p>
       <h4>전선관 내경</h4>
-      <p class="ref">후강전선관(<code>KS C 8401</code>) 호칭 16~104은 근사 내경(짝수)으로 실제 KS 내경값을 사용합니다. ELP전선관(<code>KS C 8455</code>, 파상형 경질 폴리에틸렌·지중용)은 호칭이 곧 내경(30~200mm)입니다. HI-PVC전선관(<code>KS C 8431</code>, 내충격용 경질 PVC)은 호칭 16~104의 KS 내경값을 사용합니다.</p>
+      <p class="ref">후강전선관(<code>KS C 8401</code>) 호칭 16~104은 근사 내경(짝수)으로 실제 KS 내경값을 사용합니다. 나사없는 전선관(E관, <code>KS C 8401</code>)은 호칭 E19~E75의 내경(외경−2×두께: 16.7~72.6mm)을 사용합니다. ELP전선관(<code>KS C 8455</code>, 파상형 경질 폴리에틸렌·지중용)은 호칭이 곧 내경(30~200mm)입니다. HI-PVC전선관(<code>KS C 8431</code>, 내충격용 경질 PVC)은 호칭 16~104의 KS 내경값을 사용합니다.</p>
       <h4>전선·케이블 외경</h4>
       <p class="ref">단심 절연전선은 HFIX(<code>KS C 3341</code>)와 F-GV 접지선을 사용합니다. F-CV 전력케이블(<code>KS C IEC 60502-1</code>)은 1심(단심)부터 다심까지 선택할 수 있으며, F-CVV 제어케이블, 22.9kV CN-CV, 소방용 F-FR-8 내화케이블 데이터가 포함되어 있습니다. F-CV는 난연(난연 PVC 시스) 처리만 다를 뿐 CV와 동일 규격·치수이므로 단심 CV는 F-CV 1심으로 통합했습니다. 표에 없는 규격은 '직접입력' 모드를 사용하세요.</p>
       <div class="note"><strong>참고</strong> · 본 계산은 점유율(면적) 기준의 1차 산정 도구입니다. 가닥수가 적을 때(2~3본)는 기하학적 외접원 보정으로 필요 관경이 달라질 수 있습니다. 최종 설계 시에는 현장 조건을 함께 검토하세요.</p>
@@ -663,7 +667,10 @@
     </div>
 
     <div class="card">
-      <p class="card-title"><span class="idx">01</span> 공제료 산정</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:18px;">
+        <p class="card-title" style="margin-bottom:0;"><span class="idx">01</span> 공제료 산정</p>
+        <a class="guide-btn" href="https://www.ecfc.co.kr/main.do" target="_blank" rel="noopener" style="text-decoration:none;padding:9px 13px;font-size:12.5px;background:var(--saman-gray);box-shadow:0 2px 9px rgba(77,77,77,.3);">전기공사공제조합 요율 확인 ↗</a>
+      </div>
       <div class="field">
         <label>총공사원가 (부가세 제외, 원)</label>
         <input type="text" id="dmgCost" inputmode="numeric" placeholder="예: 100,000,000" value="100,000,000" style="font-family:var(--mono); text-align:center;">
@@ -907,6 +914,7 @@
       <p>계산할 전선관의 재질·용도에 맞게 하나를 선택합니다.</p>
       <ul>
         <li><strong>후강전선관</strong> · 일반적인 금속 강관 (<code>KS C 8401</code>)</li>
+        <li><strong>나사없는 전선관</strong> · 얇은 두께의 강관, 커넥터 접속 (E관 · <code>KS C 8401</code>)</li>
         <li><strong>ELP전선관</strong> · 파상형 경질 폴리에틸렌관, 주로 지중선로용 (<code>KS C 8455</code>)</li>
         <li><strong>HI-PVC전선관</strong> · 내충격성 경질 비닐 전선관 (<code>KS C 8431</code>)</li>
       </ul>
@@ -961,6 +969,9 @@ const CONDUITS = {
   steel_thick:{label:"후강전선관", sizes:[
     {n:16,id:16.4},{n:22,id:21.9},{n:28,id:28.3},{n:36,id:36.9},{n:42,id:42.8},
     {n:54,id:54.0},{n:70,id:69.6},{n:82,id:82.3},{n:92,id:93.7},{n:104,id:106.4}]},
+  steel_e:{label:"나사없는 전선관", sizes:[
+    {n:19,id:16.7},{n:25,id:23.0},{n:31,id:29.0},{n:39,id:35.3},
+    {n:51,id:48.0},{n:63,id:60.3},{n:75,id:72.6}]},
   elp:{label:"ELP전선관", sizes:[
     {n:30,id:30.0},{n:40,id:40.0},{n:50,id:50.0},{n:65,id:65.0},{n:80,id:80.0},
     {n:100,id:100.0},{n:125,id:125.0},{n:150,id:150.0},{n:175,id:175.0},{n:200,id:200.0}]},
