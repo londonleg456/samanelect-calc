@@ -860,10 +860,7 @@
     <div class="card">
       <div class="card-title-row">
         <p class="card-title"><span class="idx">03</span> 정리 표</p>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button type="button" class="guide-btn" data-maction="copycalc">계산서 복사</button>
-          <button type="button" class="guide-btn" data-maction="copy" style="background:var(--saman-gray);box-shadow:0 2px 9px rgba(77,77,77,.3);">표 복사(전체)</button>
-        </div>
+        <button type="button" class="guide-btn" data-maction="copycalc">계산서 복사</button>
       </div>
       <div class="tbl-wrap">
         <table class="mech-table">
@@ -872,7 +869,7 @@
           <tfoot><tr><th colspan="4">총계</th><td id="mechTotalOn">0</td><td id="mechTotalSp">0</td><td id="mechTotalKw">0</td><td></td></tr></tfoot>
         </table>
       </div>
-      <p class="fee-rate-note"><strong>계산서 복사</strong> — 부하계산서 양식 칸 위치에 맞춰 복사합니다. 부하번호는 하이픈 기준 두 칸(M1- / 101)으로 나뉘고, 수식 칸(효율·역률·전압·kVA·전류·계)은 빈 칸으로 나갑니다. 수식을 지키려면: ① 빈 시트에 일반 붙여넣기(Ctrl+V) → ② 그 범위를 엑셀에서 다시 복사(Ctrl+C) → ③ 계산서의 부하번호 첫 칸 선택 → 선택하여 붙여넣기 → <strong>'빈 셀 무시' 체크</strong> → 확인. (웹에서 바로 붙여넣으면 '빈 셀 무시' 옵션이 나타나지 않아 이 순서가 필요합니다.) <strong>표 복사(전체)</strong> — 제목줄 포함 전체 표(검토·공유용). 기동방식 — V:인버터(VVVF), N:직입, F:피더.</p>
+      <p class="fee-rate-note"><strong>계산서 복사</strong> — 부하계산서 양식 전체 열(E~Y)에 맞춰 복사합니다. 부하번호는 하이픈 기준 두 칸(M1- / 101), 효율·역률·전압·단위입력·정격전류(L~P)와 설비부하 계[kW]·계[kVA](S·T), 모터극수·기동전류·부하·기동(V~Y)에는 <strong>계산서 수식이 함께 들어갑니다</strong>. 수식 행 번호는 계산서 데이터 시작 행인 <strong>8행(E8) 기준</strong>으로 매겨지므로 E8 칸에 붙여넣으세요. 다른 행에 붙일 때는 붙여넣은 뒤 수식 행 번호가 어긋나니 첫 행 수식을 채우기 핸들로 다시 내려주세요. 기동방식 — V:인버터(VVVF), N:직입, F:피더.</p>
       <details style="margin-top:10px;">
         <summary>계산서 열 배치 설정</summary>
         <div class="details-body">
@@ -880,7 +877,7 @@
             <span class="mf-cap">열 순서 (쉼표로 구분 · 빈 항목 = 건너뛰는 칸)</span>
             <input type="text" id="mechCalcLayout" style="width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;font-family:var(--mono);font-size:12.5px;color:var(--ink);background:#fff;" spellcheck="false">
           </div>
-          <p class="ref" style="margin-top:8px;">사용 가능한 항목: <code>번호1</code>(하이픈 앞, 하이픈 포함) · <code>번호2</code>(하이픈 뒤) · <code>부하번호</code>(전체) · <code>부하명</code> · <code>단위부하</code> · <code>기동</code> · <code>상용</code> · <code>예비</code> · <code>계</code> · <code>비고</code>. 항목 사이에 아무것도 쓰지 않으면(쉼표만) 그 칸은 비워서 건너뜁니다. 설정은 이 브라우저에 저장됩니다. <button type="button" id="mechCalcReset" style="border:1px solid var(--line);background:#FAFBFC;border-radius:7px;padding:4px 10px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--ink-2);cursor:pointer;">기본값 복원</button></p>
+          <p class="ref" style="margin-top:8px;">사용 가능한 항목: <code>번호1</code>(하이픈 앞, 하이픈 포함) · <code>번호2</code>(하이픈 뒤) · <code>부하번호</code>(전체) · <code>부하명</code> · <code>단위부하</code> · <code>기동</code> · <code>상용</code> · <code>예비</code> · <code>계</code> · <code>비고</code> · 수식 토큰 <code>효율</code>·<code>역률</code>·<code>전압</code>·<code>단위입력</code>·<code>전류</code>·<code>계kW</code>·<code>계kVA</code>·<code>극수</code>·<code>기동전류</code>·<code>부하표기</code>·<code>기동표기</code>(계산서 수식이 행 번호에 맞춰 들어감). 항목 사이에 아무것도 쓰지 않으면(쉼표만) 그 칸은 비워서 건너뜁니다. 설정은 이 브라우저에 저장됩니다. <button type="button" id="mechCalcReset" style="border:1px solid var(--line);background:#FAFBFC;border-radius:7px;padding:4px 10px;font-family:var(--sans);font-size:12px;font-weight:700;color:var(--ink-2);cursor:pointer;">기본값 복원</button></p>
         </div>
       </details>
     </div>
@@ -889,7 +886,7 @@
       <summary>사용 안내</summary>
       <div class="details-body">
         <p class="ref">기계분야 기기리스트 엑셀(.xlsx·.xls·.csv)을 올리면 부하번호·부하명·단위부하(kW)·기동방식·상용/예비 대수·비고(모니터링 포함, MOP 등)를 자동으로 읽어 채웁니다. 수량 <code>2(1)</code>은 <strong>상용 1·예비 1</strong>로 해석합니다(괄호 안이 예비). 단계가 여러 개면 <strong>1단계 수량</strong>을 기준으로 읽습니다. 인식 후 잘못 읽힌 값은 02에서 직접 수정하세요. '표 복사'한 내용은 탭(Tab)으로 칸이 구분되어 엑셀·한글 부하계산서에 붙여넣으면 칸이 자동으로 맞춰집니다.</p>
-        <div class="note"><strong>인식 규칙</strong> · 엑셀은 머리글에서 '기기번호·기기명·동력(kW)·수량·상용·비고' 열을 찾아 읽습니다. 사양·비고에 VVVF/인버터가 있으면 기동방식 V, 그 외는 N(직입)으로 넣습니다. 파일은 브라우저 안에서만 처리되며 외부로 전송되지 않습니다. 인식 결과는 반드시 원본과 대조 확인하세요.</div>
+        <div class="note"><strong>인식 규칙</strong> · 엑셀은 머리글에서 '기기번호·기기명·동력(kW)·수량·상용·비고' 열을 찾아 읽습니다. 비고에 MOP가 있으면 기동방식 F(피더), 사양·비고에 VVVF/인버터가 있으면 V, 그 외는 N(직입)으로 넣습니다. 파일은 브라우저 안에서만 처리되며 외부로 전송되지 않습니다. 인식 결과는 반드시 원본과 대조 확인하세요.</div>
       </div>
     </details>
 
@@ -1621,12 +1618,26 @@ function copyMech(btn){
 }
 // ===== 계산서 양식 맞춤 복사 =====
 var MECH_CALC_LAYOUT_LS="mech_calc_layout";
-var MECH_CALC_LAYOUT_DEFAULT="번호1,번호2,부하명,,,단위부하,기동,,,,,,상용,예비,,,비고";
+var MECH_CALC_LAYOUT_DEFAULT="번호1,번호2,부하명,,,단위부하,기동,효율,역률,전압,단위입력,전류,상용,예비,계kW,계kVA,비고,극수,기동전류,부하표기,기동표기";
 function mechCalcLayout(){
   var el=document.getElementById("mechCalcLayout");
   var v=(el&&el.value.trim())||localStorage.getItem(MECH_CALC_LAYOUT_LS)||MECH_CALC_LAYOUT_DEFAULT;
   return v.split(",").map(function(t){ return t.trim(); });
 }
+// 계산서 수식 템플릿 — {r} 자리에 붙여넣기 행 번호가 들어감 (E열 붙여넣기 기준)
+var MECH_CALC_FORMULAS={
+  "효율":'=IF(V{r}=2,VLOOKUP(J{r},고효율2P,3),VLOOKUP(J{r},고효율4P,3))',
+  "역률":'0.92',
+  "전압":'380',
+  "단위입력":'=ROUND(J{r}/(L{r}*M{r}),2)',
+  "전류":'=ROUND(IF(N{r}=220,O{r}/N{r}*1000,O{r}/(SQRT(3)*N{r})*1000),2)',
+  "계kW":'=J{r}*Q{r}',
+  "계kVA":'=O{r}*Q{r}',
+  "극수":'=IF(LEFT($K{r},1)="V",3,4)',
+  "기동전류":'=ROUND(IF(K{r}="N",P{r}*7.2,IF(K{r}="Y",P{r}*4.82,IF(K{r}="V",P{r}*1.2,IF(K{r}="R",P{r}*4.68,P{r}*7.2)))),2)',
+  "부하표기":'부하',
+  "기동표기":'=K{r}'
+};
 function mechSplitNo(no){
   var s=String(no||"").trim();
   var i=s.lastIndexOf("-");
@@ -1635,9 +1646,11 @@ function mechSplitNo(no){
 }
 function copyMechCalc(btn){
   var layout=mechCalcLayout(), lines=[];
+  var startRow=8; // 계산서 데이터 시작 행(E8) 기준
   mechState.items.forEach(function(it){
     var cap=parseFloat(it.cap)||0, on=parseFloat(it.on)||0, sp=parseFloat(it.sp)||0;
     if(!it.no && !it.name && !cap && !on && !sp) return;
+    var r=startRow+lines.length;
     var no=mechSplitNo(it.no);
     var map={
       "번호1":no.p1, "번호2":no.p2, "부하번호":it.no||"",
@@ -1645,7 +1658,10 @@ function copyMechCalc(btn){
       "상용":on||"", "예비":sp||"", "계":(Math.round(cap*on*100)/100)||"",
       "비고":it.rm||""
     };
-    lines.push(layout.map(function(t){ return t in map? map[t] : ""; }).join("\t"));
+    lines.push(layout.map(function(t){
+      if(t in MECH_CALC_FORMULAS) return MECH_CALC_FORMULAS[t].replace(/\{r\}/g, r);
+      return t in map? map[t] : "";
+    }).join("\t"));
   });
   mechDoCopy(lines.join("\n"), btn);
 }
@@ -1712,8 +1728,9 @@ function mechParseQty(raw){
 }
 function mechDetectStart(text){
   var t=String(text||"");
-  if(/VVVF|인버터|인버어터|inverter/i.test(t)) return "V";
-  return "N";
+  if(/MOP/i.test(t)) return "F";                       // 비고·사양에 MOP → 피더(F)
+  if(/VVVF|인버터|인버어터|inverter/i.test(t)) return "V"; // VVVF·인버터 → V
+  return "N";                                           // 그 외 직입(N)
 }
 function mechCellStr(v){ return String(v==null?"":v).replace(/\s+/g," ").trim(); }
 
