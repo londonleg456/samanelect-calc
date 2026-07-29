@@ -85,9 +85,10 @@
   .guide-btn:active{background:var(--saman-orange-deep);transform:translateY(1px);}
   .guide-btn svg{flex-shrink:0;}
   /* ---------- 계산기 전환 탭 ---------- */
-  .calc-tabs{display:flex;flex-wrap:wrap;gap:6px;background:#E2E6EC;border-radius:12px;padding:5px;margin-bottom:6px;}
-  .calc-tab{flex:1;border:none;background:transparent;border-radius:9px;padding:12px 8px;
-    font-family:var(--sans);font-size:14px;font-weight:800;color:var(--ink-2);cursor:pointer;white-space:nowrap;}
+  .calc-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:#E2E6EC;border-radius:12px;padding:5px;margin-bottom:6px;}
+  .calc-tab{border:none;background:transparent;border-radius:9px;padding:12px 6px;min-width:0;
+    font-family:var(--sans);font-size:13.5px;font-weight:800;color:var(--ink-2);cursor:pointer;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;}
   .calc-tab.active{background:var(--surface);color:var(--saman-orange-deep);box-shadow:0 1px 5px rgba(16,32,47,.14);}
   /* ---------- 조달수수료 계산기 ---------- */
   .fee-cases{display:flex;flex-direction:column;gap:9px;margin-bottom:18px;}
@@ -173,7 +174,7 @@
   .mech-rows{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;}
   .mech-rows-inner{min-width:800px;}
   .mech-row,.mech-rows-head{
-    display:grid;grid-template-columns:96px minmax(140px,1fr) 74px 110px 54px 54px minmax(110px,.8fr) 36px;
+    display:grid;grid-template-columns:112px minmax(140px,1fr) 74px 110px 54px 54px minmax(110px,.8fr) 36px;
     gap:6px;align-items:center;
   }
   .mech-rows-head{margin-bottom:6px;}
@@ -455,6 +456,52 @@
     font-family:var(--sans);font-size:13px;font-weight:800;color:var(--ink-2);cursor:pointer;}
   .rm-mode button.active{background:var(--surface);color:var(--saman-orange-deep);box-shadow:0 1px 5px rgba(16,32,47,.14);}
   .rm-group{border:1.5px solid var(--line);border-radius:13px;background:#FCFCFD;padding:13px;margin-bottom:11px;}
+  .mc-chk{display:flex;align-items:center;justify-content:center;gap:2px;border:1.5px solid var(--line);border-radius:8px;
+    padding:8px 4px;background:#fff;cursor:pointer;user-select:none;}
+  .mc-chk input{width:15px;height:15px;margin:0;accent-color:var(--saman-orange);cursor:pointer;}
+  .mc-chk span{font-size:12px;font-weight:800;color:var(--ink-2);}
+  .mc-bins{display:flex;flex-wrap:wrap;gap:10px;}
+  .mc-bin{flex:1 1 240px;min-width:220px;border:1.5px solid var(--line);border-radius:10px;padding:10px;background:#FBFCFD;}
+  .mc-bin.ghost{background:repeating-linear-gradient(45deg,#fff,#fff 6px,#F4F6F8 6px,#F4F6F8 12px);border-style:dashed;}
+  .mc-bin-h{margin:0 0 8px;font-size:12.5px;font-weight:800;color:var(--ink);}
+  .mc-bin-h span{font-weight:700;color:var(--ink-2);font-size:11px;margin-left:5px;}
+  .mc-chips{min-height:52px;display:flex;flex-direction:column;gap:6px;border-radius:8px;padding:4px;transition:background .12s;}
+  .mc-chips.over{background:rgba(245,130,32,.12);outline:2px dashed var(--saman-orange);}
+  .mc-drop{margin:0;padding:10px 4px;font-size:11px;color:var(--ink-2);text-align:center;font-weight:700;}
+  .mc-chip{display:flex;align-items:center;gap:5px;background:#fff;border:1.5px solid var(--line);border-radius:8px;
+    padding:6px;font-size:12px;font-weight:700;color:var(--ink);cursor:grab;}
+  .mc-chip.dragging{opacity:.45;}
+  .mc-chip.pinned{border-color:var(--saman-orange);}
+  .mc-chip.vvvf{background:#F3F7FB;}
+  .mc-chip .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .mc-chip em{font-style:normal;font-family:var(--mono);font-weight:800;color:var(--saman-orange-deep);}
+  .mc-chip .tag{font-style:normal;font-size:9.5px;font-weight:800;padding:2px 4px;border-radius:4px;background:#E4ECF5;color:#3C5670;}
+  .mc-chip .tag.warn{background:#FBE3CE;color:#8A4A22;}
+  .mc-chip .tag.pin{background:rgba(245,130,32,.16);color:var(--saman-orange-deep);}
+  .mc-chip button{border:none;background:#F4F6F8;border-radius:5px;width:20px;height:22px;cursor:pointer;
+    font-size:10px;font-weight:800;color:var(--ink-2);line-height:1;}
+  .mc-tbl td.bl{color:#A84646;font-weight:800;}
+  .mc-prow,.mc-phead{display:grid;grid-template-columns:minmax(120px,1.6fr) 112px 92px 62px 62px 34px;gap:6px;align-items:center;}
+  .mc-phead{margin-bottom:5px;}
+  .mc-phead span{font-size:11px;font-weight:800;color:var(--ink-2);letter-spacing:.02em;padding-left:2px;white-space:nowrap;}
+  .mc-prow{margin-bottom:6px;}
+  .mc-prow input,.mc-prow select{width:100%;min-width:0;border:1.5px solid var(--line);border-radius:8px;
+    padding:9px 8px;font-family:var(--sans);font-size:13px;font-weight:700;color:var(--ink);background:#fff;}
+  .mc-prow input[type="number"]{font-family:var(--mono);text-align:right;}
+  .mc-prow input:focus,.mc-prow select:focus{outline:none;border-color:var(--saman-orange);box-shadow:0 0 0 3px rgba(245,130,32,.16);}
+  .mc-params{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .mc-params .field{margin:0;}
+  .mc-params label{font-size:11.5px;}
+  .mc-block{margin-top:16px;}
+  .mc-btitle{font-size:13px;font-weight:800;color:var(--ink);margin:0 0 6px;}
+  .mc-btitle span{font-weight:700;color:var(--ink-2);font-size:11.5px;margin-left:6px;}
+  .mc-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+  .mc-tbl th,.mc-tbl td{border:1px solid var(--line);padding:6px 7px;text-align:center;font-family:var(--mono);}
+  .mc-tbl th{background:#F4F6F8;font-weight:800;font-family:var(--sans);}
+  .mc-tbl td.l{text-align:left;font-family:var(--sans);font-weight:600;}
+  .mc-warn{margin:10px 0 0;padding:10px 12px;border-radius:8px;background:#FDECEC;color:#8E2B2B;font-size:12.5px;font-weight:700;}
+  .mc-note{margin:8px 0 0;padding:10px 12px;border-radius:8px;background:#FBE3CE;color:#8A4A22;font-size:12.5px;font-weight:700;}
+  @media (max-width:720px){ .mc-params{grid-template-columns:repeat(2,1fr);} }
   .rm-ghead{display:grid;grid-template-columns:minmax(90px,1.6fr) 120px 34px;gap:6px;align-items:center;margin-bottom:10px;}
   .rm-ghead input,.rm-ghead select{width:100%;min-width:0;border:1.5px solid var(--line);border-radius:8px;
     padding:9px 8px;font-family:var(--sans);font-size:13px;font-weight:700;color:var(--ink);background:#fff;}
@@ -535,6 +582,7 @@
       <button type="button" class="calc-tab" data-view="fee" role="tab" aria-selected="false">조달수수료</button>
       <button type="button" class="calc-tab" data-view="light" role="tab" aria-selected="false">등기구 배치</button>
       <button type="button" class="calc-tab" data-view="mech" role="tab" aria-selected="false">기기리스트 정리</button>
+      <button type="button" class="calc-tab" data-view="mcc" role="tab" aria-selected="false">MCC 대수</button>
       <button type="button" class="calc-tab" data-view="room" role="tab" aria-selected="false">전기실 사이즈</button>
     </div>
   </header>
@@ -778,7 +826,6 @@
         </div>
       </details>
     </div>
-
 
     <footer>
       <strong>조달수수료 · 손해배상공제료 계산기</strong> · 조달청 고시 및 공제조합 요율 기준 1차 산정 도구. 확정 금액은 나라장터·공제조합 산출값을 확인하세요. 계산 결과는 참고용이며, 법적 효력을 갖는 설계서가 아닙니다.
@@ -1058,9 +1105,14 @@
       <p class="rm-gnote" style="margin-top:8px;"><strong>판넬 종류 → 유지거리 적용</strong> · 특고압 배전반 → 특고압 / 고압 배전반 → 고압 / 저압배전반·전동기제어반(MCC)·공법제어반·계측제어반·UPS → 저압 / 변압기 등 → 변압기 행의 값을 사용합니다.</p>
       <p class="rm-gnote"><strong>열 상호간</strong>은 두 그룹이 마주 볼 때 필요한 최소 통로폭 산정에 쓰이며, 앞면·뒷면 요구값과 비교해 <strong>가장 큰 값</strong>을 적용합니다. 현장 조건(반입·유지보수 통로, 소방)에 따라 값을 직접 수정하세요.</p>
       <div class="field" style="margin:12px 0 0;">
-        <label>벽 이격거리 (m) <small style="font-weight:600;color:var(--ink-2);">— 판넬과 벽면(상·하·좌·우) 사이 최소 거리</small></label>
+        <label>측면 벽 이격거리 (m) <small style="font-weight:600;color:var(--ink-2);">— 판넬 <strong>옆면</strong>과 좌·우 벽 사이 거리</small></label>
         <input type="number" id="rmWallClr" min="0" step="0.1" value="1">
-        <p class="rm-gnote" style="margin:6px 0 0;">위 표의 해당 면 유지거리가 이 값보다 크면 <strong>큰 값</strong>이 적용됩니다. (예: 앞면이 벽을 보는 경우 앞면값 우선)</p>
+        <p class="rm-gnote" style="margin:6px 0 0;">좌·우 <strong>측면에만</strong> 적용됩니다. 위 표의 <strong>기타의 면</strong> 값이 더 크면 큰 값을 씁니다. 상·하 벽면은 그 면이 앞면이면 <strong>앞면</strong>값, 뒷면이면 <strong>뒷면(점검면)</strong>값을 그대로 적용합니다.</p>
+      </div>
+      <div class="field" style="margin:12px 0 0;">
+        <label>뒷면 점검도어 여유 (m) <small style="font-weight:600;color:var(--ink-2);">— 도어를 연 상태에서 추가 확보할 거리</small></label>
+        <input type="number" id="rmDoorClr" min="0" step="0.1" value="0.3">
+        <p class="rm-gnote" style="margin:6px 0 0;">뒷면 이격 = <strong>도어 1짝 폭 + 이 값</strong>. 폭 2,000 이상 판넬은 <strong>양개문</strong>으로 보아 1짝 = 폭의 1/2로 계산하며, 위 표의 뒷면 값이 더 크면 큰 값을 씁니다.</p>
       </div>
       <div class="field" style="margin:12px 0 0;">
         <label>같은 열 그룹 간 이격 (m) <small style="font-weight:600;color:var(--ink-2);">— 한 열 안에서 그룹과 그룹 사이 거리</small></label>
@@ -1081,16 +1133,95 @@
         <h4>판넬 기본 치수(프리셋)</h4>
         <p class="ref">판넬 종류를 선택하면 폭·깊이가 기본값으로 채워집니다 — <strong>특고압 배전반 2,200 × 2,400</strong>, <strong>저압배전반(ACB/MCCB) 800 × 2,400</strong>, <strong>전동기제어반(MCC) 800 × 600</strong>, <strong>공법제어반 800 × 800</strong>, <strong>계측제어반·RCS 800 × 800</strong>, <strong>UPS 600 × 600</strong> (mm, W × D). 프로젝트 판넬 규격표(현장 기준)에서 가져온 값이며, <strong>고압 배전반·변압기</strong>도 특고압 배전반과 동일한 2,200 × 2,400을 기본값으로 씁니다. 실제 제작사 사양이 확정되면 각 행에서 직접 수정하세요.</p>
         <h4>배치 알고리즘</h4>
-        <p class="ref">그룹 내 판넬은 폭 방향으로 <strong>이격 없이 연접</strong>하며, 그룹 열의 폭 = Σ(판넬 폭 × 수량), 깊이 = 그룹 내 최대 깊이로 봅니다. 배치는 <strong>최대 2열</strong>로 제한하되 그룹 수는 제한이 없습니다. 같은 열에 배정된 그룹은 좌→우 순서로 놓이며 그룹 사이 간격 = max(입력한 <strong>그룹 간 이격</strong>(기본 0.8 m), 양쪽 그룹의 기타의 면 값). 열 폭 = Σ(그룹 폭) + Σ(그룹 간 이격), 열 깊이 = 그 열 최대 깊이이고 각 그룹은 <strong>정면이 통로 쪽에 맞춰지도록</strong> 정렬됩니다. 두 열의 가로 위치는 <strong>긴 열의 한쪽 끝선(왼쪽 또는 오른쪽)에 짧은 열을 맞추는</strong> 방식이며, 이때 소요 가로 = 맞춤측 벽이격(열 중 최대) + max(열폭 + 그 열의 반대측 벽이격) 으로 산정합니다. 두 열은 정면끼리 마주보도록 고정(1열 정면 ↓ · 2열 정면 ↑)되고, 두 열 사이 간격 = max(1열 앞면값, 2열 앞면값, 열 상호간 값). <strong>벽과의 간격</strong>은 입력한 <strong>벽 이격거리(기본 1.0 m)</strong>와 그 면의 요구 유지거리(앞면/뒷면/기타의 면) 중 <strong>큰 값</strong>을 상·하·좌·우 4면에 적용합니다.</p>
+        <p class="ref">그룹 내 판넬은 폭 방향으로 <strong>이격 없이 연접</strong>하며, 그룹 열의 폭 = Σ(판넬 폭 × 수량), 깊이 = 그룹 내 최대 깊이로 봅니다. 배치는 <strong>최대 2열</strong>로 제한하되 그룹 수는 제한이 없습니다. 같은 열에 배정된 그룹은 좌→우 순서로 놓이며 그룹 사이 간격 = max(입력한 <strong>그룹 간 이격</strong>(기본 0.8 m), 양쪽 그룹의 기타의 면 값). 열 폭 = Σ(그룹 폭) + Σ(그룹 간 이격), 열 깊이 = 그 열 최대 깊이이고 각 그룹은 <strong>정면이 통로 쪽에 맞춰지도록</strong> 정렬됩니다. 두 열의 가로 위치는 <strong>긴 열의 한쪽 끝선(왼쪽 또는 오른쪽)에 짧은 열을 맞추는</strong> 방식이며, 이때 소요 가로 = 맞춤측 벽이격(열 중 최대) + max(열폭 + 그 열의 반대측 벽이격) 으로 산정합니다. 두 열은 정면끼리 마주보도록 고정(1열 정면 ↓ · 2열 정면 ↑)되고, 두 열 사이 간격 = max(1열 앞면값, 2열 앞면값, 열 상호간 값). <strong>벽과의 간격</strong>은 면에 따라 다르게 봅니다 — <strong>좌·우 측면</strong>은 입력한 측면 벽 이격거리(기본 1.0 m)와 기타의 면 값 중 큰 값, <strong>뒷면</strong>은 점검도어를 연 상태 기준으로 <strong>도어 1짝 폭 + 여유(기본 300 mm)</strong>(폭 2,000 이상은 양개문으로 보아 폭의 1/2), <strong>앞면</strong>이 벽을 향하면 앞면 유지거리를 적용합니다.</p>
         <h4>한계</h4>
-        <p class="ref">최대 2열 마주보기 배치의 <strong>개략 검토 도구</strong>입니다. 출입문·반입 동선, 케이블 트렌치·피트, 변압기 방열 이격, 소방 설비, 천장고·인양 공간, 기둥 위치는 반영하지 않습니다. 실제 설계 시 반드시 별도 검토하세요.</p>
+        <p class="ref">뒷면 이격은 <strong>점검도어를 90° 연 깊이(= 도어 1짝 폭) + 도어 여유</strong>로 산정합니다. 폭 <strong>2,000 mm 이상</strong>인 판넬은 <strong>양개문</strong>으로 제작되는 것으로 보아 도어 1짝을 <strong>폭의 1/2</strong>로 계산합니다. 예를 들어 800 폭(편개문)은 800 + 300 = <strong>1,100 mm</strong>, 2,200 폭(양개문)은 1,100 + 300 = <strong>1,400 mm</strong>가 필요합니다. 04번 표의 뒷면 값(내선규정 참고: 특고압 0.8 m·그 외 0.6 m)은 <strong>최소 하한</strong>으로만 쓰입니다. 최대 2열 마주보기 배치의 <strong>개략 검토 도구</strong>입니다. 출입문·반입 동선, 케이블 트렌치·피트, 변압기 방열 이격, 소방 설비, 천장고·인양 공간, 기둥 위치는 반영하지 않습니다. 실제 설계 시 반드시 별도 검토하세요.</p>
         <div class="note"><strong>참고</strong> · 본 결과는 유지거리만 고려한 1차 소요면적 산정값이며, 법적 효력을 갖는 설계서가 아닙니다.</div>
       </div>
     </details>
 
     <footer>
-      <strong>전기실 사이즈 검토</strong> · 판넬 배치·유지거리 기반 개략 면적 산정 도구. 유지거리 기준값은 사용 전 반드시 해당 프로젝트 적용 규정과 대조 확인하세요. <span style="opacity:.6;">(rev. 0729-I)</span>
+      <strong>전기실 사이즈 검토</strong> · 판넬 배치·유지거리 기반 개략 면적 산정 도구. 유지거리 기준값은 사용 전 반드시 해당 프로젝트 적용 규정과 대조 확인하세요. <span style="opacity:.6;">(rev. 0729-V)</span>
     </footer>
+  </div>
+
+  <div id="view-mcc" class="calc-view" hidden>
+    <div class="head-text">
+      <div class="eyebrow">전기설비 · 동력 계획</div>
+      <h1>MCC 대수 산정</h1>
+      <p class="lede">부하 목록을 넣으면 유닛 높이와 면 유효높이를 기준으로<br>필요한 MCC 면수·대수와 스페어 배치 가능 여부를 산출합니다.</p>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">01</span> 부하 목록</p>
+      <p class="rm-gnote" style="margin:0 0 12px;">한 행이 <strong>하나의 부하</strong>입니다. 한 부하의 전체 유닛은 <strong>같은 MCC</strong>에 배치되며, 같은 MCC 안에서는 여러 면에 걸쳐 나뉠 수 있습니다.</p>
+      <div class="mech-drop" id="mcDrop" style="margin-bottom:12px;">
+        <input type="file" id="mcFile" accept=".xlsx,.xls,.csv" hidden>
+        <p class="md-main">기기리스트 엑셀을 끌어다 놓거나 <button type="button" class="md-pick" id="mcPick">파일 선택</button></p>
+        <p class="md-sub">기기명 우선 → 부하명 · 기기명이 없으면 전체 기기번호 사용 · 비고 <strong>MOP</strong> → 피더 · <strong>VVVF</strong> → 인버터 체크</p>
+      </div>
+      <p class="mech-status" id="mcStatus" hidden></p>
+      <div class="rm-rows">
+        <div class="mc-phead"><span>부하명</span><span>부하 종류</span><span>기동</span><span>상용</span><span>예비</span><span></span></div>
+        <div id="mcLoads"></div>
+      </div>
+      <button type="button" class="add" data-mcaction="addload">+ 부하 추가</button>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">02</span> 산정 기준</p>
+      <div class="mc-params">
+        <div class="field"><label>면 유효높이 (mm)</label><input type="number" id="mcFaceH" min="100" step="50" value="1800"></div>
+        <div class="field"><label>메인판넬 공제 (mm)</label><input type="number" id="mcMainCut" min="0" step="50" value="600"></div>
+        <div class="field"><label>일반(피더) 유닛높이 (mm)</label><input type="number" id="mcFeederH" min="50" step="50" value="200"></div>
+        <div class="field"><label>모터 유닛높이 (mm)</label><input type="number" id="mcMotorH" min="50" step="50" value="300"></div>
+        <div class="field"><label>VVVF 1면당 최대 (동일부하)</label><input type="number" id="mcVvvfPer" min="1" step="1" value="2"></div>
+        <div class="field"><label>MCC 1대 최대 면수</label><input type="number" id="mcMaxFaces" min="1" step="1" value="6"></div>
+        <div class="field"><label>스페어 비율 (%)</label><input type="number" id="mcSpareRatio" min="0" step="5" value="20"></div>
+      </div>
+      <p class="rm-gnote" style="margin:10px 0 0;">스페어는 <strong>모터용(300)·피더용(200)을 절반씩</strong> 잡되, 각 면의 남는 높이에 맞춰 조합을 조정해 <strong>BLANK(빈 공간)가 최소</strong>가 되도록 배치합니다. 자리가 부족하면 면을 늘리지 않고 수량을 줄입니다.</p>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">03</span> MCC 배정 <span style="font-size:11.5px;font-weight:700;color:var(--ink-2);margin-left:6px;">드래그 또는 ◀ ▶ 로 이동</span></p>
+      <p class="rm-gnote" style="margin:0 0 12px;">자동 배정 결과입니다. 부하를 다른 MCC로 옮기면 <strong>고정</strong>되어 이후 계산에서도 그 MCC에 남습니다.</p>
+      <div id="mcBins" class="mc-bins"></div>
+      <button type="button" class="add" data-mcaction="resetpin">↺ 자동 배정으로 되돌리기</button>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">04</span> 산정 결과</p>
+      <div class="rm-stats">
+        <div class="rm-st rm-st-main"><span class="rm-st-k">필요 MCC</span><span class="rm-st-v" id="mcoMcc">–</span></div>
+        <div class="rm-st"><span class="rm-st-k">총 면수</span><span class="rm-st-v" id="mcoFaces">–</span></div>
+        <div class="rm-st"><span class="rm-st-k">부하 유닛</span><span class="rm-st-v" id="mcoUnits">–</span></div>
+        <div class="rm-st"><span class="rm-st-k">스페어 (배치 / 목표)</span><span class="rm-st-v" id="mcoSpare">–</span></div>
+        <div class="rm-st"><span class="rm-st-k">총 BLANK</span><span class="rm-st-v" id="mcoBlank">–</span></div>
+      </div>
+      <div id="mcWarn"></div>
+      <div id="mcCanvas" class="rm-canvas"></div>
+      <div id="mcTable"></div>
+    </div>
+
+    <details class="ref-box">
+      <summary>산정 기준 및 배치 규칙</summary>
+      <div class="ref-body">
+        <h4>엑셀 불러오기</h4>
+        <p class="ref">기기리스트(기자재 수량산출서) 엑셀을 올리면 <strong>기기명을 부하명으로 우선 사용</strong>하고, 기기명이 비어 있을 때만 <strong>전체 기기번호</strong>를 사용합니다. 예: <strong>M-101 / 유입펌프 → 부하명 ‘유입펌프’</strong>. 상용·예비 수량을 그대로 가져오며, <strong>비고에 MOP</strong>가 있으면 <strong>피더</strong>, <strong>VVVF</strong>가 있으면 <strong>인버터 기동</strong>으로 체크하고 나머지는 모터·직입으로 판정합니다. <strong>동력(kW)이 없는 무동력 기기</strong>(저장 컨테이너·산기장치 등)와 합계·소계 행은 전기 부하가 아니므로 자동으로 제외합니다. 판정 결과는 표에서 직접 수정할 수 있습니다.</p>
+        <h4>유닛 배치</h4>
+        <p class="ref">한 면(cubicle)의 유닛 적재 유효높이는 <strong>1,800 mm</strong>이며, 각 MCC의 <strong>첫 면(메인판넬)</strong>은 주회로 자재 공간으로 <strong>600 mm</strong>를 제하여 <strong>1,200 mm</strong>만 사용합니다. 유닛 높이는 일반(피더) 부하 <strong>200 mm</strong>, 모터 부하 <strong>300 mm</strong>입니다. 한 부하의 유닛은 같은 MCC 안에서 여러 면에 나뉘어 들어갈 수 있습니다. 한 면의 마지막 유닛에 배치된 뒤 다음 면으로 이어지는 경우, 나머지는 <strong>다음 면의 최상단 유닛부터 연속 배치</strong>하며 앞선 면의 빈칸을 역순으로 다시 채우지 않습니다.</p>
+        <h4>VVVF(인버터) 기동</h4>
+        <p class="ref">인버터 기동 부하는 <strong>전용 면</strong>을 사용합니다. 동일 부하에 한해 <strong>1면에 2대까지</strong> 넣을 수 있으므로 필요 면수 = 올림(대수 ÷ 2)입니다. VVVF 전용 면에는 다른 부하 유닛이나 스페어가 들어가지 않으며, 각 MCC에서 <strong>메인판넬 반대쪽인 우측 끝에 연속 배치</strong>합니다.</p>
+        <h4>상용 · 예비</h4>
+        <p class="ref">상용·예비 여부와 관계없이 <strong>한 행의 동일 부하 전체</strong>를 하나의 묶음으로 보아 <strong>반드시 같은 MCC</strong>에 배치합니다. 같은 MCC 안에서는 여러 면으로 나눌 수 있으나 서로 다른 MCC로는 나누지 않습니다. 기존 MCC에 전량이 들어가지 않으면 부하 전체를 다음 MCC로 넘깁니다.</p>
+        <h4>스페어</h4>
+        <p class="ref">각 MCC의 <strong>부하 유닛 수 × 20%</strong>(올림)를 목표 수량으로 잡고, <strong>모터용(300 mm)과 피더용(200 mm)을 절반씩</strong> 배분하는 것을 기본으로 합니다. 다만 면마다 남는 높이가 다르므로 각 면에서 <strong>BLANK(빈 공간)를 최소로 만드는 300/200 조합</strong>을 찾아 배치하고, 모터:피더 비율은 50:50에 가깝게 유지합니다. 기존 면의 남은 높이에만 넣고 면을 늘리지 않으며, 배치하지 못한 수량과 남은 BLANK는 결과에 표시합니다.</p>
+        <h4>MCC 분할</h4>
+        <p class="ref">MCC 1대는 <strong>최대 6면</strong>입니다. 동일 부하 전체가 들어갈 기존 MCC가 없으면 새 MCC를 만들고, 새 MCC의 첫 면에도 메인 공제 600 mm가 적용됩니다. 새 MCC에도 전체 부하가 들어가지 않으면 서로 다른 MCC로 분할하지 않고 <strong>배치 불가</strong>로 표시합니다.</p>
+        <h4>한계</h4>
+        <p class="ref">유닛 높이만으로 판정하는 <strong>개략 검토 도구</strong>입니다. 실제로는 차단기 프레임(AF/AT), 컨덴서 용량, 열 방출, 제작사 표준 유닛 규격에 따라 결과가 달라질 수 있으므로 제작 도면과 반드시 대조하세요.</p>
+      </div>
+    </details>
   </div><!-- /view-room -->
 
 </div>
@@ -1157,6 +1288,7 @@
       </div>
     </div>
   </div>
+
 </div>
 
 <script>
@@ -1617,7 +1749,7 @@ function renderDmg(){
     : "요율 0.26477% = 대인 0.02057%×1.2 + 대물 0.09988%×1.2 + 목적물 0.12023% (발주자미필적배상책임 특약 포함) · 100원 미만 절사 · 최저공제료 20,000원.";
 }
 function switchView(view){
-  var map={conduit:"view-conduit", fee:"view-fee", light:"view-light", mech:"view-mech", room:"view-room"};
+  var map={conduit:"view-conduit", fee:"view-fee", light:"view-light", mech:"view-mech", room:"view-room", mcc:"view-mcc"};
   Object.keys(map).forEach(function(k){
     var el=document.getElementById(map[k]);
     if(el) el.hidden = (k!==view);
@@ -1630,11 +1762,14 @@ function switchView(view){
   if(view==="fee"){ renderFee(); renderDmg(); }
   if(view==="light") renderLight();
   if(view==="room") renderRoom();
+  if(view==="mcc") renderMcc();
   try{ window.scrollTo(0,0); }catch(e){}
 }
 
 // ===== 전기실 사이즈 검토 =====
 // 유지거리 기본값(m) — 내선규정 표 3110-3 통용값. f:앞면, b:뒷면, r:열상호간, o:기타의 면
+var RM_DBL_DOOR_W=2.0;   // 이 폭(m) 이상이면 양개문 → 도어 1짝 = 폭/2
+// 뒷면(b)은 최소 하한값 — 실제 적용값은 "점검도어 폭 + 도어 여유"와 비교해 큰 값
 var RM_KINDS=[
   {key:"ehv", label:"특고압 배전반", f:1.7, b:0.8, r:1.4, o:0.3},
   {key:"hv",  label:"고압 배전반",   f:1.5, b:0.6, r:1.2, o:0.3},
@@ -1757,20 +1892,24 @@ function rmLayout(){
   var margin=Math.max(0, rmNum(document.getElementById("rmMargin") && document.getElementById("rmMargin").value, 0));
   var wallClr=Math.max(0, rmNum(document.getElementById("rmWallClr") && document.getElementById("rmWallClr").value, 1));
   var grpGap=Math.max(0, rmNum(document.getElementById("rmGroupGap") && document.getElementById("rmGroupGap").value, 0.8));
+  var doorClr=Math.max(0, rmNum(document.getElementById("rmDoorClr") && document.getElementById("rmDoorClr").value, 0.3));
   var banks=[];
   roomState.groups.forEach(function(g){
-    var bw=0, bd=0, req={f:0,b:0,r:0,o:0}, cells=[], n=0;
+    var bw=0, bd=0, req={f:0,b:0,r:0,o:0}, cells=[], n=0, doorW=0;
     g.panels.forEach(function(p){
       var w=Math.max(0,p.w)/1000, d=Math.max(0,p.d)/1000, q=Math.max(0,Math.floor(p.qty));
       var c=roomState.clr[p.kind]||{f:0,b:0,r:0,o:0};
       if(w<=0||d<=0||q<=0) return;
       for(var i=0;i<q;i++){ cells.push({x:bw+i*w, w:w, d:d, name:p.name, kind:p.kind}); }
       bw+=w*q; n+=q;
+      // 점검도어 폭 — 2,000 이상은 양개문으로 보아 폭의 1/2, 그 미만은 편개문(폭 전체)
+      var lw = (w>=RM_DBL_DOOR_W) ? w/2 : w;
+      if(lw>doorW) doorW=lw;
       if(d>bd) bd=d;
       ["f","b","r","o"].forEach(function(f){ if(c[f]>req[f]) req[f]=c[f]; });
     });
     if(!cells.length) return;
-    banks.push({g:g, bw:bw, bd:bd, req:req, cells:cells, n:n});
+    banks.push({g:g, bw:bw, bd:bd, req:req, cells:cells, n:n, doorW:doorW});
   });
   if(!banks.length) return null;
 
@@ -1783,7 +1922,11 @@ function rmLayout(){
     list.forEach(function(b){
       ["f","b","r","o"].forEach(function(k){ if(b.req[k]>row.req[k]) row.req[k]=b.req[k]; });
       if(b.bd>row.bd) row.bd=b.bd;
+      // 뒷면 = 점검도어를 연 깊이(도어 폭) + 여유, 단 표의 뒷면 최소값 이상
+      b.backGap = Math.max(b.doorW + doorClr, b.req.b);
+      b.req.b = b.backGap;
     });
+    row.req.b = Math.max.apply(null, list.map(function(b){ return b.backGap; }));
     // 같은 열 내부: 그룹 사이는 양쪽 '기타의 면' 중 큰 값만큼 이격
     var w=0;
     list.forEach(function(b,i){
@@ -1804,7 +1947,7 @@ function rmLayout(){
   rows.forEach(function(r){
     var gap;
     if(!prev){
-      gap = Math.max(wallClr, r.req[r.topFace]);   // 윗벽과의 거리
+      gap = r.req[r.topFace];   // 윗벽 — 앞면이면 앞면값, 뒷면이면 점검면 300
       r.gapLabel = (r.topFace==="f"?"앞면":"뒷면")+" ↔ 벽";
     }else{
       // 두 열 사이 통로: 마주보는 면 요구값과 '열 상호간' 값 중 최대
@@ -1815,7 +1958,7 @@ function rmLayout(){
     y+=gap; r.y=y; y+=r.bd;
     prev=r;
   });
-  var lastGap = Math.max(wallClr, prev.req[prev.botFace]);
+  var lastGap = prev.req[prev.botFace];   // 아랫벽 — 동일 규칙
   y+=lastGap;
   var needL = y + margin*2;
 
@@ -1859,7 +2002,7 @@ function rmLayout(){
     total+=b.n;
   });
   return {rows:rows, banks:banks, needW:needW, needL:needL, roomW:roomW, roomL:roomL,
-          fixed:fixed, lastGap:lastGap, margin:margin, wallClr:wallClr, grpGap:grpGap, panelArea:panelArea, total:total};
+          fixed:fixed, lastGap:lastGap, margin:margin, wallClr:wallClr, grpGap:grpGap, doorClr:doorClr, panelArea:panelArea, total:total};
 }
 function rmFmt(v,dg){ return Number(v.toFixed(dg==null?2:dg)).toLocaleString("ko-KR"); }
 function rmMM(m){ return String(Math.round(m*1000)); }
@@ -1888,14 +2031,14 @@ function rmDimChain(segs, horiz, base, sc, X, Y, dirSign){
     });
     if(len<3) return;
     var txt=g.label!=null ? g.label : rmMM(g.b-g.a);
-    var narrow = len < 30;
+    var narrow = len < 36;
     if(horiz){
       var ty = base - 5;
       out += narrow
-        ? '<text x="'+mid+'" y="'+ty+'" text-anchor="start" font-size="10" font-weight="700" fill="#15212F" transform="rotate(-90 '+mid+' '+ty+')">'+txt+'</text>'
-        : '<text x="'+mid+'" y="'+ty+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="#15212F">'+txt+'</text>';
+        ? '<text x="'+mid+'" y="'+ty+'" text-anchor="start" font-size="12" font-weight="700" fill="#15212F" transform="rotate(-90 '+mid+' '+ty+')">'+txt+'</text>'
+        : '<text x="'+mid+'" y="'+ty+'" text-anchor="middle" font-size="13" font-weight="700" fill="#15212F">'+txt+'</text>';
     }else{
-      out += '<text x="'+(base+5)+'" y="'+(mid+3.5)+'" text-anchor="start" font-size="10.5" font-weight="700" fill="#15212F">'+txt+'</text>';
+      out += '<text x="'+(base+7)+'" y="'+(mid+4.5)+'" text-anchor="start" font-size="13" font-weight="700" fill="#15212F">'+txt+'</text>';
     }
   });
   return out;
@@ -1917,7 +2060,7 @@ function rmDrawRoom(L){
   if(!host) return;
   if(!L){ host.innerHTML='<p class="rm-gnote" style="text-align:center;padding:26px 0;">판넬을 입력하면 배치도가 표시됩니다.</p>'; return; }
   var W=L.roomW, H=L.roomL;
-  var padL=70, padR=92, padT=64, padB=86;
+  var padL=78, padR=118, padT=76, padB=104;
   var sc=Math.min(740/Math.max(W,0.1), 520/Math.max(H,0.1));
   if(!isFinite(sc)||sc<=0) sc=10;
   var vw=W*sc+padL+padR, vh=H*sc+padT+padB;
@@ -1962,11 +2105,11 @@ function rmDrawRoom(L){
   // ── 치수기입 (mm) ──────────────────────────────
   // 가로: 1열은 상단, 2열은 하단 (열이 하나면 상단)
   var topRow=L.rows[0], botRow=(L.rows.length>1)?L.rows[1]:null;
-  s+=rmDimChain(rmRowSegs(topRow,W), true, padT-30, sc, X, Y, 1);
-  s+='<text x="'+(X(0)-8)+'" y="'+(padT-27)+'" text-anchor="end" font-size="10.5" font-weight="800" fill="#566578">'+topRow.no+'열</text>';
+  s+=rmDimChain(rmRowSegs(topRow,W), true, padT-36, sc, X, Y, 1);
+  s+='<text x="'+(X(0)-8)+'" y="'+(padT-30)+'" text-anchor="end" font-size="12.5" font-weight="800" fill="#566578">'+topRow.no+'열</text>';
   if(botRow){
-    s+=rmDimChain(rmRowSegs(botRow,W), true, Y(H)+34, sc, X, Y, 1);
-    s+='<text x="'+(X(0)-8)+'" y="'+(Y(H)+37)+'" text-anchor="end" font-size="10.5" font-weight="800" fill="#566578">'+botRow.no+'열</text>';
+    s+=rmDimChain(rmRowSegs(botRow,W), true, Y(H)+40, sc, X, Y, 1);
+    s+='<text x="'+(X(0)-8)+'" y="'+(Y(H)+41)+'" text-anchor="end" font-size="12.5" font-weight="800" fill="#566578">'+botRow.no+'열</text>';
   }
   // 세로: 우측 — 벽이격 · 열깊이 · 통로
   var vsegs=[], vy=0;
@@ -1976,21 +2119,521 @@ function rmDrawRoom(L){
     vy=r.yAbs+r.bd;
   });
   if(H-vy>0.001) vsegs.push({a:vy, b:H});
-  s+=rmDimChain(vsegs, false, X(W)+26, sc, X, Y, -1);
+  s+=rmDimChain(vsegs, false, X(W)+30, sc, X, Y, -1);
   // 전체 치수 (하단 W / 좌측 L)
-  var dy=Y(H)+ (botRow?66:30);
+  var dy=Y(H)+ (botRow?80:36);
   s+='<line x1="'+X(0)+'" y1="'+dy+'" x2="'+X(W)+'" y2="'+dy+'" stroke="#15212F" stroke-width="1.2"/>';
   s+='<line x1="'+X(0)+'" y1="'+(dy-5)+'" x2="'+X(0)+'" y2="'+(dy+5)+'" stroke="#15212F" stroke-width="1.2"/>';
   s+='<line x1="'+X(W)+'" y1="'+(dy-5)+'" x2="'+X(W)+'" y2="'+(dy+5)+'" stroke="#15212F" stroke-width="1.2"/>';
-  s+='<text x="'+X(W/2)+'" y="'+(dy+17)+'" text-anchor="middle" font-size="13.5" font-weight="800" fill="#15212F">W '+rmMM(W)+' ('+rmFmt(W)+' m)</text>';
-  var dx=X(0)-34;
+  s+='<text x="'+X(W/2)+'" y="'+(dy+21)+'" text-anchor="middle" font-size="16" font-weight="800" fill="#15212F">W '+rmMM(W)+' ('+rmFmt(W)+' m)</text>';
+  var dx=X(0)-42;
   s+='<line x1="'+dx+'" y1="'+Y(0)+'" x2="'+dx+'" y2="'+Y(H)+'" stroke="#15212F" stroke-width="1.2"/>';
   s+='<line x1="'+(dx-5)+'" y1="'+Y(0)+'" x2="'+(dx+5)+'" y2="'+Y(0)+'" stroke="#15212F" stroke-width="1.2"/>';
   s+='<line x1="'+(dx-5)+'" y1="'+Y(H)+'" x2="'+(dx+5)+'" y2="'+Y(H)+'" stroke="#15212F" stroke-width="1.2"/>';
-  s+='<text x="'+dx+'" y="'+Y(H/2)+'" text-anchor="middle" font-size="13.5" font-weight="800" fill="#15212F" transform="rotate(-90 '+dx+' '+Y(H/2)+')">L '+rmMM(H)+' ('+rmFmt(H)+' m)</text>';
+  s+='<text x="'+dx+'" y="'+Y(H/2)+'" text-anchor="middle" font-size="16" font-weight="800" fill="#15212F" transform="rotate(-90 '+dx+' '+Y(H/2)+')">L '+rmMM(H)+' ('+rmFmt(H)+' m)</text>';
   s+='</svg>';
   host.innerHTML=s;
 }
+/* ===== MCC 대수 산정 ===== */
+var mcState={seq:0, loads:[]};
+var mcLast=null;
+function mcNextId(){ return "L"+(++mcState.seq); }
+function mcSeedLoads(){
+  mcState.loads=[
+    {id:mcNextId(), name:"여과 응집기",          kind:"motor",  vvvf:false, n:4, s:0, mcc:null},
+    {id:mcNextId(), name:"슬러지 수집기",        kind:"motor",  vvvf:false, n:2, s:0, mcc:null},
+    {id:mcNextId(), name:"스컴 스키머",          kind:"motor",  vvvf:false, n:2, s:0, mcc:null},
+    {id:mcNextId(), name:"스컴 분리기",          kind:"motor",  vvvf:false, n:1, s:0, mcc:null},
+    {id:mcNextId(), name:"스컴반출 호이스트",    kind:"motor",  vvvf:false, n:1, s:0, mcc:null},
+    {id:mcNextId(), name:"LCP 제어반",           kind:"feeder", vvvf:false, n:2, s:0, mcc:null},
+    {id:mcNextId(), name:"잉여슬러지 펌프",      kind:"motor",  vvvf:false, n:1, s:1, mcc:null},
+    {id:mcNextId(), name:"슬러지저류조 후송펌프",kind:"motor",  vvvf:true,  n:2, s:0, mcc:null},
+    {id:mcNextId(), name:"반송슬러지 펌프",      kind:"motor",  vvvf:true,  n:4, s:0, mcc:null}
+  ];
+}
+function mcParams(){
+  var g=function(id,dv){ var el=document.getElementById(id); return rmNum(el&&el.value, dv); };
+  return {
+    faceH:   Math.max(1, g("mcFaceH",1800)),
+    mainCut: Math.max(0, g("mcMainCut",600)),
+    feederH: Math.max(1, g("mcFeederH",200)),
+    motorH:  Math.max(1, g("mcMotorH",300)),
+    vvvfPer: Math.max(1, Math.floor(g("mcVvvfPer",2))),
+    maxFaces:Math.max(1, Math.floor(g("mcMaxFaces",6))),
+    ratio:   Math.max(0, g("mcSpareRatio",20))/100
+  };
+}
+function mcCompute(){
+  var P=mcParams(), groups=[];
+  mcState.loads.forEach(function(l){
+    var n=Math.max(0,Math.floor(l.n||0)), s=Math.max(0,Math.floor(l.s||0));
+    if(n+s<=0) return;
+    groups.push({src:l, id:l.id, name:l.name||"(무명)", n:n, s:s, units:n+s,
+      kind:(l.kind==="feeder")?"feeder":"motor",
+      h:(l.kind==="feeder")?P.feederH:P.motorH, vvvf:!!l.vvvf,
+      pin:(l.mcc>0?Math.floor(l.mcc):0)});
+  });
+  if(!groups.length) return null;
+
+  var mccs=[], over=[];
+  function newMcc(){
+    var m={no:mccs.length+1, faces:[], groups:[], spare:0, spareTarget:0, spareM:0, spareF:0};
+    m.faces.push({no:1, main:true, vvvf:false, cap:Math.max(0,P.faceH-P.mainCut), used:0, items:[]});
+    mccs.push(m); return m;
+  }
+  function ensureMcc(no){ while(mccs.length<no) newMcc(); return mccs[no-1]; }
+  function lastNormalFace(m){
+    for(var i=m.faces.length-1;i>=0;i--) if(!m.faces[i].vvvf) return m.faces[i];
+    return null;
+  }
+  function addFace(m,f){
+    if(f.vvvf){
+      m.faces.push(f);
+    }else{
+      var vi=-1;
+      for(var i=0;i<m.faces.length;i++){ if(m.faces[i].vvvf){ vi=i; break; } }
+      if(vi<0) m.faces.push(f); else m.faces.splice(vi,0,f);
+    }
+    return f;
+  }
+  function capacityFor(m,g){
+    if(g.vvvf) return Math.max(0,(P.maxFaces-m.faces.length))*P.vvvfPer;
+    var perNew=Math.floor(P.faceH/g.h), tail=lastNormalFace(m), c=0;
+    if(tail) c=Math.floor((tail.cap-tail.used)/g.h);
+    return c + Math.max(0,(P.maxFaces-m.faces.length))*perNew;
+  }
+  function commitUnits(m,g,cnt){
+    if(cnt<=0) return;
+    if(g.vvvf){
+      var left=cnt;
+      while(left>0){
+        var q=Math.min(P.vvvfPer,left); left-=q;
+        addFace(m,{no:0, main:false, vvvf:true, cap:P.faceH, used:P.faceH,
+          items:[{name:g.name, qty:q, h:P.faceH, type:"vvvf"}]});
+      }
+    }else{
+      var rest=cnt, f=lastNormalFace(m);
+      if(f && rest>0){
+        var k=Math.floor((f.cap-f.used)/g.h);
+        if(k>0){
+          var t=Math.min(k,rest); rest-=t;
+          f.used+=t*g.h;
+          f.items.push({name:g.name, qty:t, h:g.h, type:"load", kind:g.kind});
+        }
+      }
+      while(rest>0 && m.faces.length<P.maxFaces){
+        var nf=addFace(m,{no:0, main:false, vvvf:false, cap:P.faceH, used:0, items:[]});
+        var k2=Math.min(Math.floor(P.faceH/g.h), rest); rest-=k2;
+        nf.used+=k2*g.h;
+        nf.items.push({name:g.name, qty:k2, h:g.h, type:"load", kind:g.kind});
+      }
+    }
+    if(m.groups.indexOf(g)<0) m.groups.push(g);
+    g.at=g.at||[];
+    if(g.at.indexOf(m.no)<0) g.at.push(m.no);
+  }
+
+  // 1) 사용자가 고정한 부하 먼저
+  groups.forEach(function(g){
+    if(!g.pin) return;
+    var m=ensureMcc(g.pin), cap=capacityFor(m,g);
+    var take=cap>=g.units?g.units:0;
+    if(take>0) commitUnits(m,g,take);
+    if(take<g.units) over.push({name:g.name, units:g.units-take, pin:g.pin});
+  });
+  // 2) 나머지 자동 배정
+  groups.forEach(function(g){
+    if(g.pin) return;
+    var target=null;
+    for(var i=0;i<mccs.length;i++){
+      if(capacityFor(mccs[i],g)>=g.units){ target=mccs[i]; break; }
+    }
+    if(!target) target=newMcc();
+    if(capacityFor(target,g)>=g.units) commitUnits(target,g,g.units);
+    else over.push({name:g.name, units:g.units});
+  });
+  mccs=mccs.filter(function(m){ return m.groups.length>0; });
+  mccs.forEach(function(m,i){
+    m.no=i+1;
+    var normal=m.faces.filter(function(f){ return !f.vvvf; });
+    var inverter=m.faces.filter(function(f){ return f.vvvf; });
+    m.faces=normal.concat(inverter);
+    m.faces.forEach(function(f,j){ f.no=j+1; });
+  });
+
+  // 3) 스페어 — 모터:피더 절반씩을 기준으로, BLANK가 최소가 되도록 조합 선택
+  mccs.forEach(function(m){
+    m.loadUnits=m.faces.reduce(function(a,f){
+      return a+f.items.reduce(function(b,it){ return b+(it.type==="spare"?0:it.qty); },0); },0);
+    m.spareTarget=Math.ceil(m.loadUnits*P.ratio);
+    var budget=m.spareTarget, mc=0, fc=0;
+    m.faces.forEach(function(f){
+      if(f.vvvf || budget<=0) return;
+      var R=f.cap-f.used, best=null;
+      var maxA=Math.min(budget, Math.floor(R/P.motorH));
+      for(var a=0;a<=maxA;a++){
+        var maxB=Math.min(budget-a, Math.floor((R-a*P.motorH)/P.feederH));
+        for(var b=0;b<=maxB;b++){
+          var blank=R-(a*P.motorH+b*P.feederH);
+          var dev=Math.abs((mc+a)-(fc+b));         // 모터:피더 50:50 편차
+          if(!best || blank<best.blank || (blank===best.blank && dev<best.dev)) best={a:a,b:b,blank:blank,dev:dev};
+        }
+      }
+      if(best && (best.a+best.b)>0){
+        if(best.a) f.items.push({name:"SPARE", qty:best.a, h:P.motorH, type:"spare", kind:"motor"});
+        if(best.b) f.items.push({name:"SPARE", qty:best.b, h:P.feederH, type:"spare", kind:"feeder"});
+        f.used+=best.a*P.motorH+best.b*P.feederH;
+        budget-=best.a+best.b; mc+=best.a; fc+=best.b;
+      }
+    });
+    m.spare=m.spareTarget-budget; m.spareM=mc; m.spareF=fc;
+    m.blank=m.faces.reduce(function(a,f){ return a+(f.vvvf?0:(f.cap-f.used)); },0);
+  });
+  var R={P:P, mccs:mccs, over:over, groups:groups,
+    totFaces:mccs.reduce(function(a,m){return a+m.faces.length;},0),
+    totUnits:mccs.reduce(function(a,m){return a+m.loadUnits;},0),
+    totSpare:mccs.reduce(function(a,m){return a+m.spare;},0),
+    totTarget:mccs.reduce(function(a,m){return a+m.spareTarget;},0),
+    totBlank:mccs.reduce(function(a,m){return a+m.blank;},0)};
+  mcLast=R;
+  return R;
+}
+/* ---- 입력 행 ---- */
+function renderMcLoads(){
+  var box=document.getElementById("mcLoads");
+  if(!box) return;
+  box.innerHTML=mcState.loads.map(function(l){
+    return '<div class="mc-prow" data-lid="'+l.id+'">'
+      + '<input type="text" data-mf="name" value="'+rmEsc(l.name||"")+'" placeholder="부하명"'
+      + (l.sourceNo?' title="원본 기기번호: '+rmEsc(l.sourceNo)+'"':'')+'>'
+      + '<select data-mf="kind">'
+      +   '<option value="motor"'+(l.kind!=="feeder"?" selected":"")+'>모터</option>'
+      +   '<option value="feeder"'+(l.kind==="feeder"?" selected":"")+'>일반(피더)</option>'
+      + '</select>'
+      + '<label class="mc-chk"><input type="checkbox" data-mf="vvvf"'+(l.vvvf?" checked":"")+'><span>VVVF</span></label>'
+      + '<input type="number" data-mf="n" min="0" step="1" value="'+(l.n||0)+'">'
+      + '<input type="number" data-mf="s" min="0" step="1" value="'+(l.s||0)+'">'
+      + '<button type="button" class="del" data-mcaction="delload" title="삭제">×</button>'
+      + '</div>';
+  }).join("");
+}
+/* ---- MCC 배정 (드래그) ---- */
+function renderMcBins(R){
+  var box=document.getElementById("mcBins");
+  if(!box) return;
+  if(!R){ box.innerHTML=""; return; }
+  var h='';
+  R.mccs.forEach(function(m){
+    h+='<div class="mc-bin"><p class="mc-bin-h">MCC-'+m.no+' <span>'+m.faces.length+'면 · '+m.loadUnits+'유닛</span></p>'
+     + '<div class="mc-chips" data-bin="'+m.no+'">';
+    m.groups.forEach(function(g){
+      var split=(g.at&&g.at.length>1);
+      h+='<div class="mc-chip'+(g.pin?' pinned':'')+(g.vvvf?' vvvf':'')+'" draggable="true" data-lid="'+g.id+'">'
+        + '<button type="button" data-mcaction="binmove" data-dir="-1" title="이전 MCC로">◀</button>'
+        + '<span class="nm">'+rmEsc(g.name)+'</span>'
+        + '<em>'+g.units+'</em>'
+        + (g.vvvf?'<i class="tag">VVVF</i>':'')
+        + (split?'<i class="tag warn">분할</i>':'')
+        + (g.pin?'<i class="tag pin">고정</i>':'')
+        + '<button type="button" data-mcaction="binmove" data-dir="1" title="다음 MCC로">▶</button>'
+        + '</div>';
+    });
+    h+='</div></div>';
+  });
+  h+='<div class="mc-bin ghost"><p class="mc-bin-h">＋ 새 MCC</p><div class="mc-chips" data-bin="'+(R.mccs.length+1)+'"><p class="mc-drop">여기로 끌어다 놓으면 새 MCC로 분리됩니다</p></div></div>';
+  box.innerHTML=h;
+}
+function mcPin(lid, bin){
+  var L=null;
+  mcState.loads.forEach(function(l){ if(l.id===lid) L=l; });
+  if(!L) return;
+  L.mcc=(bin&&bin>0)?bin:null;
+  renderMcc();
+}
+/* ---- 결과 표 ---- */
+function mcRenderTable(R){
+  var host=document.getElementById("mcTable");
+  if(!host) return;
+  if(!R){ host.innerHTML=""; return; }
+  var h='';
+  R.mccs.forEach(function(m){
+    h+='<div class="mc-block"><p class="mc-btitle">MCC-'+m.no+' <span>'+m.faces.length+'면 · 부하 '+m.loadUnits
+      +'유닛 · 스페어 '+m.spare+'/'+m.spareTarget+' (모터 '+m.spareM+' · 피더 '+m.spareF+') · BLANK '+Math.round(m.blank)+'mm</span></p>';
+    h+='<table class="mc-tbl"><thead><tr><th>면</th><th>구분</th><th>수용 유닛</th><th>사용 / 유효</th><th>BLANK</th></tr></thead><tbody>';
+    m.faces.forEach(function(f,i){
+      var kind=f.vvvf?"VVVF 전용":(f.main?"메인판넬":"일반");
+      var items=f.items.map(function(it){
+        return rmEsc(it.name)+" ×"+it.qty+(it.type==="vvvf"?"(VVVF)":(it.type==="spare"?"("+it.h+")":""));
+      }).join(", ")||"–";
+      var bl=f.vvvf?0:(f.cap-f.used);
+      h+='<tr><td>'+(i+1)+'</td><td>'+kind+'</td><td class="l">'+items+'</td><td>'
+        + Math.round(f.used)+' / '+Math.round(f.cap)+'</td><td'+(bl>0?' class="bl"':'')+'>'+Math.round(bl)+'</td></tr>';
+    });
+    h+='</tbody></table></div>';
+  });
+  host.innerHTML=h;
+}
+/* ---- 정면 배치도 ---- */
+function mcDraw(R){
+  var host=document.getElementById("mcCanvas");
+  if(!host) return;
+  if(!R){ host.innerHTML='<p class="rm-gnote" style="text-align:center;padding:26px 0;">부하를 입력하면 배치도가 표시됩니다.</p>'; return; }
+  var P=R.P, sc=0.115, fw=150, gapF=6, gapM=26, padX=16, padT=36, padB=28;
+  var H=P.faceH*sc, rowH=padT+H+padB;
+  var widths=R.mccs.map(function(m){ return m.faces.length*fw+Math.max(0,m.faces.length-1)*gapF; });
+  var vw=Math.max.apply(null,widths)+padX*2;
+  var vh=R.mccs.length*rowH+Math.max(0,R.mccs.length-1)*gapM;
+  var s='';
+  function labelSvg(label,x,y,uh,color){
+    var raw=String(label||"").trim();
+    var chars=Array.from(raw), lines=[raw];
+    if(chars.length>10){
+      var split=Math.ceil(chars.length/2), best=-1;
+      for(var d=0;d<=4;d++){
+        var right=split+d, left=split-d;
+        if(right>0&&right<chars.length&&/\s/.test(chars[right])){ best=right; break; }
+        if(left>0&&left<chars.length&&/\s/.test(chars[left])){ best=left; break; }
+      }
+      if(best>0) split=best;
+      lines=[chars.slice(0,split).join("").trim(),chars.slice(split).join("").trim()];
+      if(!lines[0]||!lines[1]) lines=[raw];
+    }
+    var longest=lines.reduce(function(n,line){ return Math.max(n,Array.from(line).length); },1);
+    var fs=Math.max(7.2,Math.min(10.5,(fw-54)/longest));
+    var center=y+uh/2, gap=fs+1, first=center+fs*.35-(lines.length-1)*gap/2;
+    var out='<text x="'+(x+7)+'" y="'+first.toFixed(1)+'" text-anchor="start" font-size="'+fs.toFixed(1)+'" font-weight="700" fill="'+color+'">';
+    lines.forEach(function(line,i){
+      out+=(i?'<tspan x="'+(x+7)+'" dy="'+gap.toFixed(1)+'">':'<tspan>')+rmEsc(line)+'</tspan>';
+    });
+    return out+'</text>';
+  }
+  R.mccs.forEach(function(m,mi){
+    var rowY=mi*(rowH+gapM);
+    var faceY=rowY+padT;
+    var x=(vw-widths[mi])/2;
+    var x0=x;
+    m.faces.forEach(function(f){
+      s+='<rect x="'+x+'" y="'+faceY+'" width="'+fw+'" height="'+H+'" fill="#fff" stroke="#15212F" stroke-width="2"/>';
+      var y=faceY;
+      if(f.main && P.mainCut>0){
+        var mh=P.mainCut*sc;
+        s+='<rect x="'+x+'" y="'+y+'" width="'+fw+'" height="'+mh+'" fill="#E4ECF5" stroke="#A9C0D8" stroke-width="1"/>';
+        s+='<text x="'+(x+fw/2)+'" y="'+(y+mh/2+5)+'" text-anchor="middle" font-size="12" font-weight="800" fill="#3C5670">MAIN '+P.mainCut+'</text>';
+        y+=mh;
+      }
+      f.items.forEach(function(it){
+        var reps=(it.type==="vvvf")?1:it.qty;
+        for(var q=0;q<reps;q++){
+          var uhMM=(it.type==="vvvf"? P.faceH : it.h), uh=uhMM*sc;
+          var fill=it.type==="spare"?"#FBE3CE":(it.type==="vvvf"?"#2E4964":"#16293B");
+          var col =it.type==="spare"?"#9A4F26":"#fff";
+          var hcol=it.type==="spare"?"#B4794F":"#9BB3C9";
+          s+='<rect x="'+x+'" y="'+y+'" width="'+fw+'" height="'+uh+'" fill="'+fill+'" stroke="#fff" stroke-width="1.2"/>';
+          var lab=it.type==="spare"?"SPARE":it.name;
+          if(uh>=15){
+            s+=labelSvg(lab,x,y,uh,col);
+            s+='<text x="'+(x+fw-6)+'" y="'+(y+uh/2+4)+'" text-anchor="end" font-size="10" font-weight="800" fill="'+hcol+'">'+uhMM+'</text>';
+          }
+          y+=uh;
+        }
+        if(it.type==="vvvf" && it.qty>1)
+          s+='<text x="'+(x+fw/2)+'" y="'+(faceY+H/2+22)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#CFE0F0">×'+it.qty+'</text>';
+      });
+      var bl=f.vvvf?0:(f.cap-f.used);
+      if(bl>0.5){
+        var bh=bl*sc;
+        s+='<rect x="'+x+'" y="'+y+'" width="'+fw+'" height="'+bh+'" fill="#FDF3F3" stroke="#D98A8A" stroke-width="1"/>';
+        s+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+fw)+'" y2="'+(y+bh)+'" stroke="#D98A8A" stroke-width="1"/>';
+        s+='<line x1="'+(x+fw)+'" y1="'+y+'" x2="'+x+'" y2="'+(y+bh)+'" stroke="#D98A8A" stroke-width="1"/>';
+        if(bh>=15) s+='<text x="'+(x+fw/2)+'" y="'+(y+bh/2+4.5)+'" text-anchor="middle" font-size="11.5" font-weight="800" fill="#A84646">BLANK '+Math.round(bl)+'</text>';
+      }
+      s+='<text x="'+(x+fw/2)+'" y="'+(faceY+H+17)+'" text-anchor="middle" font-size="12" font-weight="800" fill="#566578">'
+        + f.no+'면'+(f.vvvf?" · VVVF":(f.main?" · MAIN":""))+'</text>';
+      x+=fw+gapF;
+    });
+    s+='<text x="'+(x0+widths[mi]/2)+'" y="'+(rowY+padT-13)+'" text-anchor="middle" font-size="14" font-weight="800" fill="#15212F">MCC-'+m.no+' ('+m.faces.length+'면)</text>';
+  });
+  host.innerHTML='<svg viewBox="0 0 '+vw.toFixed(0)+' '+vh.toFixed(0)+'" xmlns="http://www.w3.org/2000/svg"'
+    + ' style="max-width:'+Math.min(1100,vw)+'px;min-width:'+Math.min(900,Math.max(280,vw))+'px;margin:0 auto;" font-family="ui-monospace,Consolas,monospace">'+s+'</svg>';
+}
+function mcRefresh(){
+  var R=mcCompute();
+  var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
+  if(!R){
+    ["mcoMcc","mcoFaces","mcoUnits","mcoSpare","mcoBlank"].forEach(function(i){ set(i,"–"); });
+    document.getElementById("mcWarn").innerHTML="";
+    mcDraw(null); mcRenderTable(null); renderMcBins(null); return;
+  }
+  set("mcoMcc", R.mccs.length+" 대");
+  set("mcoFaces", R.totFaces+" 면");
+  set("mcoUnits", R.totUnits+" 유닛");
+  set("mcoSpare", R.totSpare+" / "+R.totTarget+" 개");
+  set("mcoBlank", Math.round(R.totBlank)+" mm");
+  var w="";
+  if(R.over.length){
+    w+='<p class="mc-warn">⚠ 배치하지 못한 부하 — '
+      + R.over.map(function(g){ return rmEsc(g.name)+" "+g.units+"유닛"+(g.pin?" (MCC-"+g.pin+" 고정)":""); }).join(", ")
+      + '. 고정을 풀거나 최대 면수를 조정하세요.</p>';
+  }
+  if(R.totSpare<R.totTarget){
+    w+='<p class="mc-note">스페어 목표 '+R.totTarget+'개 중 '+R.totSpare+'개 배치. 남은 '
+      + (R.totTarget-R.totSpare)+'개는 잔여 공간이 없어 제외했습니다(면 증설 없음). 총 BLANK '+Math.round(R.totBlank)+' mm</p>';
+  }else if(R.totBlank>0){
+    w+='<p class="mc-note">총 BLANK '+Math.round(R.totBlank)+' mm — 스페어를 모터/피더 조합으로 채운 뒤 남은 공간입니다.</p>';
+  }
+  document.getElementById("mcWarn").innerHTML=w;
+  renderMcBins(R); mcDraw(R); mcRenderTable(R);
+}
+function renderMcc(){ renderMcLoads(); mcRefresh(); }
+function handleMccEvent(ev){
+  var t=ev.target;
+  if(!t || !t.getAttribute) return;
+  var act=t.getAttribute("data-mcaction");
+  if(ev.type==="click" && act){
+    if(act==="addload"){
+      mcState.loads.push({id:mcNextId(), name:"", kind:"motor", vvvf:false, n:1, s:0, mcc:null});
+      renderMcc(); return;
+    }
+    if(act==="delload"){
+      var row=t.closest(".mc-prow");
+      if(row){ var id=row.getAttribute("data-lid");
+        mcState.loads=mcState.loads.filter(function(l){ return l.id!==id; }); renderMcc(); }
+      return;
+    }
+    if(act==="binmove"){
+      var chip=t.closest(".mc-chip"), wrap=t.closest(".mc-chips");
+      if(!chip||!wrap) return;
+      var curBin=parseInt(wrap.getAttribute("data-bin"),10);
+      var dir=parseInt(t.getAttribute("data-dir"),10);
+      var maxBin=(mcLast?mcLast.mccs.length:1)+1;
+      var tgt=Math.min(maxBin, Math.max(1, curBin+dir));
+      mcPin(chip.getAttribute("data-lid"), tgt); return;
+    }
+    if(act==="resetpin"){
+      mcState.loads.forEach(function(l){ l.mcc=null; }); renderMcc(); return;
+    }
+  }
+  if(ev.type==="click") return;
+  if(t.id && t.id.indexOf("mc")===0 && !t.getAttribute("data-mf")){ mcRefresh(); return; }
+  var f=t.getAttribute("data-mf");
+  if(!f) return;
+  var prow=t.closest(".mc-prow"); if(!prow) return;
+  var lid=prow.getAttribute("data-lid"), L=null;
+  mcState.loads.forEach(function(l){ if(l.id===lid) L=l; });
+  if(!L) return;
+  if(f==="name") L.name=t.value;
+  else if(f==="kind") L.kind=t.value;
+  else if(f==="vvvf") L.vvvf=!!t.checked;
+  else L[f]=Math.max(0, Math.floor(rmNum(t.value,0)));
+  if(f==="name") mcRefresh(); else renderMcc();
+}
+function mcStatus(msg, kind){
+  var el=document.getElementById("mcStatus"); if(!el) return;
+  if(!msg){ el.hidden=true; return; }
+  el.hidden=false; el.className="mech-status"+(kind?" "+kind:""); el.textContent=msg;
+}
+// 기기리스트 파서 결과(mechParseGrid) → MCC 부하 목록
+function mcMapItems(items){
+  return items.map(function(it){
+    var sourceNo=String(it.no||"").replace(/\s+/g," ").trim();
+    var sourceName=String(it.name||"").replace(/\s+/g," ").trim();
+    var nm=sourceName||sourceNo;
+    return {
+      id:mcNextId(),
+      name:nm,
+      sourceNo:sourceNo,
+      kind:(it.start==="F")?"feeder":"motor",   // 비고 MOP → 피더, 그 외 모터
+      vvvf:(it.start==="V"),                    // 비고 VVVF → 인버터 기동
+      n:Math.max(0,parseInt(it.on,10)||0),
+      s:Math.max(0,parseInt(it.sp,10)||0),
+      mcc:null
+    };
+  }).filter(function(l){ return l.name && (l.n+l.s)>0; });
+}
+function mcApplyItems(loads, srcLabel){
+  var hasData=mcState.loads.some(function(l){ return l.name || l.n || l.s; });
+  if(hasData){
+    var replace=window.confirm("기존 부하 "+mcState.loads.length+"건이 있습니다.\n[확인] 지우고 교체 · [취소] 아래에 추가");
+    mcState.loads = replace ? loads : mcState.loads.concat(loads);
+  }else{
+    mcState.loads = loads;
+  }
+  renderMcc();
+  var nF=loads.filter(function(l){ return l.kind==="feeder"; }).length;
+  var nV=loads.filter(function(l){ return l.vvvf; }).length;
+  var nM=loads.length-nF-nV;
+  var first=loads[0], sample=first?(" · 첫 부하 "+first.name+(first.sourceNo?" ("+first.sourceNo+")":"")):"";
+  mcStatus(srcLabel+"에서 "+loads.length+"건 인식 — 피더(MOP) "+nF+" · VVVF "+nV+" · 모터 "+nM
+    +" · 총 "+loads.reduce(function(a,l){ return a+l.n+l.s; },0)+"유닛"+sample,"ok");
+}
+function mcHandleExcel(file){
+  mcStatus("엑셀 파일을 읽는 중…","busy");
+  mechLoadSheetJS().then(function(){ return file.arrayBuffer(); }).then(function(buf){
+    var wb=XLSX.read(buf,{type:"array"}), items=null, used="";
+    for(var i=0;i<wb.SheetNames.length;i++){
+      var grid=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[i]],{header:1, defval:"", raw:false});
+      var got=mechParseGrid(grid);
+      if(got){ items=got; used=wb.SheetNames[i]; break; }
+    }
+    if(!items) throw new Error("표에서 '기기번호/부하번호'와 '동력(kW)' 머리글을 찾지 못했습니다.");
+    var loads=mcMapItems(items);
+    if(!loads.length) throw new Error("동력이 있는 부하를 찾지 못했습니다.");
+    mcApplyItems(loads, "엑셀('"+used+"' 시트)");
+  }).catch(function(err){
+    mcStatus("인식 실패: "+(err&&err.message?err.message:err),"bad");
+  });
+}
+function mcHandleFile(file){
+  if(!file) return;
+  if(/\.(xlsx|xls|csv)$/i.test(file.name)) return mcHandleExcel(file);
+  mcStatus("엑셀 파일만 올릴 수 있습니다 (.xlsx · .xls · .csv).","bad");
+}
+function initMcUpload(){
+  var drop=document.getElementById("mcDrop"), input=document.getElementById("mcFile"), pick=document.getElementById("mcPick");
+  if(!drop||!input) return;
+  function open(){ input.click(); }
+  drop.addEventListener("click", function(e){ if(e.target!==pick) open(); });
+  if(pick) pick.addEventListener("click", function(e){ e.stopPropagation(); open(); });
+  input.addEventListener("change", function(){ mcHandleFile(input.files&&input.files[0]); input.value=""; });
+  ["dragenter","dragover"].forEach(function(ev){ drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.add("drag"); }); });
+  ["dragleave","drop"].forEach(function(ev){ drop.addEventListener(ev, function(e){ e.preventDefault(); drop.classList.remove("drag"); }); });
+  drop.addEventListener("drop", function(e){ mcHandleFile(e.dataTransfer&&e.dataTransfer.files&&e.dataTransfer.files[0]); });
+}
+function mcInitDnD(root){
+  if(!root) return;
+  root.addEventListener("dragstart", function(ev){
+    var chip=ev.target && ev.target.closest && ev.target.closest(".mc-chip");
+    if(!chip) return;
+    chip.classList.add("dragging");
+    try{ ev.dataTransfer.setData("text/plain", chip.getAttribute("data-lid")); ev.dataTransfer.effectAllowed="move"; }catch(e){}
+  });
+  root.addEventListener("dragend", function(ev){
+    var chip=ev.target && ev.target.closest && ev.target.closest(".mc-chip");
+    if(chip) chip.classList.remove("dragging");
+    root.querySelectorAll(".mc-chips.over").forEach(function(z){ z.classList.remove("over"); });
+  });
+  root.addEventListener("dragover", function(ev){
+    var zone=ev.target && ev.target.closest && ev.target.closest(".mc-chips");
+    if(!zone) return;
+    ev.preventDefault();
+    try{ ev.dataTransfer.dropEffect="move"; }catch(e){}
+    zone.classList.add("over");
+  });
+  root.addEventListener("dragleave", function(ev){
+    var zone=ev.target && ev.target.closest && ev.target.closest(".mc-chips");
+    if(zone) zone.classList.remove("over");
+  });
+  root.addEventListener("drop", function(ev){
+    var zone=ev.target && ev.target.closest && ev.target.closest(".mc-chips");
+    if(!zone) return;
+    ev.preventDefault();
+    zone.classList.remove("over");
+    var lid=""; try{ lid=ev.dataTransfer.getData("text/plain"); }catch(e){}
+    if(!lid) return;
+    mcPin(lid, parseInt(zone.getAttribute("data-bin"),10));
+  });
+}
+
 function renderRoom(){
   renderRmGroups();
   var fw=document.getElementById("rmFixedWrap"); if(fw) fw.hidden = roomState.mode!=="fixed";
@@ -2058,7 +2701,7 @@ function handleRoomEvent(ev){
     }
     return;
   }
-  if(t.id==="rmRoomW"||t.id==="rmRoomL"||t.id==="rmMargin"||t.id==="rmWallClr"||t.id==="rmGroupGap"){ rmRefreshOutput(); return; }
+  if(t.id==="rmRoomW"||t.id==="rmRoomL"||t.id==="rmMargin"||t.id==="rmWallClr"||t.id==="rmGroupGap"||t.id==="rmDoorClr"){ rmRefreshOutput(); return; }
   var f=t.getAttribute && t.getAttribute("data-rf");
   if(!f) return;
   var grpEl=t.closest(".rm-group");
@@ -2138,7 +2781,9 @@ function rmPaintOutput(L){
         + " m · 상부이격 "+rmFmt(r.gapTop)+" m ("+r.gapLabel+")";
     });
     parts.push("<strong>하부(벽) 이격</strong> "+rmFmt(L.lastGap)+" m");
-    parts.push("<strong>벽 이격 기준</strong> "+rmFmt(L.wallClr)+" m · <strong>그룹 간 이격</strong> "+rmFmt(L.grpGap)+" m (면별 유지거리와 비교해 큰 값 적용)");
+    parts.push("<strong>측면 벽 이격</strong> "+rmFmt(L.wallClr)+" m · <strong>그룹 간 이격</strong> "+rmFmt(L.grpGap)+" m");
+    parts.push("<strong>뒷면 이격</strong> = 점검도어 폭 + "+rmFmt(L.doorClr)+" m → "
+      + L.rows.map(function(r){ return r.no+"열 "+rmFmt(r.req.b)+" m"; }).join(" · "));
     if(L.margin>0) parts.push("<strong>추가 여유</strong> 사방 "+rmFmt(L.margin)+" m");
     brk.innerHTML="세로 산출 내역 — "+parts.join(" / ");
   }
@@ -2687,7 +3332,7 @@ function mechHandleExcel(file){
     var items=null, usedSheet="";
     for(var i=0;i<wb.SheetNames.length;i++){
       var ws=wb.Sheets[wb.SheetNames[i]];
-      var grid=XLSX.utils.sheet_to_json(ws,{header:1, defval:""});
+      var grid=XLSX.utils.sheet_to_json(ws,{header:1, defval:"", raw:false});
       var got=mechParseGrid(grid);
       if(got){ items=got; usedSheet=wb.SheetNames[i]; break; }
     }
@@ -2835,6 +3480,17 @@ function initApp(){
     }
     rmSeedGroups();
     renderRmClr();
+
+    // MCC 대수: 입력/추가/삭제 (위임)
+    var mccView = document.getElementById("view-mcc");
+    if(mccView){
+      mccView.addEventListener("input", handleMccEvent);
+      mccView.addEventListener("change", handleMccEvent);
+      mccView.addEventListener("click", handleMccEvent);
+    }
+    mcInitDnD(mccView);
+    initMcUpload();
+    mcSeedLoads();
 
     // 최초 렌더
     renderWires();
