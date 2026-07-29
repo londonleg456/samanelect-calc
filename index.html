@@ -139,6 +139,13 @@
   .room-wrap{border:1px solid var(--line);border-radius:12px;padding:14px;background:#FCFCFD;}
   .room-cap{font-size:12.5px;font-weight:700;color:var(--saman-orange-deep);margin-bottom:10px;text-align:center;}
   #roomDiagram svg{display:block;width:100%;height:auto;max-width:360px;margin:0 auto;}
+  .room-flex{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;}
+  .room-flex #roomDiagram{flex:1 1 240px;min-width:220px;max-width:360px;}
+  .dim-summary{flex:0 0 auto;border:1px solid var(--line);border-radius:10px;background:#fff;padding:12px 14px;min-width:168px;}
+  .dim-summary .ds-title{font-size:11.5px;font-weight:800;color:#5B7A9D;letter-spacing:.02em;margin:0 0 4px;}
+  .dim-summary .ds-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ink);margin:0 0 10px;line-height:1.5;}
+  .dim-summary .ds-val:last-child{margin-bottom:0;}
+  .dim-summary .ds-val small{font-family:var(--sans);font-weight:600;color:var(--ink-2);font-size:11px;}
   .u-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;}
   .u-head > label{margin-bottom:0;display:inline;}
   .u-toggle{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--ink-2);cursor:pointer;margin:0;}
@@ -441,6 +448,64 @@
     background:#FBF4EE;border:1px solid var(--copper-soft);border-left:3px solid var(--copper);
     border-radius:8px;padding:12px 15px;font-size:12.5px;color:#7a4a28;margin-top:14px;
   }
+
+  /* ---------- 전기실 사이즈 ---------- */
+  .rm-mode{display:flex;gap:6px;background:#E2E6EC;border-radius:11px;padding:4px;margin-bottom:14px;}
+  .rm-mode button{flex:1;border:none;background:transparent;border-radius:8px;padding:11px 6px;
+    font-family:var(--sans);font-size:13px;font-weight:800;color:var(--ink-2);cursor:pointer;}
+  .rm-mode button.active{background:var(--surface);color:var(--saman-orange-deep);box-shadow:0 1px 5px rgba(16,32,47,.14);}
+  .rm-group{border:1.5px solid var(--line);border-radius:13px;background:#FCFCFD;padding:13px;margin-bottom:11px;}
+  .rm-ghead{display:grid;grid-template-columns:minmax(90px,1.6fr) 120px 34px;gap:6px;align-items:center;margin-bottom:10px;}
+  .rm-ghead input,.rm-ghead select{width:100%;min-width:0;border:1.5px solid var(--line);border-radius:8px;
+    padding:9px 8px;font-family:var(--sans);font-size:13px;font-weight:700;color:var(--ink);background:#fff;}
+  .rm-ghead input{color:var(--saman-orange-deep);}
+  .rm-ghead input:focus,.rm-ghead select:focus,.rm-prow input:focus,.rm-prow select:focus{
+    outline:none;border-color:var(--saman-orange);box-shadow:0 0 0 3px rgba(245,130,32,.16);}
+  .rm-rows{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:3px;}
+  .rm-rows-inner{min-width:520px;}
+  .rm-prow,.rm-phead{display:grid;grid-template-columns:minmax(100px,1.2fr) 150px 78px 78px 62px 34px;gap:6px;align-items:center;}
+  .rm-phead{margin-bottom:5px;}
+  .rm-phead span{font-size:11px;font-weight:800;color:var(--ink-2);letter-spacing:.02em;padding-left:2px;white-space:nowrap;}
+  .rm-prow{margin-bottom:6px;}
+  .rm-prow input,.rm-prow select{width:100%;min-width:0;border:1.5px solid var(--line);border-radius:8px;
+    padding:9px 8px;font-family:var(--sans);font-size:13px;color:var(--ink);background:#fff;}
+  .rm-prow input[type="number"]{font-family:var(--mono);text-align:right;}
+  .rm-del{border:1px solid var(--line);background:#FAFBFC;border-radius:8px;width:32px;height:34px;
+    font-size:17px;font-weight:700;color:var(--ink-2);cursor:pointer;line-height:1;padding:0;}
+  .rm-del:active{border-color:var(--bad);color:var(--bad);}
+  .rm-addp{border:1px dashed var(--line);background:#fff;border-radius:9px;padding:8px 12px;width:100%;
+    font-family:var(--sans);font-size:12.5px;font-weight:700;color:var(--ink-2);cursor:pointer;margin-top:2px;}
+  .rm-addp:active{border-color:var(--saman-orange);color:var(--saman-orange-deep);}
+  .rm-gnote{font-size:11.5px;color:var(--ink-2);margin:8px 0 0;line-height:1.5;word-break:keep-all;}
+  .rm-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+  .rm-st{background:#F4F6F8;border-radius:9px;padding:11px 13px;display:flex;flex-direction:column;gap:3px;}
+  .rm-st-k{font-size:11.5px;color:var(--ink-2);font-weight:600;}
+  .rm-st-v{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--ink);}
+  .rm-st-main{grid-column:1 / -1;background:#FFF6EE;border:1px solid var(--saman-orange);}
+  .rm-st-main .rm-st-v{color:var(--saman-orange-deep);font-size:21px;}
+  .rm-st.bad{background:#FBECEF;border:1px solid #EFC6CE;}
+  .rm-st.bad .rm-st-v{color:var(--bad);}
+  .rm-canvas{border:1px solid var(--line);border-radius:12px;padding:12px;background:#FCFCFD;overflow-x:auto;}
+  .rm-canvas svg{display:block;width:100%;height:auto;min-width:280px;}
+  .rm-legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:11px;font-size:11.5px;color:var(--ink-2);font-weight:600;}
+  .rm-legend i{display:inline-block;width:13px;height:13px;border-radius:3px;margin-right:5px;vertical-align:-2px;}
+  .rm-msg{margin:12px 0 0;border-radius:10px;padding:11px 13px;font-size:12.5px;font-weight:700;
+    word-break:keep-all;line-height:1.55;background:#E9F6F0;color:var(--ok);border:1px solid #BFE5D5;}
+  .rm-msg.bad{background:#FBECEF;color:var(--bad);border-color:#EFC6CE;}
+  .rm-msg.warn{background:#FFF6EE;color:var(--saman-orange-deep);border-color:#F5D5B8;}
+  .rm-clr-table{width:100%;border-collapse:collapse;}
+  .rm-clr-table th{font-size:11px;font-weight:800;color:var(--ink-2);padding:6px 4px;text-align:center;white-space:nowrap;}
+  .rm-clr-table th:first-child{text-align:left;}
+  .rm-clr-table td{padding:4px;border-bottom:1px solid var(--line-soft);}
+  .rm-clr-table td:first-child{font-size:12.5px;font-weight:700;color:var(--ink);white-space:nowrap;}
+  .rm-clr-table input{width:100%;min-width:52px;border:1.5px solid var(--line);border-radius:7px;padding:7px 6px;
+    font-family:var(--mono);font-size:12.5px;text-align:right;color:var(--ink);background:#fff;}
+  .rm-clr-table input:focus{outline:none;border-color:var(--saman-orange);box-shadow:0 0 0 3px rgba(245,130,32,.16);}
+  .rm-clr-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .rm-clr-wrap table{min-width:400px;}
+  @media(max-width:480px){
+    .rm-stats{grid-template-columns:1fr;}
+  }
 </style>
 </head>
 <body>
@@ -470,6 +535,7 @@
       <button type="button" class="calc-tab" data-view="fee" role="tab" aria-selected="false">조달수수료</button>
       <button type="button" class="calc-tab" data-view="light" role="tab" aria-selected="false">등기구 배치</button>
       <button type="button" class="calc-tab" data-view="mech" role="tab" aria-selected="false">기기리스트 정리</button>
+      <button type="button" class="calc-tab" data-view="room" role="tab" aria-selected="false">전기실 사이즈</button>
     </div>
   </header>
 
@@ -746,11 +812,37 @@
       </div>
 
       <div class="field">
-        <label>실 크기 (m)</label>
+        <label>실 형태</label>
+        <select id="lightShape">
+          <option value="rect" selected>사각형</option>
+          <option value="L">ㄱ·ㄴ자 (모서리 절취형)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>실 크기 (m) <small style="font-weight:600;color:var(--ink-2);">— ㄱ·ㄴ자는 외곽(가장 큰) 치수</small></label>
         <div class="dim-row">
           <div><span class="dim-cap">가로 (W)</span><input type="number" id="lightW" min="0.1" step="0.1" value="10"></div>
           <span class="dim-x">×</span>
           <div><span class="dim-cap">세로 (L)</span><input type="number" id="lightL" min="0.1" step="0.1" value="8"></div>
+        </div>
+      </div>
+
+      <div class="field" id="lightCutWrap" hidden>
+        <label>절취부 크기 (m) <small style="font-weight:600;color:var(--ink-2);">— 파여서 없는 모서리 부분</small></label>
+        <div class="dim-row">
+          <div><span class="dim-cap">절취 가로 (w)</span><input type="number" id="lightCutW" min="0.1" step="0.1" value="4"></div>
+          <span class="dim-x">×</span>
+          <div><span class="dim-cap">절취 세로 (l)</span><input type="number" id="lightCutL" min="0.1" step="0.1" value="3"></div>
+        </div>
+        <div style="margin-top:10px;">
+          <span class="dim-cap" style="display:block;margin-bottom:6px;">절취 모서리 위치</span>
+          <select id="lightCutCorner">
+            <option value="tr" selected>우측 상단 (ㄴ자)</option>
+            <option value="tl">좌측 상단</option>
+            <option value="br">우측 하단 (ㄱ자)</option>
+            <option value="bl">좌측 하단</option>
+          </select>
         </div>
       </div>
 
@@ -804,7 +896,10 @@
       <p class="light-formula" id="loFormula"></p>
       <div class="room-wrap">
         <div class="room-cap" id="loArrange">배치 –</div>
-        <div id="roomDiagram"></div>
+        <div class="room-flex">
+          <div id="roomDiagram"></div>
+          <div class="dim-summary" id="loDimSummary" hidden></div>
+        </div>
       </div>
       <p class="fee-rate-note" id="loNote"></p>
     </div>
@@ -817,7 +912,7 @@
         <h4>조도 기준 (KS A 3011)</h4>
         <p class="ref">실 용도별 조도는 <code>KS A 3011</code> 표준조도를 기준으로 한 대표값입니다. 전기실·운영실 400 lx, 실험실 600 lx, 기계실·전실·복도 200 lx. 조명률 자동 추정 시 반사율은 <strong>전기실·운영실·실험실 천장70·벽50·바닥20%</strong>, <strong>기계실·전실·복도 천장50·벽50·바닥20%</strong>를 가정합니다. 표에 없는 값은 '직접 입력'을 사용하세요.</p>
         <h4>실지수(K) 및 배치</h4>
-        <p class="ref">실지수 K = (W·L) / [Hm·(W+L)], Hm=설치높이−0.85m(작업면). K는 조명률(U) 산정의 핵심 변수로, 본 계산기는 U를 직접 입력하거나 <strong>실지수·반사율 기반 자동 추정</strong>(일반 직부 배광 가정)을 선택할 수 있습니다. 배치도는 면적비에 따라 행·열 격자로 균등 배열한 <strong>개략 배치(1차 검토용)</strong>로, 실제 설계 시 등기구 배광·간격(S≤1.5H 권장)·균제도를 추가 검토하세요.</p>
+        <p class="ref">실지수 K = (W·L) / [Hm·(W+L)], Hm=설치높이−0.85m(작업면). K는 조명률(U) 산정의 핵심 변수로, 본 계산기는 U를 직접 입력하거나 <strong>실지수·반사율 기반 자동 추정</strong>(일반 직부 배광 가정)을 선택할 수 있습니다. ㄱ·ㄴ자(모서리 절취형) 실은 면적 A=W·L−w·l로 계산하고, 직각 절취 시 둘레가 외곽 사각형과 같으므로 실지수는 K=A/[Hm·(W+L)]로 산정합니다. 배치는 실을 두 사각형 구역(A·B)으로 나눠 면적 비율로 등수를 배분한 뒤 구역별 격자 배열합니다. 배치도는 면적비에 따라 행·열 격자로 균등 배열한 <strong>개략 배치(1차 검토용)</strong>로, 실제 설계 시 등기구 배광·간격(S≤1.5H 권장)·균제도를 추가 검토하세요.</p>
         <div class="note"><strong>참고</strong> · 본 결과는 평균 조도 기준 1차 산정값입니다. 정확한 조명률은 등기구 배광곡선·실내 반사율·실지수로 결정됩니다.</div>
       </div>
     </details>
@@ -894,6 +989,109 @@
       <strong>기기리스트 정리</strong> · 기계분야 기기리스트 자동 인식·정리 도구. 인식 결과는 반드시 원본과 대조 확인하세요. 계산 결과는 참고용이며, 법적 효력을 갖는 설계서가 아닙니다.
     </footer>
   </div><!-- /view-mech -->
+
+  <div id="view-room" class="calc-view" hidden>
+    <div class="head-text">
+      <div class="eyebrow">전기설비 · 전기실 계획</div>
+      <h1>전기실 사이즈 검토</h1>
+      <p class="lede">판넬 치수·수량을 넣고 붙여서 놓을 판넬을 그룹으로 묶으면<br>유지거리(이격)를 반영한 소요 전기실 면적을 배치도로 보여줍니다.</p>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">01</span> 판넬 그룹 입력</p>
+      <p class="rm-gnote" style="margin:0 0 12px;">한 <strong>그룹</strong> 안의 판넬은 서로 <strong>붙여서(연접)</strong> 세웁니다. 그룹은 개수 제한 없이 추가할 수 있고, 각 그룹을 <strong>1열 / 2열</strong> 중 하나에 배정합니다. <strong>같은 열의 그룹들은 좌→우로 이격</strong>해 나란히 놓이고, 두 열은 <strong>정면끼리 마주보도록</strong> 고정(1열 정면 ↓ · 2열 정면 ↑)되어 그 사이가 조작·점검 통로가 됩니다.</p>
+      <div id="rmGroups"></div>
+      <button type="button" class="add" data-raction="addgroup" id="rmAddGroup">+ 그룹 추가</button>
+      <label style="display:block;margin:14px 0 6px;font-size:12px;font-weight:800;color:var(--ink-2);">열 맞춤 — 긴 열의 어느 쪽 끝에 짧은 열을 맞출지</label>
+      <div class="rm-mode" id="rmAlign">
+        <button type="button" data-ralign="left" class="active">◧ 왼쪽 끝 맞춤</button>
+        <button type="button" data-ralign="right">◨ 오른쪽 끝 맞춤</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">02</span> 실 크기 산정 방식</p>
+      <div class="rm-mode" id="rmMode">
+        <button type="button" data-rmode="auto" class="active">최소 소요면적 자동 산출</button>
+        <button type="button" data-rmode="fixed">실 크기 직접 입력·검토</button>
+      </div>
+      <div class="field" id="rmFixedWrap" hidden style="margin-bottom:0;">
+        <label>전기실 내부 유효 치수 (m)</label>
+        <div class="dim-row">
+          <div><span class="dim-cap">가로 (W)</span><input type="number" id="rmRoomW" min="0.5" step="0.1" value="8"></div>
+          <span class="dim-x">×</span>
+          <div><span class="dim-cap">세로 (L)</span><input type="number" id="rmRoomL" min="0.5" step="0.1" value="6"></div>
+        </div>
+        <p class="rm-gnote">기둥·벽 마감 안쪽의 <strong>내부 유효치수</strong>를 넣으세요. 소요치수와 비교해 가능/부족을 판정합니다.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">03</span> 산정 결과</p>
+      <div class="rm-stats">
+        <div class="rm-st"><span class="rm-st-k">판넬 수량 / 그룹</span><span class="rm-st-v" id="rmoCount">–</span></div>
+        <div class="rm-st"><span class="rm-st-k">판넬 점유면적</span><span class="rm-st-v" id="rmoPanelA">–</span></div>
+        <div class="rm-st"><span class="rm-st-k">소요 가로 (W)</span><span class="rm-st-v" id="rmoW">–</span></div>
+        <div class="rm-st"><span class="rm-st-k">소요 세로 (L)</span><span class="rm-st-v" id="rmoL">–</span></div>
+        <div class="rm-st rm-st-main"><span class="rm-st-k" id="rmoAreaK">소요 전기실 면적</span><span class="rm-st-v" id="rmoArea">–</span></div>
+      </div>
+      <div class="rm-canvas" id="rmCanvas"></div>
+      <div class="rm-legend">
+        <span><i style="background:#16293B;"></i>판넬</span>
+        <span><i style="background:#FBE3CE;border:1px solid #F0A868;"></i>정면(조작·계측) 유지거리</span>
+        <span><i style="background:#E4ECF5;border:1px solid #A9C0D8;"></i>후면·측면 점검 유지거리</span>
+      </div>
+      <p class="rm-msg" id="rmMsg"></p>
+      <p class="fee-rate-note" id="rmBreak"></p>
+    </div>
+
+    <div class="card">
+      <p class="card-title"><span class="idx">04</span> 유지거리 기준값 (m)</p>
+      <div class="rm-clr-wrap">
+        <table class="rm-clr-table">
+          <thead>
+            <tr><th>기기 구분</th><th>앞면<br>조작·계측면</th><th>뒷면<br>점검면</th><th>열 상호간<br>점검면</th><th>기타의 면<br>(벽·측면)</th></tr>
+          </thead>
+          <tbody id="rmClrBody"></tbody>
+        </table>
+      </div>
+      <p class="rm-gnote" style="margin-top:8px;"><strong>판넬 종류 → 유지거리 적용</strong> · 특고압 배전반 → 특고압 / 고압 배전반 → 고압 / 저압배전반·전동기제어반(MCC)·공법제어반·계측제어반·UPS → 저압 / 변압기 등 → 변압기 행의 값을 사용합니다.</p>
+      <p class="rm-gnote"><strong>열 상호간</strong>은 두 그룹이 마주 볼 때 필요한 최소 통로폭 산정에 쓰이며, 앞면·뒷면 요구값과 비교해 <strong>가장 큰 값</strong>을 적용합니다. 현장 조건(반입·유지보수 통로, 소방)에 따라 값을 직접 수정하세요.</p>
+      <div class="field" style="margin:12px 0 0;">
+        <label>벽 이격거리 (m) <small style="font-weight:600;color:var(--ink-2);">— 판넬과 벽면(상·하·좌·우) 사이 최소 거리</small></label>
+        <input type="number" id="rmWallClr" min="0" step="0.1" value="1">
+        <p class="rm-gnote" style="margin:6px 0 0;">위 표의 해당 면 유지거리가 이 값보다 크면 <strong>큰 값</strong>이 적용됩니다. (예: 앞면이 벽을 보는 경우 앞면값 우선)</p>
+      </div>
+      <div class="field" style="margin:12px 0 0;">
+        <label>같은 열 그룹 간 이격 (m) <small style="font-weight:600;color:var(--ink-2);">— 한 열 안에서 그룹과 그룹 사이 거리</small></label>
+        <input type="number" id="rmGroupGap" min="0" step="0.1" value="0.8">
+        <p class="rm-gnote" style="margin:6px 0 0;">양쪽 그룹의 <strong>기타의 면</strong> 유지거리가 이 값보다 크면 큰 값이 적용됩니다.</p>
+      </div>
+      <div class="field" style="margin:12px 0 0;">
+        <label>추가 여유 (m) <small style="font-weight:600;color:var(--ink-2);">— 벽체 마감·시공 오차 등 사방 여유</small></label>
+        <input type="number" id="rmMargin" min="0" step="0.1" value="0">
+      </div>
+    </div>
+
+    <details>
+      <summary>산정 기준 보기</summary>
+      <div class="details-body">
+        <h4>유지거리(이격) 기준</h4>
+        <p class="ref">기본값은 <code>내선규정 표 3110-3</code>(배전반 등의 최소 유지거리)로 널리 통용되는 값 — 고압·저압 배전반 앞면 1.5 m / 뒷면 0.6 m / 열 상호간 1.2 m, 특고압 배전반 1.7 / 0.8 / 1.4 m — 을 채워 둔 것입니다. <strong>한국전기설비규정(KEC)</strong>은 341.4(고압·특고압 배전반 등의 시설), 341.7(배전반 설치 장소) 등에서 취급자가 안전하게 조작·점검할 수 있는 공간 확보를 요구하며, 구체 수치는 내선규정·건축전기설비설계기준 등을 준용합니다. <strong>기준값은 프로젝트 시방·발주처 지침·최신 개정본으로 반드시 확인</strong>한 뒤 04에서 수정해 사용하세요.</p>
+        <h4>판넬 기본 치수(프리셋)</h4>
+        <p class="ref">판넬 종류를 선택하면 폭·깊이가 기본값으로 채워집니다 — <strong>특고압 배전반 2,200 × 2,400</strong>, <strong>저압배전반(ACB/MCCB) 800 × 2,400</strong>, <strong>전동기제어반(MCC) 800 × 600</strong>, <strong>공법제어반 800 × 800</strong>, <strong>계측제어반·RCS 800 × 800</strong>, <strong>UPS 600 × 600</strong> (mm, W × D). 프로젝트 판넬 규격표(현장 기준)에서 가져온 값이며, <strong>고압 배전반·변압기</strong>도 특고압 배전반과 동일한 2,200 × 2,400을 기본값으로 씁니다. 실제 제작사 사양이 확정되면 각 행에서 직접 수정하세요.</p>
+        <h4>배치 알고리즘</h4>
+        <p class="ref">그룹 내 판넬은 폭 방향으로 <strong>이격 없이 연접</strong>하며, 그룹 열의 폭 = Σ(판넬 폭 × 수량), 깊이 = 그룹 내 최대 깊이로 봅니다. 배치는 <strong>최대 2열</strong>로 제한하되 그룹 수는 제한이 없습니다. 같은 열에 배정된 그룹은 좌→우 순서로 놓이며 그룹 사이 간격 = max(입력한 <strong>그룹 간 이격</strong>(기본 0.8 m), 양쪽 그룹의 기타의 면 값). 열 폭 = Σ(그룹 폭) + Σ(그룹 간 이격), 열 깊이 = 그 열 최대 깊이이고 각 그룹은 <strong>정면이 통로 쪽에 맞춰지도록</strong> 정렬됩니다. 두 열의 가로 위치는 <strong>긴 열의 한쪽 끝선(왼쪽 또는 오른쪽)에 짧은 열을 맞추는</strong> 방식이며, 이때 소요 가로 = 맞춤측 벽이격(열 중 최대) + max(열폭 + 그 열의 반대측 벽이격) 으로 산정합니다. 두 열은 정면끼리 마주보도록 고정(1열 정면 ↓ · 2열 정면 ↑)되고, 두 열 사이 간격 = max(1열 앞면값, 2열 앞면값, 열 상호간 값). <strong>벽과의 간격</strong>은 입력한 <strong>벽 이격거리(기본 1.0 m)</strong>와 그 면의 요구 유지거리(앞면/뒷면/기타의 면) 중 <strong>큰 값</strong>을 상·하·좌·우 4면에 적용합니다.</p>
+        <h4>한계</h4>
+        <p class="ref">최대 2열 마주보기 배치의 <strong>개략 검토 도구</strong>입니다. 출입문·반입 동선, 케이블 트렌치·피트, 변압기 방열 이격, 소방 설비, 천장고·인양 공간, 기둥 위치는 반영하지 않습니다. 실제 설계 시 반드시 별도 검토하세요.</p>
+        <div class="note"><strong>참고</strong> · 본 결과는 유지거리만 고려한 1차 소요면적 산정값이며, 법적 효력을 갖는 설계서가 아닙니다.</div>
+      </div>
+    </details>
+
+    <footer>
+      <strong>전기실 사이즈 검토</strong> · 판넬 배치·유지거리 기반 개략 면적 산정 도구. 유지거리 기준값은 사용 전 반드시 해당 프로젝트 적용 규정과 대조 확인하세요. <span style="opacity:.6;">(rev. 0729-I)</span>
+    </footer>
+  </div><!-- /view-room -->
 
 </div>
 
@@ -1419,7 +1617,7 @@ function renderDmg(){
     : "요율 0.26477% = 대인 0.02057%×1.2 + 대물 0.09988%×1.2 + 목적물 0.12023% (발주자미필적배상책임 특약 포함) · 100원 미만 절사 · 최저공제료 20,000원.";
 }
 function switchView(view){
-  var map={conduit:"view-conduit", fee:"view-fee", light:"view-light", mech:"view-mech"};
+  var map={conduit:"view-conduit", fee:"view-fee", light:"view-light", mech:"view-mech", room:"view-room"};
   Object.keys(map).forEach(function(k){
     var el=document.getElementById(map[k]);
     if(el) el.hidden = (k!==view);
@@ -1431,7 +1629,519 @@ function switchView(view){
   });
   if(view==="fee"){ renderFee(); renderDmg(); }
   if(view==="light") renderLight();
+  if(view==="room") renderRoom();
   try{ window.scrollTo(0,0); }catch(e){}
+}
+
+// ===== 전기실 사이즈 검토 =====
+// 유지거리 기본값(m) — 내선규정 표 3110-3 통용값. f:앞면, b:뒷면, r:열상호간, o:기타의 면
+var RM_KINDS=[
+  {key:"ehv", label:"특고압 배전반", f:1.7, b:0.8, r:1.4, o:0.3},
+  {key:"hv",  label:"고압 배전반",   f:1.5, b:0.6, r:1.2, o:0.3},
+  {key:"lv",  label:"저압 배전반",   f:1.5, b:0.6, r:1.2, o:0.3},
+  {key:"tr",  label:"변압기 등",     f:1.5, b:0.6, r:1.2, o:0.3}
+];
+// 판넬 종류 프리셋 — kind: 유지거리 분류, w/d: 기본 치수(mm)
+var RM_TYPES=[
+  {key:"ehv_sw", label:"특고압 배전반",        kind:"ehv", w:2200, d:2400},
+  {key:"hv_sw",  label:"고압 배전반",          kind:"hv",  w:2200, d:2400},
+  {key:"lv_sw",  label:"저압배전반(ACB/MCCB)", kind:"lv",  w:800,  d:2400},
+  {key:"mcc",    label:"전동기제어반(MCC)",    kind:"lv",  w:800,  d:600},
+  {key:"ctrl",   label:"공법제어반",            kind:"lv",  w:800,  d:800},
+  {key:"meas",   label:"계측제어반·RCS",        kind:"lv",  w:800,  d:800},
+  {key:"ups",    label:"UPS(무정전전원장치)",    kind:"lv",  w:600,  d:600},
+  {key:"tr",     label:"변압기 등",             kind:"tr",  w:2200, d:2400}
+];
+function rmType(key){
+  for(var i=0;i<RM_TYPES.length;i++) if(RM_TYPES[i].key===key) return RM_TYPES[i];
+  return RM_TYPES[2];
+}
+var roomState={
+  mode:"auto",
+  align:"left",     // 열 맞춤 — 긴 열의 왼쪽 끝(left) / 오른쪽 끝(right)에 짧은 열을 정렬
+  seq:0,
+  clr:{},
+  groups:[]
+};
+RM_KINDS.forEach(function(k){ roomState.clr[k.key]={f:k.f,b:k.b,r:k.r,o:k.o}; });
+function rmNextId(){ roomState.seq++; return "g"+roomState.seq; }
+function rmRowOf(g){ return (g && g.row===2) ? 2 : 1; }
+function rmSeedGroups(){
+  roomState.groups=[
+    {id:rmNextId(), name:"LV-1 + MCC-101", row:1, panels:[
+      {id:rmNextId(), name:"저압반(MCCB)",   type:"lv_sw", kind:"lv", w:1000, d:800, qty:1},
+      {id:rmNextId(), name:"전동기 기동반",  type:"mcc",   kind:"lv", w:600,  d:600, qty:2},
+      {id:rmNextId(), name:"전동기 기동반",  type:"mcc",   kind:"lv", w:800,  d:600, qty:1}
+    ]},
+    {id:rmNextId(), name:"MCC-102", row:2, panels:[
+      {id:rmNextId(), name:"전동기 기동반",  type:"mcc",   kind:"lv", w:600,  d:600, qty:3},
+      {id:rmNextId(), name:"전동기 기동반",  type:"mcc",   kind:"lv", w:800,  d:600, qty:4}
+    ]},
+    {id:rmNextId(), name:"RCS-1 + UPS-1", row:1, panels:[
+      {id:rmNextId(), name:"Remote Control Station", type:"meas", kind:"lv", w:800, d:800, qty:1},
+      {id:rmNextId(), name:"무정전 전원 공급장치",   type:"ups",  kind:"lv", w:600, d:600, qty:1}
+    ]}
+  ];
+}
+function rmNum(v,dflt){ var n=parseFloat(v); return isFinite(n)?n:dflt; }
+function rmFindGroup(gid){
+  for(var i=0;i<roomState.groups.length;i++) if(roomState.groups[i].id===gid) return roomState.groups[i];
+  return null;
+}
+function rmEsc(s){
+  return String(s==null?"":s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
+  });
+}
+function rmKindLabel(key){
+  for(var i=0;i<RM_KINDS.length;i++) if(RM_KINDS[i].key===key) return RM_KINDS[i].label;
+  return key;
+}
+function rmTypeOptions(sel){
+  return RM_TYPES.map(function(k){
+    return '<option value="'+k.key+'"'+(k.key===sel?" selected":"")+'>'+k.label+'</option>';
+  }).join("");
+}
+function renderRmGroups(){
+  var box=document.getElementById("rmGroups");
+  if(!box) return;
+  if(!roomState.groups.length){
+    box.innerHTML='<p class="rm-gnote" style="text-align:center;padding:14px 0;">그룹을 추가해 판넬을 입력하세요.</p>';
+    return;
+  }
+  box.innerHTML=roomState.groups.map(function(g,gi){
+    var rn=rmRowOf(g);
+    var rows=g.panels.map(function(p){
+      return ''
+      + '<div class="rm-prow" data-gid="'+g.id+'" data-pid="'+p.id+'">'
+      +   '<input type="text" data-rf="pname" value="'+rmEsc(p.name)+'" placeholder="판넬명">'
+      +   '<select data-rf="ptype">'+rmTypeOptions(p.type)+'</select>'
+      +   '<input type="number" data-rf="w" min="1" step="10" value="'+p.w+'">'
+      +   '<input type="number" data-rf="d" min="1" step="10" value="'+p.d+'">'
+      +   '<input type="number" data-rf="qty" min="1" step="1" value="'+p.qty+'">'
+      +   '<button type="button" class="rm-del" data-raction="delpanel" aria-label="판넬 삭제">×</button>'
+      + '</div>';
+    }).join("");
+    return ''
+    + '<div class="rm-group" data-gid="'+g.id+'">'
+    +   '<div class="rm-ghead">'
+    +     '<input type="text" data-rf="gname" value="'+rmEsc(g.name)+'" placeholder="그룹 '+(gi+1)+'">'
+    +     '<select data-rf="row" title="배치할 열 — 1열은 정면 ↓, 2열은 정면 ↑">'
+    +       '<option value="1"'+(rn===1?" selected":"")+'>1열 (정면 ↓)</option>'
+    +       '<option value="2"'+(rn===2?" selected":"")+'>2열 (정면 ↑)</option>'
+    +     '</select>'
+    +     '<button type="button" class="rm-del" data-raction="delgroup" aria-label="그룹 삭제">×</button>'
+    +   '</div>'
+    +   '<div class="rm-rows"><div class="rm-rows-inner">'
+    +     '<div class="rm-phead"><span>판넬명</span><span>판넬 종류</span><span>폭 W(mm)</span><span>깊이 D(mm)</span><span>수량</span><span></span></div>'
+    +     rows
+    +   '</div></div>'
+    +   '<button type="button" class="rm-addp" data-raction="addpanel">+ 이 그룹에 판넬 추가</button>'
+    + '</div>';
+  }).join("");
+}
+function renderRmClr(){
+  var tb=document.getElementById("rmClrBody");
+  if(!tb) return;
+  tb.innerHTML=RM_KINDS.map(function(k){
+    var c=roomState.clr[k.key];
+    return '<tr data-kind="'+k.key+'"><td>'+k.label+'</td>'
+      + ['f','b','r','o'].map(function(f){
+          return '<td><input type="number" min="0" step="0.1" data-rclr="'+f+'" value="'+c[f]+'"></td>';
+        }).join("")
+      + '</tr>';
+  }).join("");
+}
+// 배치 계산: 그룹을 최대 2열로 묶고, 같은 열 안에서는 좌→우로 이격 배치
+function rmLayout(){
+  var margin=Math.max(0, rmNum(document.getElementById("rmMargin") && document.getElementById("rmMargin").value, 0));
+  var wallClr=Math.max(0, rmNum(document.getElementById("rmWallClr") && document.getElementById("rmWallClr").value, 1));
+  var grpGap=Math.max(0, rmNum(document.getElementById("rmGroupGap") && document.getElementById("rmGroupGap").value, 0.8));
+  var banks=[];
+  roomState.groups.forEach(function(g){
+    var bw=0, bd=0, req={f:0,b:0,r:0,o:0}, cells=[], n=0;
+    g.panels.forEach(function(p){
+      var w=Math.max(0,p.w)/1000, d=Math.max(0,p.d)/1000, q=Math.max(0,Math.floor(p.qty));
+      var c=roomState.clr[p.kind]||{f:0,b:0,r:0,o:0};
+      if(w<=0||d<=0||q<=0) return;
+      for(var i=0;i<q;i++){ cells.push({x:bw+i*w, w:w, d:d, name:p.name, kind:p.kind}); }
+      bw+=w*q; n+=q;
+      if(d>bd) bd=d;
+      ["f","b","r","o"].forEach(function(f){ if(c[f]>req[f]) req[f]=c[f]; });
+    });
+    if(!cells.length) return;
+    banks.push({g:g, bw:bw, bd:bd, req:req, cells:cells, n:n});
+  });
+  if(!banks.length) return null;
+
+  // 열(row) 구성 — 1열 정면 ↓ / 2열 정면 ↑ (마주보기)
+  var rows=[];
+  [1,2].forEach(function(rn){
+    var list=banks.filter(function(b){ return rmRowOf(b.g)===rn; });
+    if(!list.length) return;
+    var row={no:rn, banks:list, dir:(rn===1?"down":"up"), req:{f:0,b:0,r:0,o:0}, bd:0};
+    list.forEach(function(b){
+      ["f","b","r","o"].forEach(function(k){ if(b.req[k]>row.req[k]) row.req[k]=b.req[k]; });
+      if(b.bd>row.bd) row.bd=b.bd;
+    });
+    // 같은 열 내부: 그룹 사이는 양쪽 '기타의 면' 중 큰 값만큼 이격
+    var w=0;
+    list.forEach(function(b,i){
+      b.gapLeft = (i===0) ? 0 : Math.max(grpGap, list[i-1].req.o, b.req.o);
+      w += b.gapLeft;
+      b.xRel = w;
+      w += b.bw;
+    });
+    row.bw=w;
+    row.sideGap=Math.max(wallClr, row.req.o);
+    row.topFace=(row.dir==="down")?"b":"f";
+    row.botFace=(row.dir==="down")?"f":"b";
+    rows.push(row);
+  });
+
+  // 세로(y) 스택 — 열 단위
+  var y=0, prev=null;
+  rows.forEach(function(r){
+    var gap;
+    if(!prev){
+      gap = Math.max(wallClr, r.req[r.topFace]);   // 윗벽과의 거리
+      r.gapLabel = (r.topFace==="f"?"앞면":"뒷면")+" ↔ 벽";
+    }else{
+      // 두 열 사이 통로: 마주보는 면 요구값과 '열 상호간' 값 중 최대
+      gap = Math.max(prev.req[prev.botFace], r.req[r.topFace], prev.req.r, r.req.r);
+      r.gapLabel = (prev.botFace==="f"?"앞면":"뒷면")+" ↔ "+(r.topFace==="f"?"앞면":"뒷면");
+    }
+    r.gapTop=gap;
+    y+=gap; r.y=y; y+=r.bd;
+    prev=r;
+  });
+  var lastGap = Math.max(wallClr, prev.req[prev.botFace]);
+  y+=lastGap;
+  var needL = y + margin*2;
+
+  // 가로(x) — 열 끝선 정렬
+  // 맞춤측 벽: 모든 열이 같은 선에 서므로 측면이격 중 최대값이 필요
+  // 반대측 벽: 열마다 (열폭 + 자기 측면이격)이 필요하므로 그 최대값
+  var maxSide=0, maxSpan=0, maxRowW=0;
+  rows.forEach(function(r){
+    if(r.sideGap>maxSide) maxSide=r.sideGap;
+    if(r.bw+r.sideGap>maxSpan) maxSpan=r.bw+r.sideGap;
+    if(r.bw>maxRowW) maxRowW=r.bw;
+  });
+  var needW = margin*2 + maxSide + maxSpan;
+
+  var roomW=needW, roomL=needL, fixed=false;
+  if(roomState.mode==="fixed"){
+    roomW=Math.max(0.1, rmNum(document.getElementById("rmRoomW") && document.getElementById("rmRoomW").value, needW));
+    roomL=Math.max(0.1, rmNum(document.getElementById("rmRoomL") && document.getElementById("rmRoomL").value, needL));
+    fixed=true;
+  }
+  // 세로 오프셋(고정모드에서 남는 공간은 위·아래 균등 배분)
+  var offY = margin + Math.max(0,(roomL - needL))/2;
+  var slack = Math.max(0, roomW - needW);   // 실 크기 직접 입력 시 남는 가로 여유 (좌·우 균등)
+  rows.forEach(function(r){
+    r.yAbs = r.y + offY;
+    var x0;
+    if(roomState.align==="right") x0 = roomW - margin - maxSide - slack/2 - r.bw;   // 오른쪽 끝선 정렬
+    else                          x0 = margin + maxSide + slack/2;                  // 왼쪽 끝선 정렬
+    if(x0<0) x0=0;
+    r.x=x0;
+    r.banks.forEach(function(b){
+      b.x = x0 + b.xRel;
+      // 정면이 통로를 향하도록 깊이 정렬
+      b.yTop = (r.dir==="down") ? r.yAbs + (r.bd - b.bd) : r.yAbs;
+      b.row = r;
+    });
+  });
+  var panelArea=0, total=0;
+  banks.forEach(function(b){
+    b.cells.forEach(function(c){ panelArea += c.w*c.d; });
+    total+=b.n;
+  });
+  return {rows:rows, banks:banks, needW:needW, needL:needL, roomW:roomW, roomL:roomL,
+          fixed:fixed, lastGap:lastGap, margin:margin, wallClr:wallClr, grpGap:grpGap, panelArea:panelArea, total:total};
+}
+function rmFmt(v,dg){ return Number(v.toFixed(dg==null?2:dg)).toLocaleString("ko-KR"); }
+function rmMM(m){ return String(Math.round(m*1000)); }
+// 치수 체인 — segs:[{a,b,label}] (a<b, m단위), horiz:가로 여부, base:치수선 위치(px), sc:축척
+function rmDimChain(segs, horiz, base, sc, X, Y, dirSign){
+  var out="", tick=5, ext=6, col="#566578";
+  var p=function(v){ return horiz ? X(v) : Y(v); };
+  if(!segs.length) return "";
+  var s0=p(segs[0].a), s1=p(segs[segs.length-1].b);
+  // 치수선 본선
+  out += horiz
+    ? '<line x1="'+s0+'" y1="'+base+'" x2="'+s1+'" y2="'+base+'" stroke="'+col+'" stroke-width="1"/>'
+    : '<line x1="'+base+'" y1="'+s0+'" x2="'+base+'" y2="'+s1+'" stroke="'+col+'" stroke-width="1"/>';
+  segs.forEach(function(g,i){
+    var a=p(g.a), b=p(g.b), mid=(a+b)/2, len=Math.abs(b-a);
+    // 분할 틱 (45° 사선)
+    [a, b].forEach(function(t,k){
+      if(i>0 && k===0) return;   // 중복 틱 방지
+      out += horiz
+        ? '<line x1="'+(t-tick)+'" y1="'+(base+tick)+'" x2="'+(t+tick)+'" y2="'+(base-tick)+'" stroke="'+col+'" stroke-width="1.2"/>'
+        : '<line x1="'+(base-tick)+'" y1="'+(t+tick)+'" x2="'+(base+tick)+'" y2="'+(t-tick)+'" stroke="'+col+'" stroke-width="1.2"/>';
+      // 지시선
+      out += horiz
+        ? '<line x1="'+t+'" y1="'+(base-dirSign*ext)+'" x2="'+t+'" y2="'+(base+dirSign*ext*0.4)+'" stroke="'+col+'" stroke-width=".6" stroke-opacity=".55"/>'
+        : '<line x1="'+(base-dirSign*ext)+'" y1="'+t+'" x2="'+(base+dirSign*ext*0.4)+'" y2="'+t+'" stroke="'+col+'" stroke-width=".6" stroke-opacity=".55"/>';
+    });
+    if(len<3) return;
+    var txt=g.label!=null ? g.label : rmMM(g.b-g.a);
+    var narrow = len < 30;
+    if(horiz){
+      var ty = base - 5;
+      out += narrow
+        ? '<text x="'+mid+'" y="'+ty+'" text-anchor="start" font-size="10" font-weight="700" fill="#15212F" transform="rotate(-90 '+mid+' '+ty+')">'+txt+'</text>'
+        : '<text x="'+mid+'" y="'+ty+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="#15212F">'+txt+'</text>';
+    }else{
+      out += '<text x="'+(base+5)+'" y="'+(mid+3.5)+'" text-anchor="start" font-size="10.5" font-weight="700" fill="#15212F">'+txt+'</text>';
+    }
+  });
+  return out;
+}
+// 한 열의 가로 치수 체인 세그먼트 (벽여백 · 판넬폭 · 그룹간 이격)
+function rmRowSegs(r, W){
+  var segs=[], cur=0;
+  if(r.x>0.001) segs.push({a:0,b:r.x});
+  r.banks.forEach(function(b){
+    if(b.gapLeft>0.001) segs.push({a:b.x-b.gapLeft, b:b.x});
+    b.cells.forEach(function(c){ segs.push({a:b.x+c.x, b:b.x+c.x+c.w}); });
+  });
+  var right=r.x+r.bw;
+  if(W-right>0.001) segs.push({a:right,b:W});
+  return segs;
+}
+function rmDrawRoom(L){
+  var host=document.getElementById("rmCanvas");
+  if(!host) return;
+  if(!L){ host.innerHTML='<p class="rm-gnote" style="text-align:center;padding:26px 0;">판넬을 입력하면 배치도가 표시됩니다.</p>'; return; }
+  var W=L.roomW, H=L.roomL;
+  var padL=70, padR=92, padT=64, padB=86;
+  var sc=Math.min(740/Math.max(W,0.1), 520/Math.max(H,0.1));
+  if(!isFinite(sc)||sc<=0) sc=10;
+  var vw=W*sc+padL+padR, vh=H*sc+padT+padB;
+  var X=function(m){ return padL+m*sc; }, Y=function(m){ return padT+m*sc; };
+  var maxW=Math.round(Math.min(780, 660*(vw/vh)));
+  var s='<svg viewBox="0 0 '+vw.toFixed(1)+' '+vh.toFixed(1)+'" xmlns="http://www.w3.org/2000/svg"'
+      + ' style="max-width:'+maxW+'px;margin:0 auto;" font-family="ui-monospace,Consolas,monospace">';
+  // 실 외곽
+  s+='<rect x="'+X(0)+'" y="'+Y(0)+'" width="'+(W*sc)+'" height="'+(H*sc)+'" fill="#fff" stroke="#15212F" stroke-width="3"/>';
+  var blue=function(x,y,w,h,op){
+    return '<rect x="'+X(x)+'" y="'+Y(y)+'" width="'+(w*sc)+'" height="'+(h*sc)+'" fill="#E4ECF5" fill-opacity="'+op+'" stroke="#A9C0D8" stroke-width="1" stroke-dasharray="4 4"/>';
+  };
+  // 이격 영역
+  L.rows.forEach(function(r){
+    if(r.sideGap>0){
+      s+=blue(r.x-r.sideGap, r.yAbs, r.sideGap, r.bd, ".6");
+      s+=blue(r.x+r.bw,      r.yAbs, r.sideGap, r.bd, ".6");
+    }
+    r.banks.forEach(function(b){
+      if(b.gapLeft>0) s+=blue(b.x-b.gapLeft, r.yAbs, b.gapLeft, r.bd, ".5");
+      var fy = (r.dir==="down") ? b.yTop+b.bd : b.yTop-b.req.f;
+      var by = (r.dir==="down") ? b.yTop-b.req.b : b.yTop+b.bd;
+      s+='<rect x="'+X(b.x)+'" y="'+Y(fy)+'" width="'+(b.bw*sc)+'" height="'+(b.req.f*sc)+'" fill="#FBE3CE" fill-opacity=".75" stroke="#F0A868" stroke-width="1" stroke-dasharray="5 4"/>';
+      s+='<rect x="'+X(b.x)+'" y="'+Y(by)+'" width="'+(b.bw*sc)+'" height="'+(b.req.b*sc)+'" fill="#E4ECF5" fill-opacity=".8" stroke="#A9C0D8" stroke-width="1" stroke-dasharray="5 4"/>';
+    });
+  });
+  // 판넬 + 판넬 구획선
+  L.rows.forEach(function(r){
+    r.banks.forEach(function(b,bi){
+      b.cells.forEach(function(c){
+        var cy = (r.dir==="down") ? b.yTop + (b.bd-c.d) : b.yTop;
+        s+='<rect x="'+X(b.x+c.x)+'" y="'+Y(cy)+'" width="'+(c.w*sc)+'" height="'+(c.d*sc)+'" fill="#16293B" stroke="#fff" stroke-width="1.5"/>';
+      });
+      var midX=b.x+b.bw/2;
+      var ay=(r.dir==="down") ? b.yTop+b.bd+Math.min(b.req.f*0.5, 0.5) : b.yTop-Math.min(b.req.f*0.5,0.5);
+      s+='<text x="'+X(midX)+'" y="'+(Y(ay)+4)+'" text-anchor="middle" font-size="13" font-weight="700" fill="#9A4F26">'
+        + (r.dir==="down"?"▼ 정면":"▲ 정면")+'</text>';
+      s+='<text x="'+X(midX)+'" y="'+(Y(b.yTop+b.bd/2)+5)+'" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">'
+        + rmEsc(b.g.name||("그룹"+(bi+1)))+' ('+b.n+')</text>';
+    });
+  });
+  // ── 치수기입 (mm) ──────────────────────────────
+  // 가로: 1열은 상단, 2열은 하단 (열이 하나면 상단)
+  var topRow=L.rows[0], botRow=(L.rows.length>1)?L.rows[1]:null;
+  s+=rmDimChain(rmRowSegs(topRow,W), true, padT-30, sc, X, Y, 1);
+  s+='<text x="'+(X(0)-8)+'" y="'+(padT-27)+'" text-anchor="end" font-size="10.5" font-weight="800" fill="#566578">'+topRow.no+'열</text>';
+  if(botRow){
+    s+=rmDimChain(rmRowSegs(botRow,W), true, Y(H)+34, sc, X, Y, 1);
+    s+='<text x="'+(X(0)-8)+'" y="'+(Y(H)+37)+'" text-anchor="end" font-size="10.5" font-weight="800" fill="#566578">'+botRow.no+'열</text>';
+  }
+  // 세로: 우측 — 벽이격 · 열깊이 · 통로
+  var vsegs=[], vy=0;
+  L.rows.forEach(function(r){
+    if(r.yAbs-vy>0.001) vsegs.push({a:vy, b:r.yAbs});
+    vsegs.push({a:r.yAbs, b:r.yAbs+r.bd});
+    vy=r.yAbs+r.bd;
+  });
+  if(H-vy>0.001) vsegs.push({a:vy, b:H});
+  s+=rmDimChain(vsegs, false, X(W)+26, sc, X, Y, -1);
+  // 전체 치수 (하단 W / 좌측 L)
+  var dy=Y(H)+ (botRow?66:30);
+  s+='<line x1="'+X(0)+'" y1="'+dy+'" x2="'+X(W)+'" y2="'+dy+'" stroke="#15212F" stroke-width="1.2"/>';
+  s+='<line x1="'+X(0)+'" y1="'+(dy-5)+'" x2="'+X(0)+'" y2="'+(dy+5)+'" stroke="#15212F" stroke-width="1.2"/>';
+  s+='<line x1="'+X(W)+'" y1="'+(dy-5)+'" x2="'+X(W)+'" y2="'+(dy+5)+'" stroke="#15212F" stroke-width="1.2"/>';
+  s+='<text x="'+X(W/2)+'" y="'+(dy+17)+'" text-anchor="middle" font-size="13.5" font-weight="800" fill="#15212F">W '+rmMM(W)+' ('+rmFmt(W)+' m)</text>';
+  var dx=X(0)-34;
+  s+='<line x1="'+dx+'" y1="'+Y(0)+'" x2="'+dx+'" y2="'+Y(H)+'" stroke="#15212F" stroke-width="1.2"/>';
+  s+='<line x1="'+(dx-5)+'" y1="'+Y(0)+'" x2="'+(dx+5)+'" y2="'+Y(0)+'" stroke="#15212F" stroke-width="1.2"/>';
+  s+='<line x1="'+(dx-5)+'" y1="'+Y(H)+'" x2="'+(dx+5)+'" y2="'+Y(H)+'" stroke="#15212F" stroke-width="1.2"/>';
+  s+='<text x="'+dx+'" y="'+Y(H/2)+'" text-anchor="middle" font-size="13.5" font-weight="800" fill="#15212F" transform="rotate(-90 '+dx+' '+Y(H/2)+')">L '+rmMM(H)+' ('+rmFmt(H)+' m)</text>';
+  s+='</svg>';
+  host.innerHTML=s;
+}
+function renderRoom(){
+  renderRmGroups();
+  var fw=document.getElementById("rmFixedWrap"); if(fw) fw.hidden = roomState.mode!=="fixed";
+  document.querySelectorAll("#rmMode button").forEach(function(b){
+    b.classList.toggle("active", b.getAttribute("data-rmode")===roomState.mode);
+  });
+  document.querySelectorAll("#rmAlign button").forEach(function(b){
+    b.classList.toggle("active", b.getAttribute("data-ralign")===roomState.align);
+  });
+  rmRefreshOutput();
+}
+function handleRoomEvent(ev){
+  var t=ev.target;
+  if(!t) return;
+  var act=t.getAttribute && t.getAttribute("data-raction");
+  if(ev.type==="click" && act){
+    if(act==="addgroup"){
+      var nRow1=roomState.groups.filter(function(x){ return rmRowOf(x)===1; }).length;
+      var nRow2=roomState.groups.length-nRow1;
+      roomState.groups.push({id:rmNextId(), name:"그룹 "+(roomState.groups.length+1), row:(nRow2<nRow1?2:1),
+        panels:[{id:rmNextId(), name:"", type:"lv_sw", kind:"lv", w:800, d:2400, qty:1}]});
+      renderRoom(); return;
+    }
+    var gWrap=t.closest(".rm-group");
+    if(act==="delgroup" && gWrap){
+      var gid=gWrap.getAttribute("data-gid");
+      roomState.groups=roomState.groups.filter(function(g){ return g.id!==gid; });
+      renderRoom(); return;
+    }
+    if(act==="addpanel" && gWrap){
+      var g=rmFindGroup(gWrap.getAttribute("data-gid"));
+      if(g){ g.panels.push({id:rmNextId(), name:"", type:"lv_sw", kind:"lv", w:800, d:2400, qty:1}); renderRoom(); }
+      return;
+    }
+    if(act==="delpanel"){
+      var row=t.closest(".rm-prow");
+      if(row){
+        var g2=rmFindGroup(row.getAttribute("data-gid"));
+        if(g2){
+          g2.panels=g2.panels.filter(function(p){ return p.id!==row.getAttribute("data-pid"); });
+          if(!g2.panels.length) roomState.groups=roomState.groups.filter(function(x){ return x!==g2; });
+          renderRoom();
+        }
+      }
+      return;
+    }
+  }
+  if(ev.type==="click" && t.getAttribute && t.getAttribute("data-ralign")){
+    roomState.align=t.getAttribute("data-ralign");
+    renderRoom(); return;
+  }
+  if(ev.type==="click" && t.getAttribute && t.getAttribute("data-rmode")){
+    roomState.mode=t.getAttribute("data-rmode");
+    renderRoom(); return;
+  }
+  if(ev.type!=="input" && ev.type!=="change") return;
+  // 유지거리 표
+  var clrF=t.getAttribute && t.getAttribute("data-rclr");
+  if(clrF){
+    var tr=t.closest("tr");
+    if(tr){
+      var k=tr.getAttribute("data-kind");
+      if(roomState.clr[k]) roomState.clr[k][clrF]=Math.max(0, rmNum(t.value,0));
+      rmRefreshOutput();
+    }
+    return;
+  }
+  if(t.id==="rmRoomW"||t.id==="rmRoomL"||t.id==="rmMargin"||t.id==="rmWallClr"||t.id==="rmGroupGap"){ rmRefreshOutput(); return; }
+  var f=t.getAttribute && t.getAttribute("data-rf");
+  if(!f) return;
+  var grpEl=t.closest(".rm-group");
+  if(!grpEl) return;
+  var grp=rmFindGroup(grpEl.getAttribute("data-gid"));
+  if(!grp) return;
+  if(f==="gname"){ grp.name=t.value; rmRefreshOutput(); return; }
+  if(f==="row"){ grp.row=(t.value==="2")?2:1; renderRoom(); return; }
+  if(f==="align"){ grp.align=t.value; rmRefreshOutput(); return; }
+  var prow=t.closest(".rm-prow");
+  if(!prow) return;
+  var pid=prow.getAttribute("data-pid"), pnl=null;
+  grp.panels.forEach(function(p){ if(p.id===pid) pnl=p; });
+  if(!pnl) return;
+  if(f==="pname") pnl.name=t.value;
+  else if(f==="ptype"){
+    var tp=rmType(t.value);
+    pnl.type=tp.key; pnl.kind=tp.kind; pnl.w=tp.w; pnl.d=tp.d;
+    // 전체 재렌더 없이 해당 행의 치수 입력칸만 갱신 (포커스 유지)
+    var wEl=prow.querySelector('[data-rf="w"]'), dEl=prow.querySelector('[data-rf="d"]');
+    if(wEl) wEl.value=tp.w;
+    if(dEl) dEl.value=tp.d;
+    rmRefreshOutput(); return;
+  }
+  else if(f==="w") pnl.w=Math.max(0, rmNum(t.value,0));
+  else if(f==="d") pnl.d=Math.max(0, rmNum(t.value,0));
+  else if(f==="qty") pnl.qty=Math.max(0, Math.floor(rmNum(t.value,0)));
+  rmRefreshOutput();
+}
+// 입력 중 커서 유실 방지: 입력 반영은 결과만 다시 그린다
+function rmRefreshOutput(){
+  var fw=document.getElementById("rmFixedWrap"); if(fw) fw.hidden = roomState.mode!=="fixed";
+  var L=rmLayout();
+  var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
+  rmDrawRoom(L);
+  if(!L){
+    ["rmoCount","rmoPanelA","rmoW","rmoL","rmoArea"].forEach(function(id){ set(id,"–"); });
+    var m0=document.getElementById("rmMsg");
+    if(m0){ m0.className="rm-msg warn"; m0.textContent="판넬 폭·깊이·수량을 입력하세요."; }
+    var b0=document.getElementById("rmBreak"); if(b0) b0.textContent="";
+    return;
+  }
+  rmPaintOutput(L);
+}
+function rmPaintOutput(L){
+  var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
+  set("rmoCount", L.total+" 면 / "+L.banks.length+" 그룹 / "+L.rows.length+" 열");
+  set("rmoPanelA", rmFmt(L.panelArea)+" ㎡");
+  set("rmoW", rmFmt(L.needW)+" m");
+  set("rmoL", rmFmt(L.needL)+" m");
+  var area = L.fixed ? L.roomW*L.roomL : L.needW*L.needL;
+  set("rmoAreaK", L.fixed ? "입력 실 면적" : "소요 전기실 면적");
+  set("rmoArea", rmFmt(area)+" ㎡");
+  var msg=document.getElementById("rmMsg"), brk=document.getElementById("rmBreak");
+  var over=[];
+  if(L.fixed){
+    if(L.roomW < L.needW-1e-9) over.push("가로 "+rmFmt(L.needW-L.roomW)+" m 부족");
+    if(L.roomL < L.needL-1e-9) over.push("세로 "+rmFmt(L.needL-L.roomL)+" m 부족");
+  }
+  if(msg){
+    if(L.fixed && over.length){
+      msg.className="rm-msg bad";
+      msg.textContent="유지거리 확보 불가 — "+over.join(" · ")+" (소요 "+rmFmt(L.needW)+" × "+rmFmt(L.needL)+" m)";
+    }else if(L.fixed){
+      msg.className="rm-msg";
+      msg.textContent="배치 가능 — 소요 "+rmFmt(L.needW)+" × "+rmFmt(L.needL)+" m 대비 가로 +"+rmFmt(L.roomW-L.needW)+" m · 세로 +"+rmFmt(L.roomL-L.needL)+" m 여유";
+    }else{
+      msg.className="rm-msg";
+      msg.textContent="최소 소요 치수 "+rmFmt(L.needW)+" × "+rmFmt(L.needL)+" m = "+rmFmt(L.needW*L.needL)+" ㎡ (유지거리 포함, 판넬 점유율 "
+        + rmFmt(L.panelArea/(L.needW*L.needL)*100,1)+"%)";
+    }
+  }
+  if(brk){
+    var parts=L.rows.map(function(r){
+      var names=r.banks.map(function(b,i){ return rmEsc(b.g.name||("그룹"+(i+1)))+"("+b.n+"면)"; }).join(" + ");
+      return "<strong>"+r.no+"열</strong> "+names+" · 열폭 "+rmFmt(r.bw)+" × 깊이 "+rmFmt(r.bd)
+        + " m · 상부이격 "+rmFmt(r.gapTop)+" m ("+r.gapLabel+")";
+    });
+    parts.push("<strong>하부(벽) 이격</strong> "+rmFmt(L.lastGap)+" m");
+    parts.push("<strong>벽 이격 기준</strong> "+rmFmt(L.wallClr)+" m · <strong>그룹 간 이격</strong> "+rmFmt(L.grpGap)+" m (면별 유지거리와 비교해 큰 값 적용)");
+    if(L.margin>0) parts.push("<strong>추가 여유</strong> 사방 "+rmFmt(L.margin)+" m");
+    brk.innerHTML="세로 산출 내역 — "+parts.join(" / ");
+  }
 }
 
 // ===== 조명 등기구 계산기 (광속법) =====
@@ -1470,9 +2180,21 @@ function renderLight(){
   var F = fluxSel.value==="custom" ? lVal("lightFluxCustom") : parseFloat(fluxSel.value);
   var W=lVal("lightW"), L=lVal("lightL"), Hh=lVal("lightH"), M=0.85;
 
-  var A = (W>0&&L>0)? W*L : 0;
+  // 실 형태 (사각형 / ㄱ·ㄴ자 절취형)
+  var shapeSel=document.getElementById("lightShape");
+  var shape = shapeSel? shapeSel.value : "rect";
+  var cutWrap=document.getElementById("lightCutWrap");
+  if(cutWrap) cutWrap.hidden = shape!=="L";
+  var cw=lVal("lightCutW"), cl=lVal("lightCutL");
+  var cornerSel=document.getElementById("lightCutCorner");
+  var corner = cornerSel? cornerSel.value : "tr";
+  var isL = shape==="L" && cw>0 && cl>0 && cw<W && cl<L;
+  var cutInvalid = shape==="L" && !isL && W>0 && L>0;
+
+  var A = (W>0&&L>0)? (isL? W*L-cw*cl : W*L) : 0;
   var Hm = (Hh-0.85); if(Hm<=0) Hm=Hh;
-  var K = (A>0&&Hm>0)? (W*L)/(Hm*(W+L)) : 0;
+  // 실지수 K = A / (Hm × 반둘레) — ㄱ·ㄴ자(직각 절취)의 둘레는 외곽 사각형과 동일하므로 반둘레 = W+L
+  var K = (A>0&&Hm>0)? A/(Hm*(W+L)) : 0;
 
   // 조명률 U: 자동 추정 또는 직접 입력
   var autoEl=document.getElementById("lightUAuto");
@@ -1501,35 +2223,93 @@ function renderLight(){
   set("loUM", (U>0?U.toFixed(2):"–")+" / "+M+(auto?" (자동)":""));
   set("loN", N>0? N+" 개" : "–");
 
-  // 배치 격자 (면적비 기준 균등 배열)
-  var cols=0, rows=0;
-  if(N>0 && W>0 && L>0){
-    cols = Math.max(1, Math.round(Math.sqrt(N * (W/L))));
-    rows = Math.max(1, Math.ceil(N/cols));
+  // 배치 격자 (면적비 기준 균등 배열) — ㄱ·ㄴ자는 2구역 분할
+  function gridOf(n, zw, zh){
+    if(!(n>0&&zw>0&&zh>0)) return {cols:0,rows:0};
+    var c=Math.max(1, Math.min(n, Math.round(Math.sqrt(n*(zw/zh)))));
+    return {cols:c, rows:Math.max(1, Math.ceil(n/c))};
   }
-  var grid = rows*cols;
+  var zones=[]; // {name,x,y,w,h,n,cols,rows}
+  if(N>0 && W>0 && L>0){
+    if(isL){
+      var cutTop = (corner==="tr"||corner==="tl");
+      var cutLeft = (corner==="tl"||corner==="bl");
+      var zA={name:"A", x:0, y:cutTop? cl:0, w:W, h:L-cl};
+      var zB={name:"B", x:cutLeft? cw:0, y:cutTop? 0:L-cl, w:W-cw, h:cl};
+      var aA=zA.w*zA.h, aB=zB.w*zB.h;
+      var nA=Math.round(N*aA/A), nB=N-nA;
+      if(N>=2){ if(nB<1){nB=1;nA=N-1;} if(nA<1){nA=1;nB=N-1;} }
+      else { if(aA>=aB){nA=N;nB=0;} else {nA=0;nB=N;} }
+      zA.n=nA; zB.n=nB;
+      [zA,zB].forEach(function(z){ var g=gridOf(z.n,z.w,z.h); z.cols=g.cols; z.rows=g.rows; });
+      zones=[zA,zB];
+    }else{
+      var g0=gridOf(N,W,L);
+      zones=[{name:"", x:0,y:0,w:W,h:L, n:N, cols:g0.cols, rows:g0.rows}];
+    }
+  }
+  // ㄱ·ㄴ자는 구역별 실제 등수(n) 합, 사각형은 격자 채움 수
+  var grid = zones.reduce(function(s,z){ return s + (zones.length===2? z.n : z.cols*z.rows); },0);
+  var cols = zones.length===1? zones[0].cols:0, rows = zones.length===1? zones[0].rows:0;
 
   if(N>0){
     set("loFormula", "N = (E×A)/(F×U×M) = ("+nf(E)+"×"+A.toFixed(1)+") / ("+nf(F)+"×"+U+"×0.85) = "+Nraw.toFixed(2)+" → 올림 "+N+"개");
-    set("loArrange", "배치 "+rows+"행 × "+cols+"열 = "+grid+"개");
+    if(zones.length===2){
+      set("loArrange", "배치 A구역 "+zones[0].rows+"행×"+zones[0].cols+"열 + B구역 "+zones[1].rows+"행×"+zones[1].cols+"열 = "+grid+"개");
+    }else{
+      set("loArrange", "배치 "+rows+"행 × "+cols+"열 = "+grid+"개");
+    }
     var Eactual = (grid*F*U*M)/A;
-    set("loNote", "격자 "+grid+"개 배치 시 평균 조도 약 "+nf(Math.round(Eactual))+" lx. 등기구 간격 가로 "+(W/cols).toFixed(2)+"m · 세로 "+(L/rows).toFixed(2)+"m (개략). 조명률·실지수는 등기구 배광·반사율에 따라 달라지는 1차 산정값입니다.");
+    var noteTxt="격자 "+grid+"개 배치 시 평균 조도 약 "+nf(Math.round(Eactual))+" lx. ";
+    if(zones.length===2){
+      noteTxt+="ㄱ·ㄴ자 실은 두 사각형 구역으로 나눠 면적 비율로 등수를 배분했습니다(구역별 간격·이격은 우측 표 참조). ";
+    }else{
+      noteTxt+="등기구 간격 가로 "+(W/cols).toFixed(2)+"m · 세로 "+(L/rows).toFixed(2)+"m, 벽체 이격 가로 "+(W/cols/2).toFixed(2)+"m · 세로 "+(L/rows/2).toFixed(2)+"m (간격의 1/2, 개략). ";
+    }
+    if(cutInvalid) noteTxt+="⚠ 절취부 크기가 유효하지 않아(외곽 치수보다 크거나 0) 사각형으로 계산했습니다. ";
+    noteTxt+="조명률·실지수는 등기구 배광·반사율에 따라 달라지는 1차 산정값입니다.";
+    set("loNote", noteTxt);
   } else {
     set("loFormula", "");
     set("loArrange", "배치 –");
-    set("loNote", "조도·실 크기·광속·조명률을 입력하면 소요 등기구 수와 배치도가 표시됩니다.");
+    set("loNote", (cutInvalid? "⚠ 절취부 크기는 외곽 치수보다 작아야 합니다. " : "")+"조도·실 크기·광속·조명률을 입력하면 소요 등기구 수와 배치도가 표시됩니다.");
   }
 
   var dia=document.getElementById("roomDiagram");
-  if(dia) dia.innerHTML = buildRoomSVG(W,L,cols,rows);
+  if(dia){
+    dia.innerHTML = (zones.length===2)
+      ? buildRoomSVGL(W,L,cw,cl,corner,zones)
+      : buildRoomSVG(W,L,cols,rows);
+  }
+  var ds=document.getElementById("loDimSummary");
+  if(ds){
+    if(N>0 && zones.length){
+      ds.hidden=false;
+      var dsHtml="";
+      zones.forEach(function(z){
+        if(!(z.cols>0&&z.rows>0&&z.n>0)) return;
+        var head = z.name? z.name+"구역 ("+z.w.toFixed(1)+"×"+z.h.toFixed(1)+"m) " : "";
+        dsHtml+='<p class="ds-title">'+head+'벽체 이격거리</p>'
+          +'<p class="ds-val">가로 '+(z.w/z.cols/2).toFixed(2)+' m<br>세로 '+(z.h/z.rows/2).toFixed(2)+' m</p>'
+          +'<p class="ds-title">'+(z.name? z.name+"구역 ":"")+'등기구간 이격거리</p>'
+          +'<p class="ds-val">가로 '+(z.cols>=2? (z.w/z.cols).toFixed(2)+' m':'–')+'<br>세로 '+(z.rows>=2? (z.h/z.rows).toFixed(2)+' m':'–')+'</p>';
+      });
+      dsHtml+='<p class="ds-val"><small>(벽체 이격 = 간격의 1/2)</small></p>';
+      ds.innerHTML=dsHtml;
+    }else{
+      ds.hidden=true; ds.innerHTML="";
+    }
+  }
 }
 function buildRoomSVG(W,L,cols,rows){
   if(!(W>0&&L>0&&cols>0&&rows>0)) return '<svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg"><text x="150" y="64" text-anchor="middle" font-size="12" fill="#566578" font-family="ui-monospace,monospace">입력값을 넣어주세요</text></svg>';
-  var maxW=300, pad=28, availW=maxW-pad*2, availH=200;
-  var scale=Math.min(availW/W, availH/L);
-  var rw=W*scale, rh=L*scale, ox=(maxW-rw)/2, oy=pad, totalH=rh+pad*2;
+  var maxW=340, padL=30, padT=26, padR=58, padB=46, availH=210;
+  var scale=Math.min((maxW-padL-padR)/W, availH/L);
+  var rw=W*scale, rh=L*scale, ox=padL+((maxW-padL-padR)-rw)/2, oy=padT, totalH=rh+padT+padB;
+  var DIM="#5B7A9D", MONO="ui-monospace,monospace";
   var s='<svg viewBox="0 0 '+maxW+' '+totalH.toFixed(0)+'" xmlns="http://www.w3.org/2000/svg">';
   s+='<rect x="'+ox.toFixed(1)+'" y="'+oy+'" width="'+rw.toFixed(1)+'" height="'+rh.toFixed(1)+'" fill="#fff" stroke="#4D4D4D" stroke-width="1.5" rx="3"/>';
+  // 등기구
   var fw=Math.max(6, Math.min(rw/cols, rh/rows)*0.46), fh=Math.max(4, fw*0.6);
   for(var r=0;r<rows;r++){
     for(var c=0;c<cols;c++){
@@ -1537,9 +2317,92 @@ function buildRoomSVG(W,L,cols,rows){
       s+='<rect x="'+(cx-fw/2).toFixed(1)+'" y="'+(cy-fh/2).toFixed(1)+'" width="'+fw.toFixed(1)+'" height="'+fh.toFixed(1)+'" rx="1.5" fill="#F58220" stroke="#D96E12" stroke-width="0.8"/>';
     }
   }
-  s+='<text x="'+(ox+rw/2).toFixed(1)+'" y="'+(oy-10)+'" text-anchor="middle" font-size="11" fill="#566578" font-family="ui-monospace,monospace">가로 '+W+'m</text>';
-  var lx=ox-11, ly=(oy+rh/2);
-  s+='<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle" font-size="11" fill="#566578" font-family="ui-monospace,monospace" transform="rotate(-90 '+lx.toFixed(1)+' '+ly.toFixed(1)+')">세로 '+L+'m</text>';
+  // 실 치수 라벨
+  s+='<text x="'+(ox+rw/2).toFixed(1)+'" y="'+(oy-9)+'" text-anchor="middle" font-size="11" fill="#566578" font-family="'+MONO+'">가로 '+W+'m</text>';
+  var lx=ox-12, ly=(oy+rh/2);
+  s+='<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle" font-size="11" fill="#566578" font-family="'+MONO+'" transform="rotate(-90 '+lx.toFixed(1)+' '+ly.toFixed(1)+')">세로 '+L+'m</text>';
+
+  // ---- 치수선 헬퍼 ----
+  function hdim(x1,x2,y,label){ // 수평 치수선 (아래쪽)
+    var d='<line x1="'+x1.toFixed(1)+'" y1="'+y+'" x2="'+x2.toFixed(1)+'" y2="'+y+'" stroke="'+DIM+'" stroke-width="1"/>';
+    [x1,x2].forEach(function(x){ d+='<line x1="'+x.toFixed(1)+'" y1="'+(y-3.5)+'" x2="'+x.toFixed(1)+'" y2="'+(y+3.5)+'" stroke="'+DIM+'" stroke-width="1"/>'; });
+    d+='<text x="'+((x1+x2)/2).toFixed(1)+'" y="'+(y+11)+'" text-anchor="middle" font-size="9" fill="'+DIM+'" font-family="'+MONO+'">'+label+'</text>';
+    return d;
+  }
+  function vdim(y1,y2,x,label){ // 수직 치수선 (오른쪽)
+    var d='<line x1="'+x+'" y1="'+y1.toFixed(1)+'" x2="'+x+'" y2="'+y2.toFixed(1)+'" stroke="'+DIM+'" stroke-width="1"/>';
+    [y1,y2].forEach(function(y){ d+='<line x1="'+(x-3.5)+'" y1="'+y.toFixed(1)+'" x2="'+(x+3.5)+'" y2="'+y.toFixed(1)+'" stroke="'+DIM+'" stroke-width="1"/>'; });
+    var my=(y1+y2)/2;
+    d+='<text x="'+(x+9)+'" y="'+my.toFixed(1)+'" text-anchor="middle" font-size="9" fill="'+DIM+'" font-family="'+MONO+'" transform="rotate(90 '+(x+9)+' '+my.toFixed(1)+')">'+label+'</text>';
+    return d;
+  }
+  function ext(x1,y1,x2,y2){ // 보조 연장선
+    return '<line x1="'+x1.toFixed(1)+'" y1="'+y1.toFixed(1)+'" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="'+DIM+'" stroke-width="0.6" stroke-dasharray="2 2" opacity=".55"/>';
+  }
+  var sw=W/cols, sl=L/rows;              // 등기구 간격 (m)
+  var f1x=ox+rw*0.5/cols, f2x=ox+rw*1.5/cols; // 첫·둘째 등기구 중심 x
+  var f1y=oy+rh*0.5/rows, f2y=oy+rh*1.5/rows;
+  // 수평(가로 방향): 벽 이격 + 간격
+  var dy=oy+rh+15;
+  s+=ext(ox,oy+rh,ox,dy)+ext(f1x,f1y,f1x,dy);
+  s+=hdim(ox,f1x,dy,"이격 "+(sw/2).toFixed(2)+"m");
+  if(cols>=2){
+    s+=ext(f2x,f1y,f2x,dy);
+    s+=hdim(f1x,f2x,dy,"간격 "+sw.toFixed(2)+"m");
+  }
+  // 수직(세로 방향): 벽 이격 + 간격
+  var dx=ox+rw+15;
+  s+=ext(ox+rw,oy,dx,oy)+ext(f1x<ox+rw?ox+rw:f1x,f1y,dx,f1y);
+  s+=ext(ox+rw,f1y,dx,f1y);
+  s+=vdim(oy,f1y,dx,"이격 "+(sl/2).toFixed(2)+"m");
+  if(rows>=2){
+    s+=ext(ox+rw,f2y,dx,f2y);
+    s+=vdim(f1y,f2y,dx,"간격 "+sl.toFixed(2)+"m");
+  }
+  s+='</svg>';
+  return s;
+}
+function buildRoomSVGL(W,L,cw,cl,corner,zones){
+  var maxW=340, padL=30, padT=26, padR=30, padB=30, availH=220;
+  var scale=Math.min((maxW-padL-padR)/W, availH/L);
+  var ox=padL+((maxW-padL-padR)-W*scale)/2, oy=padT, totalH=L*scale+padT+padB;
+  var MONO="ui-monospace,monospace", DIM="#5B7A9D";
+  function X(x){return (ox+x*scale);} function Y(y){return (oy+y*scale);}
+  // 외곽 다각형 (절취 모서리별)
+  var pts;
+  if(corner==="tr")      pts=[[0,0],[W-cw,0],[W-cw,cl],[W,cl],[W,L],[0,L]];
+  else if(corner==="tl") pts=[[cw,0],[W,0],[W,L],[0,L],[0,cl],[cw,cl]];
+  else if(corner==="br") pts=[[0,0],[W,0],[W,L-cl],[W-cw,L-cl],[W-cw,L],[0,L]];
+  else                   pts=[[0,0],[W,0],[W,L],[cw,L],[cw,L-cl],[0,L-cl]];
+  var s='<svg viewBox="0 0 '+maxW+' '+totalH.toFixed(0)+'" xmlns="http://www.w3.org/2000/svg">';
+  s+='<polygon points="'+pts.map(function(p){return X(p[0]).toFixed(1)+","+Y(p[1]).toFixed(1);}).join(" ")+'" fill="#fff" stroke="#4D4D4D" stroke-width="1.5"/>';
+  // 구역 경계(점선) + 구역명 + 등기구
+  zones.forEach(function(z){
+    if(z.name==="A"){
+      var by=Y(z.y===0? z.h : z.y);
+      s+='<line x1="'+X(0).toFixed(1)+'" y1="'+by.toFixed(1)+'" x2="'+X(W).toFixed(1)+'" y2="'+by.toFixed(1)+'" stroke="'+DIM+'" stroke-width="0.7" stroke-dasharray="3 3" opacity=".5"/>';
+    }
+    if(z.name) s+='<text x="'+(X(z.x)+7)+'" y="'+(Y(z.y)+13)+'" font-size="10" font-weight="bold" fill="'+DIM+'" font-family="'+MONO+'">'+z.name+'</text>';
+    if(!(z.cols>0&&z.rows>0&&z.n>0)) return;
+    var fw=Math.max(6, Math.min(z.w*scale/z.cols, z.h*scale/z.rows)*0.46), fh=Math.max(4, fw*0.6);
+    for(var r=0;r<z.rows;r++){
+      for(var c=0;c<z.cols;c++){
+        if(r*z.cols+c>=z.n) break; // 실제 등수만
+        var cx=X(z.x + z.w*(c+0.5)/z.cols), cy=Y(z.y + z.h*(r+0.5)/z.rows);
+        s+='<rect x="'+(cx-fw/2).toFixed(1)+'" y="'+(cy-fh/2).toFixed(1)+'" width="'+fw.toFixed(1)+'" height="'+fh.toFixed(1)+'" rx="1.5" fill="#F58220" stroke="#D96E12" stroke-width="0.8"/>';
+      }
+    }
+  });
+  // 외곽·절취 치수 라벨
+  var cutTop=(corner==="tr"||corner==="tl"), cutLeft=(corner==="tl"||corner==="bl");
+  var wy = cutTop? (Y(L)+13) : (Y(0)-9);
+  s+='<text x="'+X(W/2).toFixed(1)+'" y="'+wy.toFixed(1)+'" text-anchor="middle" font-size="11" fill="#566578" font-family="'+MONO+'">가로 '+W+'m</text>';
+  var lxp = cutLeft? (X(W)+12) : (X(0)-12);
+  s+='<text x="'+lxp.toFixed(1)+'" y="'+Y(L/2).toFixed(1)+'" text-anchor="middle" font-size="11" fill="#566578" font-family="'+MONO+'" transform="rotate(-90 '+lxp.toFixed(1)+' '+Y(L/2).toFixed(1)+')">세로 '+L+'m</text>';
+  // 절취부 치수 (절취 사각형 중앙)
+  var ccx = cutLeft? X(cw/2) : X(W-cw/2);
+  var ccy = cutTop? Y(cl/2) : Y(L-cl/2);
+  s+='<text x="'+ccx.toFixed(1)+'" y="'+ccy.toFixed(1)+'" text-anchor="middle" font-size="9.5" fill="#98A6B8" font-family="'+MONO+'">절취 '+cw+'×'+cl+'m</text>';
   s+='</svg>';
   return s;
 }
@@ -1963,12 +2826,23 @@ function initApp(){
     initMechUpload();
     initMechCalcLayout();
 
+    // 전기실 사이즈: 입력/추가/삭제 (위임)
+    var roomView = document.getElementById("view-room");
+    if(roomView){
+      roomView.addEventListener("input", handleRoomEvent);
+      roomView.addEventListener("change", handleRoomEvent);
+      roomView.addEventListener("click", handleRoomEvent);
+    }
+    rmSeedGroups();
+    renderRmClr();
+
     // 최초 렌더
     renderWires();
     render();
     renderFee();
     renderLight();
     renderMech();
+    renderRoom();
   }catch(err){
     // 한 줄이 실패해도 화면 전체가 비지 않도록, 원인을 사용자에게 노출
     var box = document.getElementById("wireRows");
