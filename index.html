@@ -127,7 +127,7 @@
     .pr-body .rm-st{flex:1 1 0;min-width:0;background:#F4F6F8 !important;border-radius:1mm;
       padding:1.6mm 2mm;display:flex;flex-direction:column;gap:0.4mm;break-inside:avoid;}
     .pr-body .rm-st-k{font-size:6.8pt;color:#566578;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .pr-body .rm-st-v{font-size:10pt;white-space:nowrap;}
+    .pr-body .rm-st-v{font-size:10pt;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .pr-body .rm-st-main{grid-column:auto !important;background:#FFF6EE !important;border:0.6pt solid #F58220;}
     .pr-body .rm-st-main .rm-st-v{font-size:11pt;color:#C4610B;}
     /* 도면 — 1페이지 배분 안에 반드시 들어가도록 높이 상한 */
@@ -1203,7 +1203,7 @@
     </details>
 
     <footer>
-      <strong>전기실 사이즈 검토</strong> · 판넬 배치·유지거리 기반 개략 면적 산정 도구. 유지거리 기준값은 사용 전 반드시 해당 프로젝트 적용 규정과 대조 확인하세요. <span style="opacity:.6;">(rev. 0730-I)</span>
+      <strong>전기실 사이즈 검토</strong> · 판넬 배치·유지거리 기반 개략 면적 산정 도구. 유지거리 기준값은 사용 전 반드시 해당 프로젝트 적용 규정과 대조 확인하세요. <span style="opacity:.6;">(rev. 0730-J)</span>
     </footer>
   </div>
 
@@ -2300,7 +2300,18 @@ function calcFillPrint(opts){
     }
     var blk=document.createElement("div");
     blk.className="pr-block"+(mode==="flow"?" pr-flow":(mode==="text"?" pr-text":""));
-    list.forEach(function(n){ blk.appendChild(calcStrip(n.cloneNode(true))); });
+    list.forEach(function(n){
+      var c=calcStrip(n.cloneNode(true));
+      // 요약 카드 폭 가중치 (내용 길이에 맞춰 칸 넓이 배분)
+      if(opts.statsFlex && c.classList && c.classList.contains("rm-stats")){
+        var cards=c.children;
+        for(var q=0;q<cards.length;q++){
+          var fw=opts.statsFlex[q];
+          if(fw){ cards[q].style.flexGrow=String(fw); cards[q].style.flexShrink="1"; cards[q].style.flexBasis="0"; }
+        }
+      }
+      blk.appendChild(c);
+    });
     body.appendChild(blk);
   };
   (opts.nodes||[]).forEach(function(n){
@@ -2340,7 +2351,7 @@ function rmPrintResult(){
       ["그룹 간 이격", rmFmt(L.grpGap)+" m"],
       ["뒷면 점검도어 여유", rmFmt(L.doorClr)+" m"],
       ["추가 여유", rmFmt(L.margin)+" m"],
-      ["열 구성", L.rows.map(function(r){ return r.no+"열 "+(r.dir==="down"?"정면↓":"정면↑"); }).join(" · ")],
+      ["열 구성", L.rows.length+"열"],
       ["소요 치수", "W "+rmMM(L.roomW)+" × L "+rmMM(L.roomL)+" mm"]
     ],
     nodes:[
@@ -2349,6 +2360,7 @@ function rmPrintResult(){
       document.getElementById("rmMsg"),
       document.getElementById("rmBreak")
     ],
+    statsFlex:[1.75, 0.82, 0.82, 0.82, 1.05],
     file:"전기실_사이즈_검토_"+calcToday().replace(/-/g,"")
   });
 }
@@ -2374,6 +2386,7 @@ function mcPrintResult(){
       document.getElementById("mcCanvas"),
       document.getElementById("mcTable")
     ],
+    statsFlex:[0.95, 0.8, 0.9, 1.35, 1.0],
     file:"MCC_대수_산정_"+calcToday().replace(/-/g,"")
   });
 }
