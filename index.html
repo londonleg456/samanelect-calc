@@ -837,7 +837,7 @@
     <div class="head-text" style="margin-top:46px;">
       <div class="eyebrow">전기설비 · 조달 산정</div>
       <h1>전기공사 손해배상공제료 계산기</h1>
-      <p class="lede">총공사원가와 도급자 관급자재를 입력하면 손해배상공제료와 계약금액을 산정합니다. <span style="white-space: nowrap;">(요율 0.26477% · 100원 미만 절사)</span></p>
+      <p class="lede">총공사원가와 도급자 관급자재를 입력하면 손해배상공제료와 계약금액을 산정합니다. <span style="white-space: nowrap;">(요율 0.26477% · 공제료 감액으로 도급액 끝자리 조정)</span></p>
     </div>
 
     <div class="card">
@@ -849,19 +849,54 @@
         <label>총공사원가 (부가세 제외, 원)</label>
         <input type="text" id="dmgCost" inputmode="numeric" placeholder="예: 100,000,000" value="100,000,000" style="font-family:var(--mono); text-align:center;">
       </div>
-      <div class="field" style="margin-bottom:0;">
+      <div class="field">
         <label>도급자 관급자재 (원)</label>
         <input type="text" id="dmgGov" inputmode="numeric" placeholder="예: 10,000,000" value="0" style="font-family:var(--mono); text-align:center;">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div class="field" style="margin-bottom:0;">
+          <label>공제료 끝수</label>
+          <select id="dmgFeeRound">
+            <option value="1" selected>원 미만 절사 (계산서)</option>
+            <option value="100">100원 미만 절사</option>
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label>도급액 끝자리 조정</label>
+          <select id="dmgUnit">
+            <option value="0">조정 안함</option>
+            <option value="1000" selected>천원 단위</option>
+            <option value="10000">만원 단위</option>
+            <option value="100000">십만원 단위</option>
+            <option value="1000000">백만원 단위</option>
+          </select>
+        </div>
       </div>
       <table class="fee-table" style="margin-top:16px;">
         <tbody>
           <tr><th>산정 기준액 <small style="font-weight:600;font-size:11px;opacity:.6;">(총공사원가+도급자 관급자재)</small></th><td id="dmgBase">₩ 0</td></tr>
-          <tr class="fee-row-fee"><th>손해배상공제료 <small style="font-weight:600;font-size:11px;opacity:.6;">× 0.26477% · 100원 미만 절사</small></th><td id="dmgFee">₩ 0</td></tr>
-          <tr><th>부가가치세 <small style="font-weight:600;font-size:11px;opacity:.6;">(총공사원가+공제료) × 10%</small></th><td id="dmgVat">₩ 0</td></tr>
+          <tr class="fee-row-fee"><th>손해배상공제료 <small style="font-weight:600;font-size:11px;opacity:.6;" id="dmgFeeLbl">× 0.26477%</small></th><td id="dmgFee">₩ 0</td></tr>
+          <tr><th>부가가치세 <small style="font-weight:600;font-size:11px;opacity:.6;">(총공사원가+공제료) × 10% · 원 미만 절사</small></th><td id="dmgVat">₩ 0</td></tr>
           <tr class="fee-row-total"><th>계약금액 <small style="font-weight:600;font-size:12px;opacity:0.6;">(총공사원가+공제료+부가세)</small></th><td id="dmgTotal">₩ 0</td></tr>
         </tbody>
       </table>
       <p class="fee-rate-note" id="dmgNote"></p>
+
+      <div id="dmgAdjWrap" hidden style="margin-top:16px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+          <p class="card-title" style="margin-bottom:0;font-size:14px;"><span class="idx">02</span> 도급액 끝자리 조정</p>
+          <button type="button" class="guide-btn" id="dmgAdjCopy" style="padding:7px 12px;font-size:12.5px;">감액분 복사</button>
+        </div>
+        <table class="fee-table" style="margin-top:10px;">
+          <tbody>
+            <tr class="fee-row-fee"><th>공제료 감액분 <small style="font-weight:600;font-size:11px;opacity:.6;">(산출 공제료에서 뺄 금액)</small></th><td id="dmgAdjCut">₩ 0</td></tr>
+            <tr><th>조정 손해배상공제료 <small style="font-weight:600;font-size:11px;opacity:.6;">(산출 공제료 − 감액분)</small></th><td id="dmgAdjFee">₩ 0</td></tr>
+            <tr><th>조정 부가가치세 <small style="font-weight:600;font-size:11px;opacity:.6;">(총공사원가+조정 공제료) × 10% · 원 미만 절사</small></th><td id="dmgAdjVat">₩ 0</td></tr>
+            <tr class="fee-row-total"><th>조정 도급액 <small style="font-weight:600;font-size:12px;opacity:0.6;">(총공사원가+조정 공제료+조정 부가세)</small></th><td id="dmgAdjTotal">₩ 0</td></tr>
+          </tbody>
+        </table>
+        <p class="fee-rate-note" id="dmgAdjNote"></p>
+      </div>
 
       <details style="margin-top:12px;">
         <summary>원가계산서상 공제료 적용 예시 보기</summary>
@@ -1796,21 +1831,67 @@ function renderDmg(){
   var g=function(id){ var el=document.getElementById(id); return el? (parseFloat(String(el.value).replace(/[^0-9]/g,""))||0) : 0; };
   var cost=g("dmgCost"), gov=g("dmgGov");
   var base=cost+gov;
-  var fee=Math.floor(base*DMG_RATE/100)*100;
+  var rEl=document.getElementById("dmgFeeRound");
+  var fr=rEl? (parseInt(rEl.value,10)||1) : 1;
+  var fee=Math.floor(Math.floor(base*26477/10000000)/fr)*fr;   // 정수 연산(0.26477%)
+  var lbl=document.getElementById("dmgFeeLbl");
+  if(lbl) lbl.textContent="× 0.26477% · "+(fr===1?"원":"100원")+" 미만 절사";
   var minApplied=false;
   if(base>0 && fee<DMG_MIN){ fee=DMG_MIN; minApplied=true; }
   if(base<=0) fee=0;
-  var vat=Math.round((cost+fee)*0.1);
+  var vat=dmgVatOf(cost+fee);
   var total=cost+fee+vat;
   var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
   set("dmgBase", wonFmt(base));
   set("dmgFee", wonFmt(fee));
   set("dmgVat", wonFmt(vat));
   set("dmgTotal", wonFmt(total));
+  renderDmgAdj(cost, fee, total, base);
   var note=document.getElementById("dmgNote");
   if(note) note.textContent = minApplied
     ? "산출액이 최저공제료 미만이라 최저공제료 20,000원을 적용했습니다."
-    : "요율 0.26477% = 대인 0.02057%×1.2 + 대물 0.09988%×1.2 + 목적물 0.12023% (발주자미필적배상책임 특약 포함) · 100원 미만 절사 · 최저공제료 20,000원.";
+    : "요율 0.26477% = 대인 0.02057%×1.2 + 대물 0.09988%×1.2 + 목적물 0.12023% (발주자미필적배상책임 특약 포함) · 최저공제료 20,000원 · 부가세 원 미만 절사.";
+}
+// 부가세: (공급가액+공제료) × 10%, 원 미만 절사 (계산서 방식)
+function dmgVatOf(S){ return Math.floor(S/10); }
+// 도급액 끝자리 조정: 공제료 끝에서 감액분을 빼 도급액을 선택 단위로 내림.
+// 공급가액 S 에 대해 도급액 = S + floor(S/10). 목표 T 를 만드는 S 를 찾는다.
+function dmgSolveS(T){
+  var c0=Math.floor(T/1.1);
+  for(var S=c0-3; S<=c0+3; S++){ if(S>=0 && S+dmgVatOf(S)===T) return S; }
+  return -1;
+}
+var dmgAdjState={cut:0};
+function renderDmgAdj(cost, fee, total, base){
+  var wrap=document.getElementById("dmgAdjWrap");
+  var uEl=document.getElementById("dmgUnit");
+  var unit=uEl? parseInt(uEl.value,10)||0 : 0;
+  if(!wrap) return;
+  if(!unit || base<=0 || total<=0){ wrap.hidden=true; dmgAdjState.cut=0; return; }
+  wrap.hidden=false;
+  var set=function(id,v){ var el=document.getElementById(id); if(el) el.textContent=v; };
+  var f=function(n){ return n.toLocaleString("ko-KR"); };
+  var note=document.getElementById("dmgAdjNote");
+  var T0=Math.floor(total/unit)*unit, T=T0, S=-1;
+  // 절사 부가세 구조상 만들 수 없는 도급액(11원 주기 중 1개)이면 한 단위 더 내림
+  for(var g=0; g<5 && T>0; g++, T-=unit){ S=dmgSolveS(T); if(S>=0 && S-cost<=fee) break; S=-1; }
+  if(S<0 || S-cost<DMG_MIN){
+    dmgAdjState.cut=0;
+    set("dmgAdjCut","–"); set("dmgAdjFee","–"); set("dmgAdjVat","–"); set("dmgAdjTotal","–");
+    if(note) note.textContent="감액 후 공제료가 최저공제료 "+f(DMG_MIN)+"원 미만이 됩니다. 더 작은 조정 단위를 선택하세요.";
+    return;
+  }
+  var adjFee=S-cost, cut=fee-adjFee, adjVat=dmgVatOf(S), adjTotal=S+adjVat;
+  dmgAdjState.cut=cut;
+  set("dmgAdjCut", cut>0? "− ₩ "+f(cut) : "₩ 0");
+  set("dmgAdjFee", wonFmt(adjFee));
+  set("dmgAdjVat", wonFmt(adjVat));
+  set("dmgAdjTotal", wonFmt(adjTotal));
+  if(note) note.textContent = cut===0
+    ? "도급액이 이미 "+f(unit)+"원 단위로 떨어집니다. 감액 불필요."
+    : "계산서 DA(손해배상공제료) 식 끝에 −"+f(cut)+" 입력 → 예) (D9+관급자재)*YY-"+cut
+      +" · 도급액 "+f(total)+"원 → "+f(adjTotal)+"원"
+      +(T<T0? " (부가세 절사 구조상 "+f(T0)+"원은 만들 수 없어 한 단위 아래로 맞춤)" : "");
 }
 function switchView(view){
   var map={conduit:"view-conduit", fee:"view-fee", light:"view-light", mech:"view-mech", room:"view-room", mcc:"view-mcc"};
@@ -3746,6 +3827,12 @@ function initApp(){
         renderDmg();
       });
     });
+    ["dmgUnit","dmgFeeRound"].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el) el.addEventListener("change", renderDmg);
+    });
+    var dmgCp=document.getElementById("dmgAdjCopy");
+    if(dmgCp) dmgCp.addEventListener("click", function(){ mechDoCopy(String(dmgAdjState.cut), dmgCp); });
     renderDmg();
 
     // 조달수수료: 적용금액 클릭 → 구간별 배분 토글
