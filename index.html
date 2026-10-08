@@ -613,6 +613,47 @@
   @media(max-width:480px){
     .rm-stats{grid-template-columns:1fr;}
   }
+
+  /* ===== 줄바꿈·레이아웃 보정 (2026-10 검토 반영) ===== */
+  /* 한글 단어 단위 줄바꿈 — 설명문·버튼·라벨·하단 안내 전체 적용 */
+  body{word-break:keep-all;overflow-wrap:break-word;}
+  /* 계산식: 숫자 중간 분리 방지 (긴 식은 연산자 경계에서 줄바꿈) */
+  .light-formula{word-break:keep-all;overflow-wrap:anywhere;}
+  /* 탭 상단 설명문과 첫 카드 사이 간격 */
+  .head-text{margin-bottom:18px;}
+  /* 조명률(U) 라벨을 다른 입력 라벨과 동일하게 */
+  .u-head > label:first-child{font-size:13px;font-weight:600;color:var(--ink);}
+  .u-head > label.u-toggle{font-size:12.5px;}
+  /* 조달수수료·손해배상공제료 결과표: 항목명 말줄임 해제 */
+  .fee-table th{white-space:normal;overflow:visible;text-overflow:clip;width:auto;}
+  .fee-table td{overflow:visible;text-overflow:clip;width:auto;}
+  /* MCC 결과표: 공통 표 열폭 규칙 대신 전용 열폭 + 수용 유닛 줄바꿈 허용 */
+  .mc-tbl{table-layout:fixed;}
+  .mc-tbl th,.mc-tbl td{white-space:normal;overflow:visible;text-overflow:clip;}
+  .mc-tbl th:nth-child(1),.mc-tbl td:nth-child(1){width:7%;text-align:center;}
+  .mc-tbl th:nth-child(2),.mc-tbl td:nth-child(2){width:14%;}
+  .mc-tbl th:nth-child(3),.mc-tbl td:nth-child(3){width:47%;}
+  .mc-tbl th:nth-child(4),.mc-tbl td:nth-child(4){width:20%;}
+  .mc-tbl th:nth-child(5),.mc-tbl td:nth-child(5){width:12%;text-align:center;}
+  /* 기기리스트 정리표: 모바일은 최소 폭 확보 후 가로 스크롤 */
+  /* 유지거리 기준값 표: 공통 표 열폭(10%) 대신 기기 구분 열 확보 */
+  .rm-clr-table th:nth-child(1),.rm-clr-table td:nth-child(1){width:24%;}
+  .rm-clr-table th:nth-child(n+2),.rm-clr-table td:nth-child(n+2){width:19%;}
+  @media(max-width:560px){
+    .mech-table{min-width:540px;}
+    /* MCC 결과표 모바일: 글자·여백 축소, 짧은 항목은 줄바꿈 금지 */
+    .mc-tbl{font-size:11px;}
+    .mc-tbl th,.mc-tbl td{padding:5px 3px;}
+    .mc-tbl th,.mc-tbl td:nth-child(2),.mc-tbl td:nth-child(4),.mc-tbl td:nth-child(5){white-space:nowrap;}
+    .mc-tbl th:nth-child(1),.mc-tbl td:nth-child(1){width:7%;}
+    .mc-tbl th:nth-child(2),.mc-tbl td:nth-child(2){width:21%;}
+    .mc-tbl th:nth-child(3),.mc-tbl td:nth-child(3){width:31%;}
+    .mc-tbl th:nth-child(4),.mc-tbl td:nth-child(4){width:27%;}
+    .mc-tbl th:nth-child(5),.mc-tbl td:nth-child(5){width:14%;}
+    .mc-tbl th:nth-child(5){font-size:10px;letter-spacing:-.02em;}
+    /* 전기실 그룹 머리행: 360px에서 카드 밖으로 밀리지 않도록 */
+    .rm-ghead{grid-template-columns:minmax(0,1fr) 64px 94px 30px;gap:5px;}
+  }
 </style>
 </head>
 <body>
@@ -689,7 +730,7 @@
       <label>점유율 기준</label>
       <div class="fixed-fill">
         <span class="ff-val">33.3%</span>
-        <span class="ff-desc">전선 완성단면적 합계 ≤ 전선관 내단면적 × 1/3</span>
+        <span class="ff-desc">전선 완성단면적 합계 ≤ 전선관 <span style="white-space:nowrap;">내단면적 × 1/3</span></span>
       </div>
     </div>
 
@@ -837,7 +878,7 @@
     <div class="head-text" style="margin-top:46px;">
       <div class="eyebrow">전기설비 · 조달 산정</div>
       <h1>전기공사 손해배상공제료 계산기</h1>
-      <p class="lede">총공사원가와 도급자 관급자재를 입력하면 손해배상공제료와 계약금액을 산정합니다. <span style="white-space: nowrap;">(요율 0.26477% · 공제료 감액으로 도급액 끝자리 조정)</span></p>
+      <p class="lede">총공사원가와 도급자 관급자재를 입력하면 손해배상공제료와 계약금액을 산정합니다. (요율 0.26477% · 공제료 감액으로 도급액 끝자리 조정)</p>
     </div>
 
     <div class="card">
@@ -931,7 +972,7 @@
     <div class="head-text">
       <div class="eyebrow">전기설비 · 조명 산정</div>
       <h1>등기구 배치</h1>
-      <p class="lede">실의 조도기준·크기·등기구 광속·조명률을 입력하면<br>공식에 따라 소요 등기구 수와 배치도를 산정합니다.</p>
+      <p class="lede">실의 조도기준·크기·등기구 광속·조명률을 입력하면 공식에 따라 소요 등기구 수와 배치도를 산정합니다.</p>
     </div>
 
     <div class="card">
@@ -1068,7 +1109,7 @@
     <div class="head-text">
       <div class="eyebrow">전기설비 · 기계부하</div>
       <h1>기계부하 정리</h1>
-      <p class="lede">기계분야에서 받은 부하번호·부하명·단위부하·기동방식·상용/예비 대수를 입력하면<br>부하계산서용 표로 정리하고 한 번에 복사할 수 있습니다.</p>
+      <p class="lede">기계분야에서 받은 부하번호·부하명·단위부하·기동방식·상용/예비 대수를 입력하면 부하계산서용 표로 정리하고 한 번에 복사할 수 있습니다.</p>
     </div>
 
     <div class="card">
@@ -1136,7 +1177,7 @@
     <div class="head-text">
       <div class="eyebrow">전기설비 · 전기실 계획</div>
       <h1>전기실 사이즈 검토</h1>
-      <p class="lede">판넬 치수·수량을 넣고 붙여서 놓을 판넬을 그룹으로 묶으면<br>유지거리(이격)를 반영한 소요 전기실 면적을 배치도로 보여줍니다.</p>
+      <p class="lede">판넬 치수·수량을 넣고 붙여서 놓을 판넬을 그룹으로 묶으면 유지거리(이격)를 반영한 소요 전기실 면적을 배치도로 보여줍니다.</p>
     </div>
 
     <div class="card">
@@ -1246,7 +1287,7 @@
     <div class="head-text">
       <div class="eyebrow">전기설비 · 동력 계획</div>
       <h1>MCC 대수 산정</h1>
-      <p class="lede">부하 목록을 넣으면 유닛 높이와 면 유효높이를 기준으로<br>필요한 MCC 면수·대수와 스페어 배치 가능 여부를 산출합니다.</p>
+      <p class="lede">부하 목록을 넣으면 유닛 높이와 면 유효높이를 기준으로 필요한 MCC 면수·대수와 스페어 배치 가능 여부를 산출합니다.</p>
     </div>
 
     <div class="card">
@@ -3360,17 +3401,17 @@ function buildRoomSVG(W,L,cols,rows){
   s+='<text x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" text-anchor="middle" font-size="11" fill="#566578" font-family="'+MONO+'" transform="rotate(-90 '+lx.toFixed(1)+' '+ly.toFixed(1)+')">세로 '+L+'m</text>';
 
   // ---- 치수선 헬퍼 ----
-  function hdim(x1,x2,y,label){ // 수평 치수선 (아래쪽)
+  function hdim(x1,x2,y,label,tier){ // 수평 치수선 (아래쪽) · tier=1이면 라벨을 한 단 아래로 내려 겹침 방지
     var d='<line x1="'+x1.toFixed(1)+'" y1="'+y+'" x2="'+x2.toFixed(1)+'" y2="'+y+'" stroke="'+DIM+'" stroke-width="1"/>';
     [x1,x2].forEach(function(x){ d+='<line x1="'+x.toFixed(1)+'" y1="'+(y-3.5)+'" x2="'+x.toFixed(1)+'" y2="'+(y+3.5)+'" stroke="'+DIM+'" stroke-width="1"/>'; });
-    d+='<text x="'+((x1+x2)/2).toFixed(1)+'" y="'+(y+11)+'" text-anchor="middle" font-size="9" fill="'+DIM+'" font-family="'+MONO+'">'+label+'</text>';
+    d+='<text x="'+((x1+x2)/2).toFixed(1)+'" y="'+(y+11+(tier?11:0))+'" text-anchor="middle" font-size="9" fill="'+DIM+'" font-family="'+MONO+'">'+label+'</text>';
     return d;
   }
-  function vdim(y1,y2,x,label){ // 수직 치수선 (오른쪽)
+  function vdim(y1,y2,x,label,tier){ // 수직 치수선 (오른쪽) · tier=1이면 라벨을 한 단 바깥으로 빼 겹침 방지
     var d='<line x1="'+x+'" y1="'+y1.toFixed(1)+'" x2="'+x+'" y2="'+y2.toFixed(1)+'" stroke="'+DIM+'" stroke-width="1"/>';
     [y1,y2].forEach(function(y){ d+='<line x1="'+(x-3.5)+'" y1="'+y.toFixed(1)+'" x2="'+(x+3.5)+'" y2="'+y.toFixed(1)+'" stroke="'+DIM+'" stroke-width="1"/>'; });
-    var my=(y1+y2)/2;
-    d+='<text x="'+(x+9)+'" y="'+my.toFixed(1)+'" text-anchor="middle" font-size="9" fill="'+DIM+'" font-family="'+MONO+'" transform="rotate(90 '+(x+9)+' '+my.toFixed(1)+')">'+label+'</text>';
+    var my=(y1+y2)/2, tx=x+9+(tier?11:0);
+    d+='<text x="'+tx+'" y="'+my.toFixed(1)+'" text-anchor="middle" font-size="9" fill="'+DIM+'" font-family="'+MONO+'" transform="rotate(90 '+tx+' '+my.toFixed(1)+')">'+label+'</text>';
     return d;
   }
   function ext(x1,y1,x2,y2){ // 보조 연장선
@@ -3385,7 +3426,7 @@ function buildRoomSVG(W,L,cols,rows){
   s+=hdim(ox,f1x,dy,"이격 "+(sw/2).toFixed(2)+"m");
   if(cols>=2){
     s+=ext(f2x,f1y,f2x,dy);
-    s+=hdim(f1x,f2x,dy,"간격 "+sw.toFixed(2)+"m");
+    s+=hdim(f1x,f2x,dy,"간격 "+sw.toFixed(2)+"m",1);
   }
   // 수직(세로 방향): 벽 이격 + 간격
   var dx=ox+rw+15;
@@ -3394,7 +3435,7 @@ function buildRoomSVG(W,L,cols,rows){
   s+=vdim(oy,f1y,dx,"이격 "+(sl/2).toFixed(2)+"m");
   if(rows>=2){
     s+=ext(ox+rw,f2y,dx,f2y);
-    s+=vdim(f1y,f2y,dx,"간격 "+sl.toFixed(2)+"m");
+    s+=vdim(f1y,f2y,dx,"간격 "+sl.toFixed(2)+"m",1);
   }
   s+='</svg>';
   return s;
