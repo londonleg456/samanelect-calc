@@ -541,6 +541,24 @@
   .mc-chip button{border:none;background:#F4F6F8;border-radius:5px;width:20px;height:22px;cursor:pointer;
     font-size:10px;font-weight:800;color:var(--ink-2);line-height:1;}
   .mc-tbl td.bl{color:#A84646;font-weight:800;}
+  .mc-spare{margin-top:8px;padding:8px 9px 9px;border:1.5px dashed var(--line);border-radius:8px;background:#fff;}
+  .mc-spare.manual{border-style:solid;border-color:var(--saman-orange);background:#FFFAF4;}
+  .mc-sp-h{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:0 0 6px;font-size:11.5px;font-weight:800;color:var(--ink);}
+  .mc-sp-h .tag{font-style:normal;font-size:9.5px;font-weight:800;padding:2px 4px;border-radius:4px;background:#E4ECF5;color:#3C5670;margin-left:4px;}
+  .mc-sp-h .tag.pin{background:rgba(245,130,32,.16);color:var(--saman-orange-deep);}
+  .mc-sp-auto{border:none;background:#F4F6F8;border-radius:5px;padding:3px 7px;font-size:10.5px;font-weight:800;color:var(--ink-2);cursor:pointer;}
+  .mc-sp-auto:hover{background:#E7EBF0;}
+  .mc-steps{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+  .mc-step{border:1.5px solid var(--line);border-radius:8px;padding:5px 6px 6px;background:#FBFCFD;text-align:center;}
+  .mc-step>span{display:block;font-size:10.5px;font-weight:800;color:var(--ink-2);margin-bottom:4px;white-space:nowrap;}
+  .mc-step>div{display:flex;align-items:center;justify-content:center;gap:4px;}
+  .mc-step b{min-width:22px;font-family:var(--mono);font-size:15px;font-weight:800;color:var(--ink);}
+  .mc-step button{width:28px;height:28px;border:1px solid var(--line);border-radius:7px;background:#fff;
+    font-size:16px;font-weight:800;line-height:1;color:var(--saman-orange-deep);cursor:pointer;padding:0;}
+  .mc-step button:hover:not(:disabled){border-color:var(--saman-orange);background:rgba(245,130,32,.10);}
+  .mc-step button:disabled{opacity:.35;cursor:default;}
+  .mc-sp-s{margin:6px 0 0;font-size:11px;color:var(--ink-2);font-weight:700;line-height:1.45;}
+  .mc-sp-s strong{color:var(--ink);font-family:var(--mono);}
   .mc-prow,.mc-phead{display:grid;grid-template-columns:minmax(120px,1.6fr) 112px 92px 62px 62px 34px;gap:6px;align-items:center;}
   .mc-phead{margin-bottom:5px;}
   .mc-phead span{font-size:11px;font-weight:800;color:var(--ink-2);letter-spacing:.02em;padding-left:2px;white-space:nowrap;}
@@ -1322,9 +1340,10 @@
 
     <div class="card">
       <p class="card-title"><span class="idx">03</span> MCC 배정 <span style="font-size:11.5px;font-weight:700;color:var(--ink-2);margin-left:6px;">드래그 또는 ◀ ▶ 로 이동</span></p>
-      <p class="rm-gnote" style="margin:0 0 12px;">자동 배정 결과입니다. 부하를 다른 MCC로 옮기면 <strong>고정</strong>되어 이후 계산에서도 그 MCC에 남습니다.</p>
+      <p class="rm-gnote" style="margin:0 0 12px;">자동 배정 결과입니다. 부하를 다른 MCC로 옮기면 <strong>고정</strong>되어 이후 계산에서도 그 MCC에 남습니다. 각 MCC 아래 <strong>스페어 ＋/－</strong>로 모터·피더 스페어 수를 직접 정할 수 있습니다(처음 누르면 해당 MCC가 <strong>수동</strong>으로 바뀌며, 남는 공간이 부족하면 면 증설 여부를 확인창으로 묻습니다).</p>
       <div id="mcBins" class="mc-bins"></div>
       <button type="button" class="add" data-mcaction="resetpin">↺ 자동 배정으로 되돌리기</button>
+      <button type="button" class="add" id="mcSpareResetAll" data-mcaction="spareresetall" hidden>↺ 스페어 수동 지정 모두 해제 (자동 산정으로)</button>
     </div>
 
     <div class="card">
@@ -1356,6 +1375,8 @@
         <p class="ref">상용·예비 여부와 관계없이 <strong>한 행의 동일 부하 전체</strong>를 하나의 묶음으로 보아 <strong>반드시 같은 MCC</strong>에 배치합니다. 같은 MCC 안에서는 여러 면으로 나눌 수 있으나 서로 다른 MCC로는 나누지 않습니다. 기존 MCC에 전량이 들어가지 않으면 부하 전체를 다음 MCC로 넘깁니다.</p>
         <h4>스페어</h4>
         <p class="ref">각 MCC의 <strong>부하 유닛 수 × 20%</strong>(올림)를 목표 수량으로 잡고, <strong>모터용(300 mm)과 피더용(200 mm)을 절반씩</strong> 배분하는 것을 기본으로 합니다. 다만 면마다 남는 높이가 달라 조합을 그대로 쓸 수 없으므로, 각 면에서 <strong>① 들어가는 개수가 가장 많은 조합</strong>을 먼저 찾고, 개수가 같으면 <strong>② 모터:피더가 50:50에 가까운 쪽</strong>, 그다음 <strong>③ BLANK가 작은 쪽</strong>을 택합니다. 목표 수량이 자기 MCC에 다 들어가지 않으면 <strong>다른 MCC의 잔여 공간으로 이관</strong>해 전체 부족분을 최소화합니다. 면은 늘리지 않으므로 모든 MCC가 꽉 찬 경우에만 스페어가 줄어들며, 그때의 부족 수량과 남은 BLANK를 결과에 표시합니다. BLANK는 향후 증설 여유 공간입니다.</p>
+        <h4>스페어 수동 지정</h4>
+        <p class="ref">스페어 수량은 현장 상황에 따라 설계자가 판단하므로, 03 <strong>MCC 배정</strong>의 각 MCC에서 <strong>모터(300 mm)·피더(200 mm) 스페어를 ＋/－</strong>로 직접 정할 수 있습니다. 처음 누르면 현재 자동 배치 수량에서 출발해 그 MCC는 <strong>수동</strong>이 되며, 이후 20% 자동 목표·타 MCC 이관 대상에서 빠지고 <strong>지정한 수량 그대로</strong> 배치됩니다(화면에는 부하 대비 비율이 함께 표시되어 20% 기준과 비교할 수 있습니다). 배치는 각 면의 남는 높이에 조합을 전수 비교해 <strong>면을 늘리지 않고 가장 많이 들어가도록</strong> 정합니다. 남는 공간이 부족하면 면 증설 여부를 <strong>확인창</strong>으로 묻고, 승인하면 최대 면수 한도 안에서 면을 추가합니다(결과에는 <strong>‘증설’</strong>로 표시). 수동 지정은 <strong>MCC 번호 기준</strong>이므로 부하를 다른 MCC로 옮기거나 개수를 바꿔 MCC 구성이 달라졌다면 지정값을 다시 확인하세요. <strong>↺ 자동</strong>으로 되돌릴 수 있습니다.</p>
         <h4>MCC 분할</h4>
         <p class="ref">MCC 1대는 <strong>최대 6면</strong>입니다. 동일 부하 전체가 들어갈 기존 MCC가 없으면 새 MCC를 만들고, 새 MCC의 첫 면에도 메인 공제 600 mm가 적용됩니다. 새 MCC에도 전체 부하가 들어가지 않으면 서로 다른 MCC로 분할하지 않고 <strong>배치 불가</strong>로 표시합니다.</p>
         <h4>한계</h4>
@@ -2502,7 +2523,7 @@ function mcPrintResult(){
       ["MCC 1대 최대", P.maxFaces+" 면"],
       ["스페어 비율", Math.round(P.ratio*1000)/10+" %"],
       ["스페어 배치", R.totSpare+" / "+R.totTarget+" 개"]
-    ],
+    ].concat(R.nManual?[["수동 스페어","MCC-"+R.mccs.filter(function(m){ return m.manual; }).map(function(m){ return m.no; }).join("·")]]:[]),
     nodes:[
       [document.querySelector("#view-mcc .rm-stats"), document.getElementById("mcWarn")],
       document.getElementById("mcCanvas"),
@@ -2514,7 +2535,8 @@ function mcPrintResult(){
 }
 
 /* ===== MCC 대수 산정 ===== */
-var mcState={seq:0, loads:[]};
+// spareOv: MCC 번호 → {m:모터 스페어 수, f:피더 스페어 수, grow:허용한 증설 면수} (수동 지정한 MCC만 존재)
+var mcState={seq:0, loads:[], spareOv:{}};
 var mcLast=null;
 function mcNextId(){ return "L"+(++mcState.seq); }
 function mcSeedLoads(){
@@ -2640,6 +2662,10 @@ function mcCompute(){
     m.faces.forEach(function(f,j){ f.no=j+1; });
   });
 
+  // 3-0) 수동 지정(spareOv)이 남아 있는 MCC 번호 정리 — 줄어든 MCC 번호의 지정은 버린다
+  var ovMap=mcState.spareOv||(mcState.spareOv={});
+  Object.keys(ovMap).forEach(function(k){ if(parseInt(k,10)>mccs.length) delete ovMap[k]; });
+
   // 3) 스페어 — ① 배치 개수 최대 ② 모터:피더 50:50 ③ BLANK 최소 순으로 조합 선택
   //    한 면에서 (모터용 300 × a) + (피더용 200 × b) 조합을 전수 탐색
   function mcBestFill(R, budget, mc, fc){
@@ -2661,11 +2687,70 @@ function mcCompute(){
     if(best.b) f.items.push({name:"SPARE", qty:best.b, h:P.feederH, type:"spare", kind:"feeder"});
     f.used+=best.a*P.motorH+best.b*P.feederH;
   }
+  // 3-m) 수동 지정 MCC — 사용자가 정한 모터 a개 · 피더 b개를 그대로 배치한다.
+  //      면별 남는 높이(Rs)에 (모터 300 × p) + (피더 200 × q)를 넣는 모든 경우를 DP로 따져
+  //      ① 배치 개수 최대 → ② 사용 높이 최대(BLANK 최소) 순으로 정한다. (탐욕법보다 면 증설이 덜 생김)
+  function mcManualFill(Rs, a, b){
+    var n=Rs.length, W=100000, mh=P.motorH, fh=P.feederH, i, x, y, p, q;
+    var val=[], pick=[];
+    for(i=0;i<=n;i++){
+      val.push([]); pick.push([]);
+      for(x=0;x<=a;x++){ val[i].push(new Array(b+1).fill(0)); pick[i].push(new Array(b+1).fill(null)); }
+    }
+    for(i=n-1;i>=0;i--){
+      for(x=0;x<=a;x++){
+        for(y=0;y<=b;y++){
+          var bv=-1, bp=0, bq=0, maxP=Math.min(x, Math.floor(Rs[i]/mh));
+          for(p=maxP;p>=0;p--){
+            var maxQ=Math.min(y, Math.floor((Rs[i]-p*mh)/fh));
+            for(q=maxQ;q>=0;q--){
+              var v=(p+q)*W+p*mh+q*fh+val[i+1][x-p][y-q];
+              if(v>bv){ bv=v; bp=p; bq=q; }
+            }
+          }
+          val[i][x][y]=bv; pick[i][x][y]={p:bp,q:bq};
+        }
+      }
+    }
+    var per=[]; x=a; y=b;
+    for(i=0;i<n;i++){ var c=pick[i][x][y]; per.push(c); x-=c.p; y-=c.q; }
+    return {per:per, leftM:x, leftF:y};
+  }
+  function mcManualPlace(m, ov){
+    var remM=Math.max(0,Math.floor(ov.m||0)), remF=Math.max(0,Math.floor(ov.f||0));
+    var want=remM+remF, grow=Math.max(0,Math.floor(ov.grow||0));
+    function put(f,c){
+      if(c.p) f.items.push({name:"SPARE", qty:c.p, h:P.motorH, type:"spare", kind:"motor"});
+      if(c.q) f.items.push({name:"SPARE", qty:c.q, h:P.feederH, type:"spare", kind:"feeder"});
+      f.used+=c.p*P.motorH+c.q*P.feederH;
+    }
+    // ① 기존 면(VVVF 전용 면 제외)의 남는 공간에 먼저 채움
+    var normal=m.faces.filter(function(f){ return !f.vvvf; });
+    var r=mcManualFill(normal.map(function(f){ return f.cap-f.used; }), remM, remF);
+    normal.forEach(function(f,i){ put(f, r.per[i]); });
+    remM=r.leftM; remF=r.leftF;
+    // ② 그래도 남으면, 사용자가 허용한 만큼(grow) 새 면을 추가해 채움 (최대 면수 한도 내)
+    m.spareGrown=0;
+    while((remM+remF)>0 && m.spareGrown<grow && m.faces.length<P.maxFaces){
+      var nf=addFace(m,{no:0, main:false, vvvf:false, cap:P.faceH, used:0, items:[], spareGrown:true});
+      var r2=mcManualFill([nf.cap], remM, remF);
+      put(nf, r2.per[0]);
+      remM=r2.leftM; remF=r2.leftF; m.spareGrown++;
+    }
+    m.faces.forEach(function(f,j){ f.no=j+1; });
+    m.manual=true;
+    m.reqM=Math.max(0,Math.floor(ov.m||0)); m.reqF=Math.max(0,Math.floor(ov.f||0));   // 사용자가 지정한 값(배치 못한 것 포함)
+    m.spareUnplaced=remM+remF;
+    m.spare=want-m.spareUnplaced;
+    m.spareM=Math.max(0,Math.floor(ov.m||0))-remM;
+    m.spareF=Math.max(0,Math.floor(ov.f||0))-remF;
+  }
   mccs.forEach(function(m){
     m.loadUnits=m.faces.reduce(function(a,f){
       return a+f.items.reduce(function(b,it){ return b+(it.type==="spare"?0:it.qty); },0); },0);
     m.spareTarget=Math.ceil(m.loadUnits*P.ratio);
-    m.spareExtra=0;
+    m.spareExtra=0; m.manual=false; m.spareGrown=0; m.spareUnplaced=0;
+    if(ovMap[m.no]){ mcManualPlace(m, ovMap[m.no]); return; }   // 수동 지정 MCC는 자동 배치 제외
     var budget=m.spareTarget, mc=0, fc=0;
     m.faces.forEach(function(f){
       if(f.vvvf || budget<=0) return;
@@ -2678,10 +2763,11 @@ function mcCompute(){
     m.spare=m.spareTarget-budget; m.spareM=mc; m.spareF=fc;
   });
   // 3-b) 자기 MCC에 자리가 없어 못 넣은 스페어는 다른 MCC의 잔여 공간으로 이관
-  var shortage=mccs.reduce(function(a,m){ return a+(m.spareTarget-m.spare); },0);
+  //      (수동 지정 MCC는 사용자가 정한 개수 그대로이므로 목표·이관 대상에서 제외)
+  var shortage=mccs.reduce(function(a,m){ return a+(m.manual?0:(m.spareTarget-m.spare)); },0);
   if(shortage>0){
     mccs.forEach(function(m){
-      if(shortage<=0) return;
+      if(shortage<=0 || m.manual) return;
       m.faces.forEach(function(f){
         if(shortage<=0 || f.vvvf) return;
         var best=mcBestFill(f.cap-f.used, shortage, m.spareM, m.spareF);
@@ -2697,7 +2783,8 @@ function mcCompute(){
   mccs.forEach(function(m){
     m.blank=m.faces.reduce(function(a,f){ return a+(f.vvvf?0:(f.cap-f.used)); },0);
   });
-  var R={P:P, mccs:mccs, over:over, groups:groups,
+  var R={P:P, mccs:mccs, over:over, groups:groups, short:Math.max(0,shortage),
+    nManual:mccs.filter(function(m){return m.manual;}).length,
     totFaces:mccs.reduce(function(a,m){return a+m.faces.length;},0),
     totUnits:mccs.reduce(function(a,m){return a+m.loadUnits;},0),
     totSpare:mccs.reduce(function(a,m){return a+m.spare;},0),
@@ -2725,6 +2812,76 @@ function renderMcLoads(){
       + '</div>';
   }).join("");
 }
+/* ---- 스페어 수동 조정 (MCC별 모터/피더 ＋/－) ---- */
+function mcSpareRow(m,P){
+  var nm=m.manual?m.reqM:m.spareM, nf=m.manual?m.reqF:m.spareF;
+  var pct=m.loadUnits?Math.round(m.spare/m.loadUnits*100):0;
+  var base=Math.round(P.ratio*1000)/10;
+  function step(t,label,hh,n){
+    return '<div class="mc-step"><span>'+label+' '+hh+'</span><div>'
+      + '<button type="button" data-mcaction="spare" data-mcc="'+m.no+'" data-mt="'+t+'" data-d="-1"'
+      +   (n<=0?' disabled':'')+' title="'+label+' 스페어 1개 줄이기">−</button>'
+      + '<b>'+n+'</b>'
+      + '<button type="button" data-mcaction="spare" data-mcc="'+m.no+'" data-mt="'+t+'" data-d="1"'
+      +   ' title="'+label+' 스페어 1개 추가">＋</button>'
+      + '</div></div>';
+  }
+  return '<div class="mc-spare'+(m.manual?' manual':'')+'">'
+    + '<p class="mc-sp-h"><span>스페어 '+(m.manual?'<i class="tag pin">수동</i>':'<i class="tag">자동</i>')+'</span>'
+    +   (m.manual?'<button type="button" class="mc-sp-auto" data-mcaction="sparereset" data-mcc="'+m.no+'" title="이 MCC의 스페어를 자동 산정으로 되돌립니다">↺ 자동</button>':'')
+    + '</p>'
+    + '<div class="mc-steps">'+step("m","모터",P.motorH,nm)+step("f","피더",P.feederH,nf)+'</div>'
+    + '<p class="mc-sp-s">합계 <strong>'+m.spare+'</strong>개 · 부하 대비 <strong>'+pct+'%</strong> ('+base+'% 기준 '+m.spareTarget+'개)'
+    +   (m.spareGrown?' · 스페어용 면 +'+m.spareGrown:'')+'</p>'
+    + '</div>';
+}
+function mcSpareAdjust(no, type, delta){
+  var ovMap=mcState.spareOv||(mcState.spareOv={});
+  var R=mcLast, m=R&&R.mccs[no-1];
+  if(!m || (type!=="m"&&type!=="f") || !delta) return;
+  var prev=ovMap[no];
+  // 처음 누르면 현재 자동 배치 수량에서 출발해 그 MCC를 '수동'으로 전환한다
+  var cur=prev?{m:prev.m, f:prev.f, grow:prev.grow||0}:{m:m.spareM, f:m.spareF, grow:0};
+  var cand={m:cur.m, f:cur.f, grow:cur.grow};
+  cand[type]=Math.max(0,cand[type]+delta);
+  if(cand[type]===cur[type]) return;
+  var maxF=R.P.maxFaces;
+  function probe(c){                                   // 후보값으로 다시 계산해 해당 MCC 결과를 본다
+    ovMap[no]={m:c.m, f:c.f, grow:c.grow};
+    var r=mcCompute();
+    return r&&r.mccs[no-1];
+  }
+  function restore(){ if(prev) ovMap[no]=prev; else delete ovMap[no]; }
+  var mm=probe(cand);
+  if(delta>0 && mm && mm.spareUnplaced>0){
+    // 남는 공간(BLANK)이 부족 → 면을 몇 개 늘려야 하는지 따져 확인창으로 묻는다
+    var before=m.faces.length, ok=false;
+    while(cand.grow<maxF){
+      cand.grow++;
+      mm=probe(cand);
+      if(mm && mm.spareUnplaced===0){ ok=true; break; }
+      if(!mm || mm.faces.length>=maxF) break;
+    }
+    if(!ok){
+      restore();
+      window.alert("MCC-"+no+"는 최대 면수("+maxF+"면)에 도달해 스페어를 더 넣을 수 없습니다.\n'MCC 1대 최대 면수'를 늘리거나 다른 스페어를 줄여 주세요.");
+      mcRefresh(); return;
+    }
+    var add=mm.faces.length-before;
+    var yes=window.confirm("MCC-"+no+"의 남는 공간(BLANK)이 부족합니다.\n"
+      +"스페어를 넣으려면 면을 "+add+"개 늘려야 합니다. ("+before+"면 → "+mm.faces.length+"면)\n\n"
+      +"[확인] 면을 늘려서 추가 · [취소] 추가하지 않음");
+    if(!yes){ restore(); mcRefresh(); return; }
+  }else if(delta<0){
+    // 줄인 결과 증설이 필요 없어졌다면 허용해 둔 증설 면수도 함께 줄인다
+    while(cand.grow>0){
+      var t2=probe({m:cand.m, f:cand.f, grow:cand.grow-1});
+      if(t2 && t2.spareUnplaced===0) cand.grow--; else break;
+    }
+  }
+  ovMap[no]={m:cand.m, f:cand.f, grow:cand.grow};
+  mcRefresh();
+}
 /* ---- MCC 배정 (드래그) ---- */
 function renderMcBins(R){
   var box=document.getElementById("mcBins");
@@ -2746,7 +2903,7 @@ function renderMcBins(R){
         + '<button type="button" data-mcaction="binmove" data-dir="1" title="다음 MCC로">▶</button>'
         + '</div>';
     });
-    h+='</div></div>';
+    h+='</div>'+mcSpareRow(m,R.P)+'</div>';
   });
   h+='<div class="mc-bin ghost"><p class="mc-bin-h">＋ 새 MCC</p><div class="mc-chips" data-bin="'+(R.mccs.length+1)+'"><p class="mc-drop">여기로 끌어다 놓으면 새 MCC로 분리됩니다</p></div></div>';
   box.innerHTML=h;
@@ -2766,10 +2923,13 @@ function mcRenderTable(R){
   var h='';
   R.mccs.forEach(function(m){
     h+='<div class="mc-block"><p class="mc-btitle">MCC-'+m.no+' <span>'+m.faces.length+'면 · 부하 '+m.loadUnits
-      +'유닛 · 스페어 '+m.spare+'/'+m.spareTarget+(m.spareExtra?' (타 MCC분 +'+m.spareExtra+')':'')+' (모터 '+m.spareM+' · 피더 '+m.spareF+') · BLANK '+Math.round(m.blank)+'mm</span></p>';
+      +'유닛 · 스페어 '+(m.manual
+        ? m.spare+'개 수동 (기준 '+m.spareTarget+')'
+        : m.spare+'/'+m.spareTarget+(m.spareExtra?' (타 MCC분 +'+m.spareExtra+')':''))
+      +' (모터 '+m.spareM+' · 피더 '+m.spareF+') · BLANK '+Math.round(m.blank)+'mm</span></p>';
     h+='<table class="mc-tbl"><thead><tr><th>면</th><th>구분</th><th>수용 유닛</th><th>사용 / 유효</th><th>BLANK</th></tr></thead><tbody>';
     m.faces.forEach(function(f,i){
-      var kind=f.vvvf?"VVVF 전용":(f.main?"메인판넬":"일반");
+      var kind=f.vvvf?"VVVF 전용":(f.main?"메인판넬":(f.spareGrown?"일반 (스페어 증설)":"일반"));
       var items=f.items.map(function(it){
         return rmEsc(it.name)+" ×"+it.qty+(it.type==="vvvf"?"(VVVF)":(it.type==="spare"?"("+it.h+")":""));
       }).join(", ")||"–";
@@ -2858,7 +3018,7 @@ function mcDraw(R){
         if(bh>=15) s+='<text x="'+(x+fw/2)+'" y="'+(y+bh/2+4.5)+'" text-anchor="middle" font-size="11.5" font-weight="800" fill="#A84646">BLANK '+Math.round(bl)+'</text>';
       }
       s+='<text x="'+(x+fw/2)+'" y="'+(faceY+H+17)+'" text-anchor="middle" font-size="12" font-weight="800" fill="#566578">'
-        + f.no+'면'+(f.vvvf?" · VVVF":(f.main?" · MAIN":""))+'</text>';
+        + f.no+'면'+(f.vvvf?" · VVVF":(f.main?" · MAIN":(f.spareGrown?" · 증설":"")))+'</text>';
       x+=fw+gapF;
     });
     s+='<text x="'+(x0+widths[mi]/2)+'" y="'+(rowY+padT-13)+'" text-anchor="middle" font-size="14" font-weight="800" fill="#15212F">MCC-'+m.no+' ('+m.faces.length+'면)</text>';
@@ -2875,6 +3035,7 @@ function mcRefresh(){
   if(!R){
     ["mcoMcc","mcoFaces","mcoUnits","mcoSpare","mcoBlank"].forEach(function(i){ set(i,"–"); });
     document.getElementById("mcWarn").innerHTML="";
+    var ra0=document.getElementById("mcSpareResetAll"); if(ra0) ra0.hidden=true;
     mcDraw(null); mcRenderTable(null); renderMcBins(null); return;
   }
   set("mcoMcc", R.mccs.length+" 대");
@@ -2888,15 +3049,33 @@ function mcRefresh(){
       + R.over.map(function(g){ return rmEsc(g.name)+" "+g.units+"유닛"+(g.pin?" (MCC-"+g.pin+" 고정)":""); }).join(", ")
       + '. 고정을 풀거나 최대 면수를 조정하세요.</p>';
   }
-  if(R.totSpare<R.totTarget){
-    w+='<p class="mc-note">스페어 목표 '+R.totTarget+'개 중 '+R.totSpare+'개 배치. 남은 '
-      + (R.totTarget-R.totSpare)+'개는 어느 MCC에도 잔여 공간이 없어 제외했습니다(면 증설 없음). 총 BLANK '+Math.round(R.totBlank)+' mm</p>';
+  var pctBase=Math.round(R.P.ratio*1000)/10;
+  if(R.short>0){
+    w+='<p class="mc-note">'+(R.nManual
+        ? '자동 배정 MCC의 스페어 '+R.short+'개는 자기 MCC와 다른 자동 MCC에 잔여 공간이 없어 제외했습니다(수동 지정 MCC로는 이관하지 않음 · 면 증설 없음).'
+        : '스페어 목표 '+R.totTarget+'개 중 '+R.totSpare+'개 배치. 남은 '+R.short+'개는 어느 MCC에도 잔여 공간이 없어 제외했습니다(면 증설 없음).')
+      + ' 총 BLANK '+Math.round(R.totBlank)+' mm</p>';
   }else if(R.totBlank>0){
     var mv=R.mccs.reduce(function(a,m){ return a+(m.spareExtra||0); },0);
-    w+='<p class="mc-note">스페어 목표 '+R.totTarget+'개 전량 배치'
+    w+='<p class="mc-note">'+(R.nManual
+        ? '스페어 '+R.totSpare+'개 배치 ('+pctBase+'% 기준 '+R.totTarget+'개 · 수동 지정 '+R.nManual+'대 포함)'
+        : '스페어 목표 '+R.totTarget+'개 전량 배치')
       + (mv?' (자기 MCC에 자리가 없어 '+mv+'개는 다른 MCC로 이관)':'')
       + '. 총 BLANK '+Math.round(R.totBlank)+' mm — 스페어를 다 넣은 뒤 남은 공간이므로 향후 증설 여유로 쓰입니다.</p>';
   }
+  if(R.nManual){
+    w+='<p class="mc-note">수동 스페어 — '+R.mccs.filter(function(m){ return m.manual; }).map(function(m){
+      return 'MCC-'+m.no+' 모터 '+m.reqM+' · 피더 '+m.reqF+' (부하 대비 '+(m.loadUnits?Math.round(m.spare/m.loadUnits*100):0)+'%)'
+        +(m.spareGrown?' · 스페어용 면 +'+m.spareGrown:'');
+    }).join(' / ')+'</p>';
+    R.mccs.forEach(function(m){
+      if(m.manual && m.spareUnplaced>0){
+        w+='<p class="mc-warn">⚠ MCC-'+m.no+' 수동 스페어 중 '+m.spareUnplaced+'개를 배치하지 못했습니다(공간 부족). '
+          + '스페어를 줄이거나, ＋ 버튼의 확인창에서 면 증설을 허용하세요.</p>';
+      }
+    });
+  }
+  var ra=document.getElementById("mcSpareResetAll"); if(ra) ra.hidden=!R.nManual;
   document.getElementById("mcWarn").innerHTML=w;
   renderMcBins(R); mcDraw(R); mcRenderTable(R);
 }
@@ -2928,6 +3107,16 @@ function handleMccEvent(ev){
     if(act==="print"){ mcPrintResult(); return; }
     if(act==="resetpin"){
       mcState.loads.forEach(function(l){ l.mcc=null; }); renderMcc(); return;
+    }
+    if(act==="spare"){
+      mcSpareAdjust(parseInt(t.getAttribute("data-mcc"),10), t.getAttribute("data-mt"), parseInt(t.getAttribute("data-d"),10));
+      return;
+    }
+    if(act==="sparereset"){
+      delete mcState.spareOv[parseInt(t.getAttribute("data-mcc"),10)]; mcRefresh(); return;
+    }
+    if(act==="spareresetall"){
+      mcState.spareOv={}; mcRefresh(); return;
     }
   }
   if(ev.type==="click") return;
@@ -2972,8 +3161,10 @@ function mcApplyItems(loads, srcLabel){
   if(hasData){
     var replace=window.confirm("기존 부하 "+mcState.loads.length+"건이 있습니다.\n[확인] 지우고 교체 · [취소] 아래에 추가");
     mcState.loads = replace ? loads : mcState.loads.concat(loads);
+    if(replace) mcState.spareOv={};      // 부하를 통째로 바꾸면 MCC 구성이 달라지므로 수동 스페어 지정도 해제
   }else{
     mcState.loads = loads;
+    mcState.spareOv={};
   }
   renderMcc();
   var nF=loads.filter(function(l){ return l.kind==="feeder"; }).length;
